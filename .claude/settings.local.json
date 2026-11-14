@@ -16,8 +16,8 @@
   "enableWorkflows": true,
   "workflowKeywordTriggerEnabled": true,
   "enabledPlugins": {
-    "superpowers@superpowers-dev": true,
-    "i-have-adhd@i-have-adhd": true
+    "i-have-adhd@i-have-adhd": true,
+    "superpowers@superpowers-dev": true
   },
   "extraKnownMarketplaces": {
     "superpowers-dev": {
