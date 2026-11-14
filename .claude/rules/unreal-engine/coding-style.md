@@ -3,82 +3,49 @@ paths:
   - "Source/**/*.{h,cpp,cs}"
   - "Plugins/**/Source/**/*.{h,cpp,cs}"
 ---
+# Unreal Engine C++ Coding Style
 
-# Unreal Engine の C++ コーディング規約(Epic)
+Source: https://dev.epicgames.com/documentation/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine?lang=ja (Unreal Engine 5.9 documentation, Japanese page, read in full on 2026-11-15). Epic's in-house standard; the page says compliance is required.
 
-- 出典: https://dev.epicgames.com/documentation/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine?lang=ja (Unreal Engine 5.9 のドキュメント、2026-11-15 取得)
-- 位置づけ: Epic Games の社内規約。原文は遵守が必須としている。
-- 要約であり原文の転載ではない。
+## Precedence
+- For `Source/**/*.{h,cpp}` this file takes precedence over `.claude/rules/cpp/coding-style.md` (ECC text and the C++ Core Guidelines section). For `Source/**/*.cs` (build scripts such as `*.Build.cs`, `*.Target.cs`) it takes precedence over `.claude/rules/csharp/coding-style.md` (Epic uses tabs in C# too). Both load because `paths` cannot exclude files.
 
-## 優先順位
-
-- `Source/**/*.{h,cpp}` では **この規約を `.claude/rules/cpp/core-guidelines.md` より優先**する。
-- `Source/**/*.cs`(`*.Build.cs`、`*.Target.cs` などのビルドスクリプト)では、`.claude/rules/csharp/dotnet-conventions.md` ではなく**この規約を優先**する(Epic は C# でもタブを使う)。
-- `.claude/rules/cpp/` の ECC 由来のルール(`coding-style.md` など)と食い違う場合も、このファイルの規約を優先する。
-
-### Core Guidelines と食い違う箇所
-
-| 項目 | C++ Core Guidelines | Unreal(従う) |
+| Topic | C++ Core Guidelines / ECC | Unreal (follow this) |
 |---|---|---|
-| 命名 | `underscore_style`(NL.10) | PascalCase、型ごとの接頭辞 |
-| 波かっこ | K&R 系(NL.17) | **Allman**(新しい行) |
-| `auto` | 使ってよい(ES.11) | **原則使わない**。構造化束縛も使わない |
-| 標準ライブラリ | 優先する(SL.1、SL.2) | 標準コンテナと文字列は、相互運用コードを除いて避ける |
+| Naming | `underscore_style` (NL.10) | PascalCase with type prefixes |
+| Braces | K&R-derived (NL.17) | Allman (brace on a new line) |
+| `auto` | allowed (ES.11); ECC also suggests structured bindings | avoid `auto`; no structured bindings |
+| Standard library | prefer it (SL.1, SL.2) | avoid standard containers and strings except in interop code |
+Same in both: enumerations use `enum class`.
 
-食い違わない例: 列挙型は、どちらも `enum class` を使う。
+## Naming
+- PascalCase, each word capitalized, usually no underscores; US English spelling in code and comments.
+- Type prefixes: `T` templates, `U` UObject-derived, `A` AActor-derived, `S` SWidget-derived, `I` abstract interfaces, `C` concepts, `E` enums, `F` most other classes and structs, `b` for booleans (required). No prefixes in C#. Typedefs take the prefix of the type they alias; template parameters may use an `In` prefix.
+- Macros: ALL_CAPS with underscores, starting with `UE_`. Types and variables are nouns; methods are verbs; `bool`-returning functions read as questions (`IsVisible()`); procedures are a verb plus the object; avoid vague verbs (`Handle`, `Process`). Names must be clear, unambiguous and descriptive; avoid heavy abbreviation.
+- Output parameters passed by reference use an `Out` prefix (`bOutResult` for `bool`). Declare one variable per line with a documentation comment above it.
 
-## 命名
+## Portability and standard library
+- Use size-explicit types (`int32`, `uint8`, `int64`, `float`, `double`); never depend on the size of `int`; use `bool`, not `BOOL`. Use explicit sizes for serialization and replication.
+- Standard library use was historically avoided. Allowed with conditions: `<atomic>` (new code), `<type_traits>` (lowercase `value`/`type`), `<initializer_list>` (only for brace initialization), `<regex>` (editor-only code, encapsulated), `<limits>`, `<cmath>`. `memcpy`/`memset` only with a clear performance gain. Do not mix UE and standard idioms in the same API.
 
-- PascalCase。各単語の先頭を大文字にし、通常はアンダースコアを使わない。コメントとコードは米国英語のつづり。
-- 型の接頭辞: `T` テンプレート、`U` UObject 派生、`A` AActor 派生、`S` SWidget 派生、`I` 抽象インターフェース、`C` コンセプト、`E` 列挙型、`F` その他の多くのクラスと構造体、`b` ブール変数(必須)。C# では接頭辞を付けない。
-- typedef は対象の型に応じた接頭辞を付ける。テンプレートパラメーターは `In` 接頭辞の例が示されている。
-- マクロは全大文字のアンダースコア区切りで、`UE_` で始める。
-- 型と変数は名詞、メソッドは動作を表す動詞。`bool` を返す関数は問いの形(`IsVisible()`)。`Handle` や `Process` のような曖昧な動詞を避ける。
-- 参照渡しの**出力引数は `Out` 接頭辞**(`bool` は `bOutResult`)。変数は1行に1つ宣言し、直前にドキュメントコメントを書けるようにする。
+## C++ features
+- The engine builds with and requires C++20. Use `static_assert`, `override` and `final` (strongly recommended) and `nullptr` (not `NULL`).
+- Do not use `auto` except for lambdas stored in variables, iterators and template code; no structured bindings. Prefer range-based `for` (`TMap` yields `TPair` with `Key`/`Value`).
+- Lambdas: keep short; explicit captures instead of `[&]`/`[=]`; for deferred execution avoid reference captures and `this` (use `TWeakObjectPtr`); give large lambdas an explicit return type.
+- Replace plain enums with `enum class` (works with `UENUM`; exposed Blueprint enums must be `uint8`). Flag enums use `ENUM_CLASS_FLAGS` with `None` = 0.
+- `const` on parameters, methods, loop variables and locals, but not on return types (it blocks move). Use `MoveTemp`; by-value sink parameters are an exception to the `const` rule. Default member initializers are allowed but trigger rebuilds and patch limits when headers change, so they suit game code.
+- Not stated on the page: rules for exceptions, RTTI, the ternary operator and threading.
 
-## 移植性と標準ライブラリ
+## Formatting
+- Allman braces; braces even around single statements; align `else if` with `if`. Tabs, width 4 (also in C#); spaces only for alignment.
+- `switch`: comment intentional fall-through, always `default`, end cases with `break` or equivalent. Pointer and reference: a space after the symbol (`FShaderType* Ptr`). No space between a function name and `(`. One blank line at the end of the file. The first line of each source file carries the required copyright notice exactly.
 
-- サイズを明示した型を使う(`int32`、`uint8`、`int64`、`float`、`double`)。`int` のサイズに依存しない。`BOOL` ではなく `bool`。シリアル化とレプリケーションにはサイズ明示の型。
-- 標準ライブラリの直接利用は歴史的に避けてきた。条件付きで使えるのは `<atomic>`(新規コードで可)、`<type_traits>`、`<initializer_list>`(波かっこ初期化に必要なとき)、`<regex>`(エディター専用コードにカプセル化)、`<limits>`、`<cmath>`。`memcpy` / `memset` は性能上の利点が明確なときだけ。
-- 同じ API で UE 流と標準流のイディオムを混在させない。
+## Comments and dependencies
+- Prefer self-explanatory code; comments state intent, not implementation; update comments with the code; replace magic numbers with named constants.
+- Document with JavaDoc-style comments: classes (problem solved and why), methods once at the public declaration (purpose, parameter units/ranges/invalid values, error meaning). Wrap third-party code in searchable marker comments.
+- `#pragma once`; include what you use directly without relying on transitive includes; avoid huge headers such as `Core.h`; forward declarations over includes; no standard-library headers inside headers; file names without prefixes (`Scene.cpp`); `Public`/`Private` folders per module; be careful with `FORCEINLINE`; no heavy `static` variables in headers.
 
-## C++ 機能の使用方針
-
-- **C++20 でビルドし、最小 C++20 が必要。**
-- `static_assert` を使う。`override` と `final` の使用を強く推奨する。`NULL` ではなく `nullptr`。
-- **`auto` は原則使わない**(読み手に型を見せる)。例外は、ラムダを変数に入れる場合、イテレーター、テンプレートコード。構造化束縛も使わない。
-- 範囲ベース `for` を推奨する(`TMap` は `TPair` の `Key` と `Value`)。
-- ラムダは短く保ち、`[&]` や `[=]` より明示的キャプチャ。遅延実行では参照キャプチャと `this` を避け、`TWeakObjectPtr` などを使う。大きなラムダは戻り値型を明示する。
-- 従来の列挙型は `enum class` に置き換える(`UENUM` 対応)。ブループリントに公開する列挙型は `uint8` が必要。フラグ列挙は `ENUM_CLASS_FLAGS` で演算子を定義し、`None` を 0 にする。
-- `const` を引数・メソッド・ループ変数・ローカル変数に付ける。**戻り値型には付けない**(ムーブを妨げる)。ムーブには `MoveTemp`。
-- デフォルトメンバー初期化子は使えるが、ヘッダ変更時の再ビルドとパッチ適用の制約があるため、ゲームコード向き。
-
-## フォーマット
-
-- **Allman 形式**で、関数・クラス・制御文の波かっこは新しい行。単独の文でも波かっこで囲む。`else if` は `if` と同じ位置に揃える。
-- **インデントはタブ(幅 4)**。C# でもタブ。スペースは揃えのためだけ。
-- `switch` は、フォールスルーを明示的にコメントし、`default` を置き、各ケースに `break` などを書く。
-- ポインタと参照は記号の右にスペースを1つ(`FShaderType* Ptr`)。関数名と `(` の間は空けない。ファイル末尾に空行を1行。
-- ソースファイルの最初の行に、規定の著作権表示を正確に入れる。
-
-## コメントと物理的な依存関係
-
-- コードは実装、コメントは**意図**を書く。マジックナンバーは名前付き定数にする。ドキュメントコメントは JavaDoc 形式で、メソッドは公開宣言の箇所に一度だけ書く(目的、各パラメーターの単位・有効範囲・不正値・エラーの意味)。
-- ヘッダガードは **`#pragma once`**。必要なヘッダは直接 include し、推移的な include に頼らない。前方宣言をヘッダの include より優先する。標準ライブラリヘッダをヘッダ内で include しない。
-- ファイル名にプレフィックスを付けない(`Scene.cpp`、`UScene.cpp` ではない)。他モジュールが必要とする定義は `Public`、それ以外は `Private` ディレクトリ。`FORCEINLINE` は慎重に。ヘッダに重い `static` 変数を置かない。
-
-## API 設計・プラットフォーム・その他
-
-- `bool` 引数を避け、列挙型フラグを使う。引数が多いときは構造体にまとめる。`bool` と `FString` のオーバーロードを避ける。
-- インターフェースは `I` 接頭辞、メンバー変数なし、純粋仮想。`virtual` と `override` を両方明示する。UObject はポインタで渡す。メンバーは基本 `private`。派生を想定しないクラスには `final`。
-- 新しい API は `UE::` 名前空間に置く(`UCLASS` / `USTRUCT` とマクロには使わない)。ヘッダでグローバルの `using` 宣言をしない。
-- プラットフォーム固有のコードは、プラットフォーム名のサブディレクトリに置く。`PLATFORM_[PLATFORM]` の分岐を増やさず、`FPlatformMisc` などの抽象化レイヤーに静的関数を足す。
-- 文字列リテラルは `TEXT()` で囲む。変数のシャドウイングは禁止。複雑な式は中間変数に分割する。デバッグコードはチェックインしない。
-- 挙動を変えない大規模な整形や名前変更は、独立した変更として分ける。
-- 言葉選び: `blacklist` / `whitelist` は `allow list` / `deny list`、`master` / `slave` は `primary` / `replica` などに置き換える。
-
-## 要約の範囲と未確認事項
-
-- 日本語版の全文を読んだ(Web 取得の要約を経由しており、原文の細部は未確認)。
-- 原文は、**例外・RTTI・三項演算子・スレッドについて、この記事内に規定が見当たらなかった**。規定が無いのか、要約で漏れたのかは未確認。
-- `Source/**/*.cs` を対象に含めたのは、原文が C# について述べていることと、`.Build.cs` / `.Target.cs` が `Source/` にある前提(Unreal の標準的な構成の仮定)による。実際のフォルダ構成は未確認。このリポジトリには Unreal Engine のプロジェクトがまだ無い。
+## API design and general rules
+- No `bool` parameters (use enum flags); bundle many parameters into a struct; no `bool`/`FString` overloads; interfaces start with `I`, have no data members and are pure virtual; write both `virtual` and `override`; pass UObjects by pointer; members private by default; `final` for classes not meant to be derived. New APIs go in the `UE::` namespace (not for `UCLASS`/`USTRUCT` or macros); no global `using` in headers; implementation details in a `Private` namespace.
+- Platform-specific code lives in platform-named subdirectories; avoid scattering `PLATFORM_[PLATFORM]` checks, add static functions to abstraction layers such as `FPlatformMisc`.
+- Wrap string literals in `TEXT()`; no variable shadowing; split complex expressions; do not check in debug code; make behavior-neutral mass formatting or renames separate changes; use inclusive terms (allow/deny list, primary/replica).

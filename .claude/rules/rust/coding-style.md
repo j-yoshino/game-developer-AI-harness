@@ -149,3 +149,22 @@ src/
 ## References
 
 See skill: `rust-patterns` for comprehensive Rust idioms and patterns.
+
+## Project Conventions: Rust API Guidelines - Naming
+
+Source: https://rust-lang.github.io/api-guidelines/naming.html (Naming chapter only, read in full on 2026-11-15). Other chapters of the API Guidelines are not covered. This section takes precedence over the generic ECC text above.
+
+### Casing (C-CASE)
+- UpperCamelCase: types, traits, enum variants. snake_case: modules, functions, methods, local variables, macros. SCREAMING_SNAKE_CASE: statics and constants. Type parameters: usually a single uppercase letter such as `T`. Lifetimes: short lowercase such as `'a`, `'de`.
+- Acronyms count as one word in UpperCamelCase (`Uuid`, `Usize`, `Stdin`) and are lowercase in snake_case. Do not put a one-letter word anywhere but the end (`btree_map` yes, `b_tree_map` no; `PI_2` yes, `PI2` no).
+- Constructors are `new` or `with_more_details`; conversion constructors are `from_xxx`. Crate names must not have `-rs` or `-rust` affixes.
+
+### Conversions (C-CONV)
+- `as_`: free, borrowed to borrowed, lowers abstraction (`str::as_bytes`). `to_`: costly; borrowed to owned, or owned to owned for `Copy` types (`str::to_lowercase`). `into_`: consumes ownership and returns an owned value, cost varies (`String::into_bytes`).
+- A wrapper around one value provides `into_inner()`. Put `mut` where it appears in the return type (`as_mut_slice`, not `as_slice_mut`).
+
+### Getters, iterators, features, word order
+- C-GETTER: no `get_` prefix; use the field name (`first()`), `first_mut()` for the mutable one. Use `get` only when it is the single obvious accessor (`Cell::get`). For validated access, consider an `unsafe` `_unchecked` variant.
+- C-ITER, C-ITER-TY: collections provide `iter` (`&U`), `iter_mut` (`&mut U`), `into_iter` (`U`), as methods only. Types that are not homogeneous collections use other names (`bytes`, `chars`). Iterator type names match the method (`into_iter` -> `IntoIter`, `keys` -> `Keys`).
+- C-FEATURE: Cargo features have no `use-`/`with-` prefix; the standard library feature is `std`; features are additive, so no `no-abc` names.
+- C-WORD-ORDER: keep word order consistent with the standard library, e.g. `ParseAddrError`, not `AddrParseError`.

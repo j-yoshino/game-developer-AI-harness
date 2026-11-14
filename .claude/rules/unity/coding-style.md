@@ -2,62 +2,37 @@
 paths:
   - "Assets/**/*.cs"
 ---
+# Unity C# Coding Style
 
-# Unity の C# 命名規則とスタイル規則
+Source: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity (read in full on 2026-11-15). Unity's article builds on Microsoft's conventions and says the best rules are the ones your team agrees on.
 
-- 出典: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity (2026-11-15 取得)
-- 位置づけ: Unity 公式の記事。Microsoft の規約を土台に、最適なルールはチームの必要に合わせて決めるという立場。
-- 要約であり原文の転載ではない。
+## Precedence
 
-## 優先順位
+- For `Assets/**/*.cs` this file takes precedence over `.claude/rules/csharp/coding-style.md` (ECC text and the .NET section) when they conflict. Both load because `paths` cannot exclude files.
+- The article does not cover comments, brace placement or indentation; follow the .NET section of `.claude/rules/csharp/coding-style.md` for those.
 
-- `Assets/**/*.cs` では **この規約を `.claude/rules/csharp/dotnet-conventions.md` より優先**する。食い違ったらこちらに従う。
-- この記事が扱わない項目(コメント、波かっこ、インデント)は `.claude/rules/csharp/dotnet-conventions.md` のスタイル節に従う(判断。原文は別記事を案内している)。
-- `.claude/rules/csharp/` の ECC 由来のルール(`coding-style.md` など)と食い違う場合も、このファイルの規約を優先する。
+## Identifiers
+- Use meaningful names. No Hungarian notation (`iCounter`, `strName`). No special characters, symbols or Unicode in identifiers (can interfere with Unity command-line tools).
+- camelCase: local variables and method parameters. PascalCase: classes, public fields, methods. snake_case and kebab-case appear in the article only as options; kebab-case is recommended for USS (UI Toolkit).
 
-## 識別子全般
+## Fields and variables
+- Nouns for non-`bool`; `bool` gets a verb prefix (`isDead`, `hasDamageMultiplier`). No abbreviations; one-letter names only in loops and math. Prefer readability over brevity.
+- Public fields PascalCase, private fields camelCase (the article's example prefixes private fields with `_`, e.g. `_isDead`). Constants: `k_` prefix + PascalCase. `m_` and `s_` prefixes are shown only as options and are described as uncommon in modern C#.
+- Use `this` to separate members from locals. Decide as a team whether to write `private` explicitly (Microsoft recommends explicit); use `protected` if subclasses need access.
+- Do not initialize fields to their defaults (`= 0`, `= null`, `= false`). One variable per line. Do not repeat the class name (`Player.Score`, not `Player.PlayerScore`). No joke names.
+- `var`: team decision; the article describes using it only when the type is obvious and avoiding it when the type is unclear or for primitives outside loops.
 
-- 意味が分かる名前を付ける。ハンガリー記法(`iCounter`、`strName`)は使わない。
-- 識別子に特殊文字・記号・Unicode 文字を使わない(Unity のコマンドラインツールと干渉する可能性がある)。
-- 大文字小文字: **camelCase** はローカル変数とメソッドの引数、**PascalCase** はクラス・public フィールド・メソッド。
-- snake_case と kebab-case は、記事では選択肢として紹介されているだけ。kebab-case は USS(UI Toolkit)で推奨。
+## Enums, classes, interfaces, methods
+- Enums: PascalCase type and members, singular noun, no prefix or suffix; `[Flags]` enums may be plural; public enums may live outside classes.
+- Classes: PascalCase noun or noun phrase. A `MonoBehaviour` class lives alone in a file named after the class. Interfaces: capital `I` + adjective (`IKillable`, `IDamageable<T>`).
+- Methods: start with a verb (`GetDirection`, `FindTarget`); parameters camelCase; `bool`-returning methods read as questions (`IsGameOver`, `HasStartedTurn`).
 
-## フィールドと変数
+## Events
+- Verb phrases: present progressive before the change (`OpeningDoor`), past participle after (`DoorOpened`). Prefer `System.Action`; use `EventHandler` only as a team-wide choice.
+- Raising methods are prefixed `On` (`OnDoorOpened`) and use `?.Invoke`. Subscriber handlers include the source name (article example: `GameEvents_DoorOpened`). Custom `EventArgs` only when needed (derive from `System.EventArgs` or use a read-only struct).
 
-- `bool` 以外は名詞。`bool` は動詞の接頭辞を付ける(`isDead`、`hasDamageMultiplier`)。
-- 省略せず、意図が分かる名前にする。1文字の名前はループや数式だけ。簡潔さより可読性を優先する(例: `CanScrollHorizontally`)。
-- public フィールドは PascalCase、private フィールドは camelCase。記事の例では private に `_` 接頭辞を付けている(`_isDead`)。
-- **定数は `k_` 接頭辞 + PascalCase。**
-- `m_`(メンバー)や `s_`(static)の接頭辞は、記事では選択肢として紹介されているだけで、最近の C# では一般的でないとされている。
-- メンバーとローカル変数を区別したいときは `this` を使う。
-- アクセス修飾子を省略するかどうかはチーム内で統一する(Microsoft の指針は private の明示を推奨)。サブクラスで使う可能性があるなら `protected`。
-- フィールドを既定値で初期化しない(`= 0`、`= null`、`= false` は冗長)。
-- 1行に1つの変数を宣言する。クラス名を繰り返さない(`Player` クラスの `PlayerScore` ではなく `Score`)。言葉遊びの名前を付けない。
-- `var` の使い方はチームで決める。記事は、型が明らかなときだけ使い、不明確なときやループ外のプリミティブ型では避ける流儀を紹介している。
+## Namespaces
+- PascalCase, no symbols or underscores, dot-separated hierarchy (`MyApplication.AI`), matching the folder structure. Use `using` directives at the top of the file. Qualify with a prefix when the same class name exists in several namespaces.
 
-## 列挙型・クラス・インターフェース・メソッド
-
-- 列挙型: 型名もメンバーも PascalCase、単数形の名詞。接頭辞・接尾辞は付けない。`[Flags]` のビット列挙は複数形でよい。
-- クラス: PascalCase の名詞(句)。**`MonoBehaviour` 派生は1ファイルに1クラス、ファイル名をクラス名に合わせる。**
-- インターフェース: 大文字の `I` + 機能を表す形容詞(`IKillable`、`IDamageable<T>`)。
-- メソッド: 動詞または動詞句で始める(`GetDirection`、`FindTarget`)。引数は camelCase。`bool` を返すメソッドは問いの形にする(`IsGameOver`、`HasStartedTurn`)。
-
-## イベント
-
-- 名前は動詞句。状態変化の前は進行形(`OpeningDoor`)、後は過去分詞(`DoorOpened`)。
-- ほとんどの場合は `System.Action`。`EventHandler` を使うかどうかはチームで統一する。
-- イベントを発火するメソッドは `On` 接頭辞(`OnDoorOpened`)。購読者の有無を確認して発火する(`?.Invoke`)。
-- 購読側のハンドラーは、購読対象の名前を含める(記事の例: `GameEvents_DoorOpened`)。
-- カスタムの `EventArgs` は必要なときだけ。作るなら `System.EventArgs` を継承するか、読み取り専用の構造体にする。
-
-## 名前空間
-
-- PascalCase。記号やアンダースコアを使わない。ドット区切りで階層化する(`MyApplication.AI`、`MyApplication.UI`)。
-- プロジェクトのフォルダ構成に合わせる。ファイル先頭で `using` を使い、接頭辞の繰り返しを避ける。
-- 複数の名前空間に同名のクラスがあるときは、接頭辞で明示して衝突を避ける。
-
-## 要約の範囲と未確認事項
-
-- 日本語版の記事の全文を読んだ(Web 取得の要約を経由しており、原文の細部は未確認)。
-- 記事は、コメント・波かっこの位置・インデント・EditorConfig を扱っていない。
-- このリポジトリには Unity のプロジェクトがまだ無い。`Assets/` の構成は**標準的な構成の仮定**で、実際のフォルダ構成は未確認。
+## Coverage
+The whole article was read. This repository has no Unity project yet, so the `Assets/` layout is an assumption about the standard structure.
