@@ -5,14 +5,6 @@
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },
   "model": "sonnet",
-  "skillOverrides": {
-    "superpowers:writing-plans": "off",
-    "superpowers:executing-plans": "off",
-    "superpowers:subagent-driven-development": "off",
-    "writing-plans": "off",
-    "executing-plans": "off",
-    "subagent-driven-development": "off"
-  },
   "enableWorkflows": true,
   "workflowKeywordTriggerEnabled": true,
   "enabledPlugins": {

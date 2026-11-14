@@ -54,7 +54,7 @@ brainstorming(何を作るか決める・design doc 作成)
 
 - **計画を書くときは `/speckit-plan` を使う。** superpowers の `writing-plans` は使わない。
 - **実装は `/speckit-implement` を使う。** superpowers の `executing-plans` と `subagent-driven-development` は使わない。
-- 上記3スキルは `.claude/settings.local.json` の `skillOverrides` で **`off`**(モデルからもユーザーからも見えない)にしてある。executing-plans と subagent-driven-development は、曖昧さや計画の欠陥を「判断して進め、台帳に記録する」(各スキルの「Rulings, not stalls」の段落)ため、「曖昧さが残る間は進まない」という `answer-policy.md` と食い違う。計画と実装は spec-kit で行う。
+- 上記3スキルは **使わない**。superpowers はプラグインのスキルで、`skillOverrides` はプラグインのスキルに効かない(公式: 「Plugin skills are not affected by `skillOverrides`」、https://code.claude.com/docs/en/skills.md)ため、スキル一覧には残る。プラグインごと無効化すると brainstorming なども消えるので、無効化はしない。executing-plans と subagent-driven-development は、曖昧さや計画の欠陥を「判断して進め、台帳に記録する」(各スキルの「Rulings, not stalls」の段落)ため、「曖昧さが残る間は進まない」という `answer-policy.md` と食い違う。計画と実装は spec-kit で行う。
 - 計画の成果物は `specs/<NNN-feature>/plan.md` に置く。`docs/superpowers/plans/` は使わない。**計画書の正本を2つ作らない。**
 
 ### superpowers 側で積極的に使うスキル
