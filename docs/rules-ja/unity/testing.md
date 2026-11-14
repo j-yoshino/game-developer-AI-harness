@@ -24,3 +24,10 @@ Unity -runTests -batchmode -projectPath <path> -testPlatform EditMode -testResul
 - `-runTests` のコマンドに `-quit` を付けない。テストの実行中に付けると、Editor がテストの完了を待たずに即座に終了する(非同期コードの実行中だとアプリケーションがハングすることもある)。非同期タスクの既定の待機時間は300秒(`-quitTimeout` で秒単位に変更できる)。
 - すでに別の Editor で開いているプロジェクトは、バッチモードで開けない。
 - 終了コード: Unity の各コンポーネントに共通の終了コードの定義はない(エラーメッセージとスタックトレースを読む)。`-batchmode` では、例外、アセットサーバーの更新の失敗、その他の失敗で終了コード 1 になる。成功時の終了コードは書かれていない。
+
+## C# のテストのルールから埋めた部分
+`.claude/rules/csharp/testing.md` から(一般的な C#。Unity 固有ではない):
+- テストには、実装の詳細ではなく振る舞いで名前を付ける(たとえば `FindById_ReturnsOrder_WhenOrderExists`)。
+- 各テストを Arrange、Act、Assert の構成にし、単体レベルと統合レベルのテストをはっきり分ける。
+- 行カバレッジ 80% 以上を目標にする。未検証: Unity のプロジェクトでどのカバレッジツールを使うべきか(読んだ Unity のページには書かれていない)。
+- そのままでは適用できない: xUnit、FluentAssertions、Moq/NSubstitute、Testcontainers、`WebApplicationFactory` は .NET のサーバー側の選択肢で、Unity Test Framework は NUnit ベース(公式ページ)。それ以外のライブラリが Unity の中で動くかは確認していない。

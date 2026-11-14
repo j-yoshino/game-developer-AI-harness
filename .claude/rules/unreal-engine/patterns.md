@@ -30,3 +30,7 @@ Sources (read on 2026-11-15):
 - Actors (and subobjects attached to actors) replicate when `bReplicates` is set. Creation, destruction and movement replicate automatically; properties, components, subobjects and RPCs do not and must be marked.
 - Prefer RepNotify properties over RPCs; use multicast sparingly; make frequently called RPCs unreliable; rate-limit reliable RPCs tied to player input so the queue does not overflow. Use the actor's network role and `IsLocallyControlled` to filter code that runs on both server and client; replicate the variables that drive local-only visuals and audio.
 - Not covered here: Net Role and `HasAuthority` details (they are in the Actor Role documentation, not read), Gameplay Framework, Subsystems and delegates.
+
+## Filled from the C++ patterns
+- For plain C++ types that are not UObjects, the language-level guidance in `.claude/rules/cpp/coding-style.md` (RAII, Rule of Zero, Rule of Five) still applies. UObject lifetime is handled by garbage collection instead, as described above.
+- Not verified: Unreal's own smart pointers (`TSharedPtr`, `TUniquePtr`) and how they relate to the standard-library advice in `cpp/patterns.md`; the pages read do not cover them.

@@ -26,3 +26,7 @@ RunUAT.bat RunUnreal -test=UE.EditorAutomation -runtest=MyTest.One -project=<pat
 
 ## 書かれていないこと
 読んだ公式ページには、Claude Code の `PostToolUse` フックで使う C++ のフォーマッターやリンターのコマンドは書かれていない。Epic の標準(`coding-style.md` を参照)を強制する、文書化されたツールは、読んだページにはない。
+
+## C++ のフックから
+- `.claude/rules/cpp/hooks.md` の CMake と CTest のコマンドは適用されない。読んだ Unreal のページは、ビルドシステムとして UnrealBuildTool を説明している。
+- Unreal のコードに、既定のスタイルで `clang-format` を実行しない(`cpp/coding-style.md` は、設定なしの `clang-format -i` を勧めている)。Epic 形式のコード(タブ、Allman 形式の波かっこ)が書き換わってしまう。`coding-style.md` に合わせた設定が必要になる。Epic がそのような設定を提供しているかは確認していない。

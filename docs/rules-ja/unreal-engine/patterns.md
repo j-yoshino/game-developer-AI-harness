@@ -28,3 +28,7 @@
 - Actor(と、Actor にアタッチされたサブオブジェクト)は、`bReplicates` を設定するとレプリケートされる。生成・破棄・移動は自動でレプリケートされるが、プロパティ、コンポーネント、サブオブジェクト、RPC は自動ではなく、明示的に指定しなければならない。
 - RPC より RepNotify プロパティを優先する。マルチキャストは控えめに。頻繁に呼ぶ RPC は unreliable にする。プレイヤー入力に結び付いた reliable な RPC は、キューがあふれないようにレート制限する。サーバーとクライアントの両方で動くコードを絞るには、Actor のネットワークロールと `IsLocallyControlled` を使う。ローカル専用の映像・音声を駆動する変数をレプリケートする。
 - ここで扱っていないこと: Net Role と `HasAuthority` の詳細(Actor Role のドキュメントにあるが、読んでいない)、Gameplay Framework、Subsystem、デリゲート。
+
+## C++ のパターンから埋めた部分
+- UObject ではない通常の C++ の型には、`.claude/rules/cpp/coding-style.md` の言語レベルの指針(RAII、Rule of Zero、Rule of Five)が引き続き適用される。UObject の寿命は、上で説明したとおり、代わりにガベージコレクションが扱う。
+- 未検証: Unreal 独自のスマートポインター(`TSharedPtr`、`TUniquePtr`)と、`cpp/patterns.md` の標準ライブラリに関する助言との関係。読んだページには書かれていない。

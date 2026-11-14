@@ -23,3 +23,10 @@ Sources (read on 2026-11-15):
 
 ## Not covered by the pages read
 No official Epic page read here describes cheat prevention, anti-cheat, secret handling or save-data protection in depth. Community sources disagree on whether `WithValidation` is mandatory in current engine versions; confirm against your engine version. Validation checks only the arguments a client sends; it does not stop a client from manipulating its own state.
+
+## Filled from the C++ security rules
+Language-level safety rules from `.claude/rules/cpp/security.md` and the Core Guidelines apply to Unreal C++ as well:
+- Always initialize variables (ES.20). Avoid signed integer overflow (ES.103). Never dereference null or dangling pointers (ES.65). Avoid casts, and avoid `reinterpret_cast` unless it is unavoidable (ES.48, ES.49).
+- Avoid `strcpy`, `strcat` and `sprintf` (from `cpp/security.md`). Not verified: the engine's recommended replacements; the pages read do not cover them.
+- For UObjects, use the pointer types in `patterns.md` instead of the smart-pointer advice in `cpp/security.md`.
+- Not verified for Unreal: AddressSanitizer/UBSan and the `clang-tidy` / `cppcheck` commands suggested in `cpp/security.md`.

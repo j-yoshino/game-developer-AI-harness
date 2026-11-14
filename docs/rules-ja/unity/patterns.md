@@ -37,3 +37,6 @@
 - プーリング: 頻繁に作るオブジェクトは `UnityEngine.Pool` でプールする(スレッドセーフではなく、メインスレッド専用)。`ObjectPool<T>` は create / get / release / destroy のコールバック、容量、コレクションチェック(Editor のみ、二重解放を検出する)を受け取る。`Get()` は空なら作成し、`Release()` はプールが満杯なら破棄する。取得時・解放時に状態をリセットし(コルーチンの停止、イベントの購読解除、物理・アニメーション・パーティクルのリセット)、解放した GameObject は非アクティブにする。プールは、管理オブジェクトが `DontDestroyOnLoad` のルートの下にない限り、そのシーンと一緒に破棄される。インスタンスは `OnDisable` / `OnDestroy` で解放する。`Clear` は非アクティブなインスタンスを破棄する。コレクション用のプール(`List<T>`、`HashSet<T>`、`Dictionary<TKey, TValue>`)も同じように使う。コレクションの `Clear()` はメモリを保持するため、一時的なリストはフィールドに引き上げる。
 - リフレクション: Mono と IL2CPP は、すべての `System.Reflection` オブジェクトをキャッシュして決して回収せず、GC はそれらをスキャンし続ける。実行時に `Assembly.GetTypes` や `Type.GetMethods` を使わない。エディターでスキャンして結果を ScriptableObject か JSON に保存するか、型の静的配列を持つ C# ファイルを生成する。リフレクションが避けられないなら、`Activator.CreateInstance` / `Type.GetType` は、あらかじめ選んだ型のリストに限る。
 - 読んだページに書かれていないこと: LINQ、`foreach`、構造体とクラスの比較、`GetComponent` のキャッシュ。
+
+## C# のパターンから埋めていない部分
+`.claude/rules/csharp/patterns.md` の項目(API レスポンスのエンベロープ、リポジトリ、オプションパターン、依存性注入)はサーバーアプリケーション向けで、読んだ Unity のページのどれも、Unity での利用を裏付けていないため、ここにはコピーしない。

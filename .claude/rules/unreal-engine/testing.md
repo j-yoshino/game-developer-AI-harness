@@ -32,3 +32,8 @@ Sources (read on 2026-11-15):
 ```
 - CI with Gauntlet (`RunUAT.bat RunUnreal`): `-test=UE.EditorAutomation` (Editor) or `UE.TargetAutomation` (client/packaged game), `-runtest=<test>`, `-project=<.uproject>`, `-build=editor|<packaged path>`, optional `-platform`, `-device`, `-configuration`. `-ResumeOnCriticalFailure` lets UE.Automation resume after a crash, up to three times. The page does not say where results are stored.
 - The pages read do not cover `-unattended`, `-NullRHI`, `-nosplash` or `-testexit`. Some community sources use `RunTests`; the official page uses `RunTest`.
+
+## From the C++ testing rules
+- `.claude/rules/cpp/testing.md` assumes GoogleTest, CMake/CTest and lcov. The Unreal pages read use the Automation framework instead, so those commands do not apply here.
+- Name tests by behavior within the `Group.Subgroup.Test` hierarchy of `PrettyName`.
+- Not verified for Unreal: coverage tooling and the AddressSanitizer/UBSan setup suggested in `cpp/testing.md`.

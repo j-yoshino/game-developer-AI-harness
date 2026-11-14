@@ -33,3 +33,6 @@ These commands are assembled from documented arguments and have **not been run**
 
 ## Not covered
 No official Unity page read here documents a formatter or linter command for Claude Code `PostToolUse` hooks. Use whichever `.editorconfig`/analyzer setup the project adopts.
+
+## From the C# hooks
+`.claude/rules/csharp/hooks.md` suggests `dotnet format`, `dotnet build` and `dotnet test --no-build` as `PostToolUse` hooks. Whether these work on Unity-generated projects was not verified, so do not rely on them; use the Unity batch-mode commands above.

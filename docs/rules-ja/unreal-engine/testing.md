@@ -30,3 +30,8 @@
 ```
 - Gauntlet(`RunUAT.bat RunUnreal`)を使った CI: `-test=UE.EditorAutomation`(Editor)または `UE.TargetAutomation`(クライアント/パッケージ済みゲーム)、`-runtest=<test>`、`-project=<.uproject>`、`-build=editor|<packaged path>`、必要に応じて `-platform`、`-device`、`-configuration`。`-ResumeOnCriticalFailure` を付けると、UE.Automation はクラッシュの後に最大3回まで再開できる。ページは結果の保存先を述べていない。
 - 読んだページは `-unattended`、`-NullRHI`、`-nosplash`、`-testexit` を扱っていない。コミュニティの情報源には `RunTests` を使うものがあるが、公式ページは `RunTest` を使っている。
+
+## C++ のテストのルールから
+- `.claude/rules/cpp/testing.md` は、GoogleTest、CMake/CTest、lcov を前提にしている。読んだ Unreal のページは代わりに Automation フレームワークを使っているため、これらのコマンドはここでは適用されない。
+- テストには、`PrettyName` の `Group.Subgroup.Test` の階層の中で、振る舞いで名前を付ける。
+- Unreal では未検証: カバレッジのツール、および `cpp/testing.md` が挙げる AddressSanitizer/UBSan の設定。

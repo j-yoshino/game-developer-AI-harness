@@ -25,3 +25,10 @@ Unity -runTests -batchmode -projectPath <path> -testPlatform EditMode -testResul
 - Do not add `-quit` to a `-runTests` command: while tests are running it makes the Editor exit immediately without waiting for them (and it can hang an application that is running async code). The default wait for async tasks is 300 seconds (`-quitTimeout` changes it, in seconds).
 - A project that is already open in another Editor cannot be opened in batch mode.
 - Exit codes: Unity components report no common exit-code definition (read the error messages and stack traces); in `-batchmode`, an exception, a failed asset-server update or another failure exits with code 1. The success exit code is not stated.
+
+## Filled from the C# testing rules
+From `.claude/rules/csharp/testing.md` (generic C#; not Unity-specific):
+- Name tests by behavior, not by implementation detail (for example `FindById_ReturnsOrder_WhenOrderExists`).
+- Structure each test as Arrange, Act, Assert, and keep unit-level and integration-level tests clearly separated.
+- Coverage target of 80% or more line coverage. Not verified: which coverage tooling Unity projects should use (none of the Unity pages read cover it).
+- Not applicable as written: xUnit, FluentAssertions, Moq/NSubstitute, Testcontainers and `WebApplicationFactory` are .NET server-side choices; the Unity Test Framework is NUnit-based (official page). Whether the other libraries work inside Unity was not checked.

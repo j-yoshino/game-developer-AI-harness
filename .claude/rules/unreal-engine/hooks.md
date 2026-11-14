@@ -28,3 +28,7 @@ These commands are assembled from the pages listed above and have **not been run
 
 ## Not covered
 No official page read documents a C++ formatter or linter command for Claude Code `PostToolUse` hooks. Epic's standard (see `coding-style.md`) is not enforced by a documented tool in the pages read.
+
+## From the C++ hooks
+- The CMake and CTest commands in `.claude/rules/cpp/hooks.md` do not apply: the Unreal pages read describe UnrealBuildTool as the build system.
+- Do not run `clang-format` with a default style on Unreal code (`cpp/coding-style.md` suggests `clang-format -i` without a configuration). It would reformat Epic-style code (tabs, Allman braces). A configuration matching `coding-style.md` would be needed; whether Epic ships one was not verified.

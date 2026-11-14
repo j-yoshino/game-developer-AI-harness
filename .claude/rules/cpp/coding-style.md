@@ -102,3 +102,35 @@ Source: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines (read in fu
 
 ### Not summarized
 GSL (support library description), FAQ, and Appendices A-D (libraries, modernizing code, discussion, supporting tools), the glossary and the to-do list contain no numbered rules.
+
+## Project Rules: Comments and File Header
+
+These project rules take precedence over the generic ECC text and over the source conventions above where they differ. In Unreal Engine code, `.claude/rules/unreal-engine/coding-style.md` adds to this section.
+
+### File header (Doxygen)
+Start every new C++ source and header file with this block, before any `#include` or `#pragma once`:
+
+```cpp
+/**
+ * @file PlayerController.cpp
+ * @brief Handles player input and movement.
+ * @date 2026-11-15
+ * @author <output of `git config user.name`>
+ */
+```
+
+- `@file`: the file name with its extension (Doxygen accepts part of the path when the name is not unique).
+- `@brief`: one sentence describing the file.
+- `@date`: the creation date as `YYYY-MM-DD`. Write it once when the file is created and never update it (git keeps the history).
+- `@author`: the value of `git config user.name`, also for files that Claude creates.
+- Exempt: generated files and third-party code. Existing files are not retrofitted unless asked.
+- From the Doxygen manual: commands start with `\` or `@`; `\file` marks a comment block as the documentation of its file; `/** */` and `///` blocks are accepted; the manual does not say the file block must come first.
+
+### Comment style (same as the C# rules)
+- Use `//` for short explanations. Do not use multi-line `/* */` for explanations; use consecutive `//` lines. Use `/** */` or `///` only for Doxygen documentation blocks.
+- Document public declarations with Doxygen comments.
+- Put a comment on its own line, never at the end of a line of code.
+- Start the text with a capital letter and put one space after `//`.
+
+### Period rule
+End every comment line with a period (`.`), including each line of a comment that wraps. Write every line as a complete sentence or phrase so that the period fits. Exceptions, where a period would corrupt the content: the values on `@file`, `@date` and `@author` lines, the mandatory copyright notice, URLs, and lines inside code examples. Lines that contain only a delimiter (`/**`, ` */`) are not comment text.

@@ -91,7 +91,28 @@ Source: https://learn.microsoft.com/ja-jp/dotnet/csharp/fundamentals/coding-styl
 
 ### Style
 - 4 spaces, no tabs; Allman braces (each brace on its own line); one statement and one declaration per line; at least one blank line between method and property definitions; parentheses to clarify expression precedence; continuation lines indented 4 spaces; break long statements, with line breaks before binary operators.
-- Comments: `//` for short notes, avoid `/* */`; XML doc comments for methods, classes, fields and all public members; comment on its own line, starting with a capital letter and ending with a period, one space after `//`.
+- Comments: `//` for short notes, avoid `/* */`; XML doc comments for methods, classes, fields and all public members; comment on its own line, starting with a capital letter, one space after `//`; every comment line ends with a period (see "Project Rules: Comments and File Header" below).
 - The 65-character line limit is for documentation display and does not apply to this project; follow `.editorconfig`.
 - Naming rules for classes, methods and fields are not covered by this page; follow `.editorconfig` and existing code.
 - The page recommends enforcing conventions with `.editorconfig` and code analysis; neither is set up in this repository yet.
+
+## Project Rules: Comments and File Header
+
+These project rules take precedence over the generic ECC text and over the .NET section above where they differ. They also apply to Unity code (`Assets/`) and to Unreal build scripts (`Source/**/*.cs`).
+
+### File header (Doxygen, written as `//!` lines)
+Start every new C# file with this block, before the `using` directives:
+
+```csharp
+//! @file PlayerController.cs
+//! @brief Handles player input and movement.
+//! @date 2026-11-15
+//! @author <output of `git config user.name`>
+```
+
+- `@file`, `@brief`, `@date`, `@author`: same meaning, format and exemptions as in `.claude/rules/cpp/coding-style.md` (creation date as `YYYY-MM-DD`, written once; author from `git config user.name`; generated and third-party files exempt; existing files not retrofitted unless asked).
+- Why `//!` and not `///`: the Doxygen manual lists C# among the languages whose comment blocks can be written as at least two lines of `///` or `//!`. A `///` XML documentation comment that is not placed on a valid language element can raise compiler warning CS1587 (level 2; the documented example is a summary above a namespace), so the header uses `//!`. Not verified: that a build emits no warning for `//!`, and whether Doxygen handles `@file` blocks and XML tags in the same C# file (the manual says only that XML tags are supported).
+- Member documentation stays in XML documentation comments (`///` with `<summary>`), as in the .NET section.
+
+### Period rule
+End every comment line with a period (`.`), including each line of a comment that wraps. Write every line as a complete sentence or phrase so that the period fits. Exceptions, where a period would corrupt the content: the values on `@file`, `@date` and `@author` lines, URLs, and lines inside code examples. Delimiter-only lines are not comment text.

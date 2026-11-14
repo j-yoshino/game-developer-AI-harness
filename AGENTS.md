@@ -36,6 +36,9 @@
 - `paths` に除外指定ができないため、重なるファイルでは両方が読み込まれる。**Unity は `unity/`、Unreal は `unreal-engine/` を優先**する(各ファイルの冒頭に明記)。規約の節は、同じファイル内の汎用的な ECC の記述より優先する。
 - `unity/` と `unreal-engine/` は公式ドキュメントで確認できた範囲だけを書いている。確認できなかったこと(Unity のセキュリティなど)は、各ファイルに「書かれていないこと」として明記してある。コマンド例は組み立てたもので、まだ実行していない。
 - rules は英語で書く。`docs/rules-ja/` を更新するときは、rules の変更と同じ変更に含める。
+- **コードを書くときの共通規則**(各 `coding-style.md` の「Project Rules: Comments and File Header」の節。`cpp/`・`csharp/`・`rust/` にある。`unity/` と `unreal-engine/` は、そこを参照する):
+  - 新しいソースファイルは、先頭に Doxygen 形式のヘッダー(`@file`・`@brief`・`@date`・`@author`)を書く。C++ は `/** */`、C# は `//!` の行、Rust は `//!`(要約・Date・Author)。`@date` は作成日(`YYYY-MM-DD`)を1回だけ書き、`@author` は `git config user.name`。Unreal の著作権表示は1行目のまま。
+  - すべてのコメント行の末尾にピリオドを付ける(値の行、URL、コード例などの例外は各ファイルに記載)。コメントは独立した行に書き、`//` の後に空白を1つ。
 
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。
 

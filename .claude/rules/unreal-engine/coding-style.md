@@ -49,3 +49,14 @@ Same in both: enumerations use `enum class`.
 - No `bool` parameters (use enum flags); bundle many parameters into a struct; no `bool`/`FString` overloads; interfaces start with `I`, have no data members and are pure virtual; write both `virtual` and `override`; pass UObjects by pointer; members private by default; `final` for classes not meant to be derived. New APIs go in the `UE::` namespace (not for `UCLASS`/`USTRUCT` or macros); no global `using` in headers; implementation details in a `Private` namespace.
 - Platform-specific code lives in platform-named subdirectories; avoid scattering `PLATFORM_[PLATFORM]` checks, add static functions to abstraction layers such as `FPlatformMisc`.
 - Wrap string literals in `TEXT()`; no variable shadowing; split complex expressions; do not check in debug code; make behavior-neutral mass formatting or renames separate changes; use inclusive terms (allow/deny list, primary/replica).
+
+## Comments, file header and period rule
+Follow "Project Rules: Comments and File Header" in `.claude/rules/cpp/coding-style.md` (the C# comment style, the Doxygen file header, and a period at the end of every comment line), with these Unreal specifics:
+- The mandatory copyright notice stays on line 1 of every source file (see Formatting). Put the Doxygen file header right after it, before any include.
+- Epic's JavaDoc-style documentation comments (`/** */`) at public declarations are Doxygen blocks and stay allowed. They follow the period rule too.
+- The period rule does not apply to the copyright notice, which must match exactly.
+- For `Source/**/*.cs` build scripts use the C# header form (`//!` lines) from `.claude/rules/csharp/coding-style.md`, with Epic's tabs.
+
+## Gaps filled from the C++ rules
+- The Epic page does not state rules for exceptions, RTTI, the ternary operator or threading. The Core Guidelines section in `.claude/rules/cpp/coding-style.md` applies there, except that its error-handling rules (E.*) assume exceptions. Whether exceptions are enabled for a given Unreal module was not verified, so check the module's build settings before using them.
+- Other C++ rules in `.claude/rules/cpp/coding-style.md` apply unless the table above or Epic's page contradicts them.

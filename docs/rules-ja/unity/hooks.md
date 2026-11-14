@@ -32,3 +32,6 @@ Unity -batchmode -quit -projectPath . -executeMethod BuildScripts.Validate -logF
 
 ## 書かれていないこと
 ここで読んだ Unity の公式ページには、Claude Code の `PostToolUse` フックで使うフォーマッターやリンターのコマンドは書かれていない。プロジェクトが採用する `.editorconfig` やアナライザーの設定を使う。
+
+## C# のフックから
+`.claude/rules/csharp/hooks.md` は、`dotnet format`、`dotnet build`、`dotnet test --no-build` を `PostToolUse` フックとして挙げている。これらが Unity が生成するプロジェクトで動くかは確認していないため、頼らない。上の Unity のバッチモードのコマンドを使う。

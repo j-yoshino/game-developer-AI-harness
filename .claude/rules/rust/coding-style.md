@@ -168,3 +168,25 @@ Source: https://rust-lang.github.io/api-guidelines/naming.html (Naming chapter o
 - C-ITER, C-ITER-TY: collections provide `iter` (`&U`), `iter_mut` (`&mut U`), `into_iter` (`U`), as methods only. Types that are not homogeneous collections use other names (`bytes`, `chars`). Iterator type names match the method (`into_iter` -> `IntoIter`, `keys` -> `Keys`).
 - C-FEATURE: Cargo features have no `use-`/`with-` prefix; the standard library feature is `std`; features are additive, so no `no-abc` names.
 - C-WORD-ORDER: keep word order consistent with the standard library, e.g. `ParseAddrError`, not `AddrParseError`.
+
+## Project Rules: Comments and File Header
+
+These project rules take precedence over the generic ECC text and over the naming section above where they differ.
+
+### File header (Rust has no Doxygen)
+Rust has no `@file`, `@brief`, `@date` or `@author`. The equivalent is an inner line doc comment (`//!`) at the top of the file. Inner doc comments document the enclosing item, and a `//!` block at the top of a file documents that file as a module (Rust Reference); `rustdoc` renders it as Markdown and uses the first paragraph, up to the first blank line, as the summary in module listings (rustdoc book). Start every new `.rs` file with:
+
+```rust
+//! Handles player input and movement.
+//!
+//! - **Date**: 2026-11-15
+//! - **Author**: <output of `git config user.name`>
+```
+
+- The first line is the `@brief` equivalent: one sentence, ending with a period, kept to one line.
+- `@file` is omitted: `rustdoc` already shows the module path and file location.
+- **Date**: the creation date as `YYYY-MM-DD`, written once and never updated. **Author**: the value of `git config user.name`.
+- The date and author appear in the generated public documentation (accepted trade-off). Place the block before any `use` item. Generated files and third-party code are exempt; existing files are not retrofitted unless asked.
+
+### Period rule
+End every comment line with a period (`.`), including each line of a comment that wraps, for `//`, `///` and `//!` comments. Write every line as a complete sentence or phrase so that the period fits. Exceptions, where a period would corrupt the content: the `Date` and `Author` values, URLs, and lines inside code examples.

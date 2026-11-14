@@ -9,7 +9,7 @@ Source: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity
 ## Precedence
 
 - For `Assets/**/*.cs` this file takes precedence over `.claude/rules/csharp/coding-style.md` (ECC text and the .NET section) when they conflict. Both load because `paths` cannot exclude files.
-- The article does not cover comments, brace placement or indentation; follow the .NET section of `.claude/rules/csharp/coding-style.md` for those.
+- The article does not cover comments, brace placement or indentation; those gaps are filled from the C# rules (see "Gaps filled from the C# rules" below).
 
 ## Identifiers
 - Use meaningful names. No Hungarian notation (`iCounter`, `strName`). No special characters, symbols or Unicode in identifiers (can interfere with Unity command-line tools).
@@ -36,3 +36,9 @@ Source: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity
 
 ## Coverage
 The whole article was read. This repository has no Unity project yet, so the `Assets/` layout is an assumption about the standard structure.
+
+## Gaps filled from the C# rules
+The Unity article is silent on these. They come from `.claude/rules/csharp/coding-style.md` (the .NET conventions and the project rules) and apply as written there:
+- Formatting: 4 spaces and no tabs, Allman braces, one statement and one declaration per line, a blank line between method and property definitions.
+- `var`: the article leaves it to the team; use `var` only when the type is obvious from the right-hand side.
+- Comments, file header and period rule: see "Project Rules: Comments and File Header" in `.claude/rules/csharp/coding-style.md`. In short: `//` comments on their own line, a Doxygen file header written as `//!` lines, and every comment line ends with a period.
