@@ -17,20 +17,21 @@
 |---|---|
 | `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ / 未検証の明記 / 曖昧なら AskUserQuestion)。毎セッション読み込まれる |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
-| `.claude/rules/coding-conventions/` | 言語・エンジンごとのコーディング規約の要約(`paths` で該当ファイルを開いたときだけ読み込まれる)。下表 |
+| `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` だけ)。下表 |
 
-### コーディング規約の適用範囲
+### 言語・エンジン別のルール(`.claude/rules/`)
 
-| ファイル | 対象(`paths`) | 出典 |
-|---|---|---|
-| `dotnet-csharp.md` | `**/*.cs` | .NET コーディング規則(Microsoft Learn) |
-| `unity-csharp.md` | `Assets/**/*.cs` | Unity の C# 命名規則とスタイル規則 |
-| `cpp-core-guidelines.md` | `**/*.{cpp,cc,cxx,c++,hpp,hh,hxx,h}` | C++ Core Guidelines |
-| `unreal-cpp.md` | `Source/**/*.{h,cpp,cs}`、`Plugins/**/Source/**/*.{h,cpp,cs}` | Epic の C++ コーディング規約 |
-| `rust-naming.md` | `**/*.rs`、`**/Cargo.toml` | Rust API Guidelines の Naming |
+| ディレクトリ | ECC 由来 | コーディング規約の要約(追加分) | 対象(`paths`) |
+|---|---|---|---|
+| `cpp/` | `coding-style`・`hooks`・`patterns`・`security`・`testing` | `core-guidelines.md`(C++ Core Guidelines) | C/C++ のソース・ヘッダ |
+| `csharp/` | 同上 | `dotnet-conventions.md`(.NET コーディング規則) | `**/*.cs` |
+| `rust/` | 同上 | `api-guidelines-naming.md`(Rust API Guidelines の Naming) | `**/*.rs`、`**/Cargo.toml` |
+| `unity/` | なし | `coding-style.md`(Unity の C# 命名規則とスタイル規則) | `Assets/**/*.cs` |
+| `unreal-engine/` | なし | `coding-style.md`(Epic の C++ コーディング規約) | `Source/**`、`Plugins/**/Source/**` の `.h` `.cpp` `.cs` |
 
-- `paths` に除外指定ができないため、重なるファイルでは両方が読み込まれる。**Unity は `unity-csharp.md`、Unreal は `unreal-cpp.md` を優先**する(各ファイルの冒頭に明記)。
-- いずれも `.claude/rules/ecc/` の ECC のルールより優先する。
+- `paths` に除外指定ができないため、重なるファイルでは両方が読み込まれる。**Unity は `unity/`、Unreal は `unreal-engine/` を優先**する(各ファイルの冒頭に明記)。
+- コーディング規約の要約は、同じディレクトリの ECC 由来のルールより優先する。
+- ECC 由来のルールは、`ecc/` の階層を外して `.claude/rules/<言語>/` に置いている。ECC の installer の記録(`.claude/ecc/install-state.json`、ローカル専用)は移動前のパスを指しており、ECC の更新・削除機能がこの配置で動くかは未検証。
 - 各ファイルの末尾に、要約の範囲と未確認事項を書いてある。出典を読めていない部分を「規約どおり」と扱わない。
 
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。

@@ -12,9 +12,9 @@ paths:
 
 ## 優先順位
 
-- `Source/**/*.{h,cpp}` では **この規約を `cpp-core-guidelines.md` より優先**する。
-- `Source/**/*.cs`(`*.Build.cs`、`*.Target.cs` などのビルドスクリプト)では、`dotnet-csharp.md` ではなく**この規約を優先**する(Epic は C# でもタブを使う)。
-- `.claude/rules/ecc/cpp/` の ECC のルールと食い違う場合も、このディレクトリの規約を優先する。
+- `Source/**/*.{h,cpp}` では **この規約を `.claude/rules/cpp/core-guidelines.md` より優先**する。
+- `Source/**/*.cs`(`*.Build.cs`、`*.Target.cs` などのビルドスクリプト)では、`.claude/rules/csharp/dotnet-conventions.md` ではなく**この規約を優先**する(Epic は C# でもタブを使う)。
+- `.claude/rules/cpp/` の ECC 由来のルール(`coding-style.md` など)と食い違う場合も、このファイルの規約を優先する。
 
 ### Core Guidelines と食い違う箇所
 

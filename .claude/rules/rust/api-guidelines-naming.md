@@ -9,7 +9,7 @@ paths:
 - 出典: https://rust-lang.github.io/api-guidelines/naming.html (2026-11-15 取得)
 - 位置づけ: Rust API Guidelines のうち **Naming の章だけ**。Rust のコーディング規約全体ではない(フォーマットは `rustfmt`、リントは `clippy` に従う)。
 - 要約であり原文の転載ではない。
-- `.claude/rules/ecc/rust/` の ECC のルールと食い違う場合は、このディレクトリの規約を優先する。
+- 同じディレクトリの ECC 由来のルール(`coding-style.md`、`hooks.md`、`patterns.md`、`security.md`、`testing.md`)と食い違う場合は、このファイルの規約を優先する。
 
 ## 大文字小文字(C-CASE)
 

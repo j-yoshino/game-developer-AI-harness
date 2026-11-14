@@ -11,9 +11,9 @@ paths:
 
 ## 優先順位
 
-- **Unreal Engine のプロジェクト(`Source/**/*.{h,cpp}`)では `unreal-cpp.md` を優先**する。両方が読み込まれるのは、`paths` で除外指定ができないため。
+- **Unreal Engine のプロジェクト(`Source/**/*.{h,cpp}`)では `.claude/rules/unreal-engine/coding-style.md` を優先**する。両方が読み込まれるのは、`paths` で除外指定ができないため。
 - 食い違う箇所は、Unreal の項に具体的に挙げた。それ以外の C++ では、このガイドラインに従う。
-- `.claude/rules/ecc/cpp/` の ECC のルールと食い違う場合は、このディレクトリの規約を優先する。
+- 同じディレクトリの ECC 由来のルール(`coding-style.md`、`hooks.md`、`patterns.md`、`security.md`、`testing.md`)と食い違う場合は、このファイルの規約を優先する。
 
 ## 基本理念(P)
 

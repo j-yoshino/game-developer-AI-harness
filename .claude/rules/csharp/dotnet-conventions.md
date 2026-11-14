@@ -11,9 +11,9 @@ paths:
 
 ## 優先順位
 
-- `Assets/**/*.cs`(Unity)は **`unity-csharp.md` を優先**する。両方が読み込まれるのは、`paths` で除外指定ができないため。
-- `Source/**/*.cs`(Unreal Engine のビルドスクリプト)は **`unreal-cpp.md` を優先**する(Epic は C# でもタブを使う)。
-- `.claude/rules/ecc/csharp/` の ECC のルールと食い違う場合は、このディレクトリの規約を優先する。
+- `Assets/**/*.cs`(Unity)は **`.claude/rules/unity/coding-style.md` を優先**する。両方が読み込まれるのは、`paths` で除外指定ができないため。
+- `Source/**/*.cs`(Unreal Engine のビルドスクリプト)は **`.claude/rules/unreal-engine/coding-style.md` を優先**する(Epic は C# でもタブを使う)。
+- 同じディレクトリの ECC 由来のルール(`coding-style.md`、`hooks.md`、`patterns.md`、`security.md`、`testing.md`)と食い違う場合は、このファイルの規約を優先する。
 
 ## 言語ガイドライン
 

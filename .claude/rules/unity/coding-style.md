@@ -11,9 +11,9 @@ paths:
 
 ## 優先順位
 
-- `Assets/**/*.cs` では **この規約を `dotnet-csharp.md` より優先**する。食い違ったらこちらに従う。
-- この記事が扱わない項目(コメント、波かっこ、インデント)は `dotnet-csharp.md` のスタイル節に従う(判断。原文は別記事を案内している)。
-- `.claude/rules/ecc/csharp/` の ECC のルールと食い違う場合も、このディレクトリの規約を優先する。
+- `Assets/**/*.cs` では **この規約を `.claude/rules/csharp/dotnet-conventions.md` より優先**する。食い違ったらこちらに従う。
+- この記事が扱わない項目(コメント、波かっこ、インデント)は `.claude/rules/csharp/dotnet-conventions.md` のスタイル節に従う(判断。原文は別記事を案内している)。
+- `.claude/rules/csharp/` の ECC 由来のルール(`coding-style.md` など)と食い違う場合も、このファイルの規約を優先する。
 
 ## 識別子全般
 
