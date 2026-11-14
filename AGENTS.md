@@ -8,6 +8,8 @@
 |---|---|---|
 | spec-kit | `.claude/skills/speckit-*`、`.specify/` | Spec-Driven Development の明示的フロー |
 | superpowers | `vendor/superpowers`(submodule) | 開発方法論スキル群(自動発動) |
+| Unity 公式プラグイン | `vendor/unity-agent-plugin`(submodule、取り込みのみ・未有効化) | Unity のスキル集(Unity-Technologies 製) |
+| Unreal Engine プラグイン | `vendor/unreal-engine-skills-for-claude-code-plugin`(submodule、取り込みのみ・未有効化) | MCP 経由の Unreal Editor 操作(Epic Games 製) |
 | SkillSpector | `uv tool`(リポジトリ外) | スキルのセキュリティスキャン |
 | Unity CLI | MCP サーバー | Unity Editor 連携 |
 

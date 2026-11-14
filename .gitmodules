@@ -4,3 +4,9 @@
 [submodule "vendor/i-have-adhd"]
 	path = vendor/i-have-adhd
 	url = https://github.com/ayghri/i-have-adhd.git
+[submodule "vendor/unity-agent-plugin"]
+	path = vendor/unity-agent-plugin
+	url = https://github.com/Unity-Technologies/unity-agent-plugin.git
+[submodule "vendor/unreal-engine-skills-for-claude-code-plugin"]
+	path = vendor/unreal-engine-skills-for-claude-code-plugin
+	url = https://github.com/EpicGames/unreal-engine-skills-for-claude-code-plugin.git
