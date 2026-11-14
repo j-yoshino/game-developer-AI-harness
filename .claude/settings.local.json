@@ -21,5 +21,13 @@
   },
   "enabledPlugins": {
     "superpowers@superpowers-dev": true
+  },
+  "skillOverrides": {
+    "superpowers:writing-plans": "user-invocable-only",
+    "superpowers:executing-plans": "user-invocable-only",
+    "superpowers:subagent-driven-development": "user-invocable-only",
+    "writing-plans": "user-invocable-only",
+    "executing-plans": "user-invocable-only",
+    "subagent-driven-development": "user-invocable-only"
   }
 }
