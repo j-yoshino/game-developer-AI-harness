@@ -1,27 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "language": "japanese",
-  "model": "sonnet",
-  "advisorModel": "opus",
-  "effortLevel": "medium",
-  "teammateMode": "auto",
-  "enableWorkflows": true,
-  "workflowKeywordTriggerEnabled": true,
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
   },
-  "extraKnownMarketplaces": {
-    "superpowers-dev": {
-      "source": {
-        "source": "directory",
-        "path": "vendor/superpowers"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "superpowers@superpowers-dev": true
-  },
+  "model": "sonnet",
   "skillOverrides": {
     "superpowers:writing-plans": "user-invocable-only",
     "superpowers:executing-plans": "user-invocable-only",
@@ -29,5 +12,29 @@
     "writing-plans": "user-invocable-only",
     "executing-plans": "user-invocable-only",
     "subagent-driven-development": "user-invocable-only"
-  }
+  },
+  "enableWorkflows": true,
+  "workflowKeywordTriggerEnabled": true,
+  "enabledPlugins": {
+    "superpowers@superpowers-dev": true,
+    "i-have-adhd@i-have-adhd": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-dev": {
+      "source": {
+        "source": "directory",
+        "path": "vendor/superpowers"
+      }
+    },
+    "i-have-adhd": {
+      "source": {
+        "source": "directory",
+        "path": "vendor/i-have-adhd"
+      }
+    }
+  },
+  "language": "japanese",
+  "effortLevel": "medium",
+  "advisorModel": "opus",
+  "teammateMode": "auto"
 }

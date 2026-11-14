@@ -1,3 +1,6 @@
 [submodule "vendor/superpowers"]
 	path = vendor/superpowers
 	url = https://github.com/obra/superpowers.git
+[submodule "vendor/i-have-adhd"]
+	path = vendor/i-have-adhd
+	url = https://github.com/ayghri/i-have-adhd.git
