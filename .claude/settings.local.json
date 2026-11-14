@@ -10,5 +10,24 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-dev": {
+      "source": {
+        "source": "directory",
+        "path": "vendor/superpowers"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-dev": true
+  },
+  "skillOverrides": {
+    "superpowers:writing-plans": "user-invocable-only",
+    "superpowers:executing-plans": "user-invocable-only",
+    "superpowers:subagent-driven-development": "user-invocable-only",
+    "writing-plans": "user-invocable-only",
+    "executing-plans": "user-invocable-only",
+    "subagent-driven-development": "user-invocable-only"
   }
 }
