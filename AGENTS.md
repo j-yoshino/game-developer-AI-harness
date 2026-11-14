@@ -15,7 +15,7 @@
 
 | ファイル | 内容 |
 |---|---|
-| `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ / 未検証の明記 / 曖昧なら AskUserQuestion)。毎セッション読み込まれる |
+| `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ・確認の経緯は書かない / 事実でないことの明示 / 検証は自分で完結しユーザーの手が要るものだけ「やり残し」/ 曖昧さが残る間は進まず AskUserQuestion)。毎セッション読み込まれる |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
 | `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` だけ)。下表 |
 | `docs/rules-ja/` | `.claude/rules/` の日本語訳(同じ構成・同じファイル名)。**Claude には読み込まれない**。トークン量を抑えるため、rules は英語で書き、日本語は docs に置く |
@@ -54,7 +54,7 @@ brainstorming(何を作るか決める・design doc 作成)
 
 - **計画を書くときは `/speckit-plan` を使う。** superpowers の `writing-plans` は使わない。
 - **実装は `/speckit-implement` を使う。** superpowers の `executing-plans` と `subagent-driven-development` は使わない。
-- 上記3スキルは `.claude/settings.local.json` の `skillOverrides` で `user-invocable-only` にしてあり、明示的に呼ばれた場合のみ動く。
+- 上記3スキルは `.claude/settings.local.json` の `skillOverrides` で **`off`**(モデルからもユーザーからも見えない)にしてある。executing-plans と subagent-driven-development は、曖昧さや計画の欠陥を「判断して進め、台帳に記録する」(各スキルの「Rulings, not stalls」の段落)ため、「曖昧さが残る間は進まない」という `answer-policy.md` と食い違う。計画と実装は spec-kit で行う。
 - 計画の成果物は `specs/<NNN-feature>/plan.md` に置く。`docs/superpowers/plans/` は使わない。**計画書の正本を2つ作らない。**
 
 ### superpowers 側で積極的に使うスキル

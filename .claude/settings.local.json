@@ -6,12 +6,12 @@
   },
   "model": "sonnet",
   "skillOverrides": {
-    "superpowers:writing-plans": "user-invocable-only",
-    "superpowers:executing-plans": "user-invocable-only",
-    "superpowers:subagent-driven-development": "user-invocable-only",
-    "writing-plans": "user-invocable-only",
-    "executing-plans": "user-invocable-only",
-    "subagent-driven-development": "user-invocable-only"
+    "superpowers:writing-plans": "off",
+    "superpowers:executing-plans": "off",
+    "superpowers:subagent-driven-development": "off",
+    "writing-plans": "off",
+    "executing-plans": "off",
+    "subagent-driven-development": "off"
   },
   "enableWorkflows": true,
   "workflowKeywordTriggerEnabled": true,
