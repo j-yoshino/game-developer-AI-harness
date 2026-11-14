@@ -11,6 +11,15 @@
 | SkillSpector | `uv tool`(リポジトリ外) | スキルのセキュリティスキャン |
 | Unity CLI | MCP サーバー | Unity Editor 連携 |
 
+## このリポジトリ独自のルールとスキル
+
+| ファイル | 内容 |
+|---|---|
+| `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ / 未検証の明記 / 曖昧なら AskUserQuestion)。毎セッション読み込まれる |
+| `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
+
+**Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。
+
 ## 計画フェーズの使い分け
 
 **計画と実装は spec-kit を正本とする。** superpowers と spec-kit は計画スキルの発動条件が重なるため、役割を以下に固定する。
