@@ -17,6 +17,28 @@
 |---|---|
 | `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ / 未検証の明記 / 曖昧なら AskUserQuestion)。毎セッション読み込まれる |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
+| `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` だけ)。下表 |
+| `docs/rules-ja/` | `.claude/rules/` の日本語訳(同じ構成・同じファイル名)。**Claude には読み込まれない**。トークン量を抑えるため、rules は英語で書き、日本語は docs に置く |
+
+### 言語・エンジン別のルール(`.claude/rules/`)
+
+各ディレクトリに、`coding-style.md`・`hooks.md`・`patterns.md`・`security.md`・`testing.md` の5ファイルがある。**コーディング規約は、新しいファイルを作らず、各ディレクトリの `coding-style.md` に含めている。**
+
+| ディレクトリ | 由来 | `coding-style.md` に含めた規約 | 対象(`paths`) |
+|---|---|---|---|
+| `cpp/` | ECC(5ファイル) | C++ Core Guidelines(全文を読了) | C/C++ のソース・ヘッダ |
+| `csharp/` | ECC(5ファイル) | .NET コーディング規則(Microsoft Learn) | `**/*.cs` |
+| `rust/` | ECC(5ファイル) | Rust API Guidelines の Naming | `**/*.rs`、`**/Cargo.toml` |
+| `unity/` | 公式ドキュメントから作成 | Unity の C# 命名規則とスタイル規則 | `Assets/**/*.cs`(`patterns.md` と `testing.md` は `.asmdef` も) |
+| `unreal-engine/` | 公式ドキュメントから作成 | Epic の C++ コーディング規約 | `Source/**`、`Plugins/**/Source/**` の `.h` `.cpp` `.cs` |
+
+- ECC 由来のファイルは、`ecc/` の階層を外して `.claude/rules/<言語>/` に置いている。規約は、各 `coding-style.md` の末尾の「Project Conventions」の節に、ECC の記述を残したまま追記している。ECC の installer の記録(`.claude/ecc/install-state.json`、ローカル専用)は移動前のパスを指しており、ECC の更新・削除機能がこの配置で動くかは未検証。
+- `paths` に除外指定ができないため、重なるファイルでは両方が読み込まれる。**Unity は `unity/`、Unreal は `unreal-engine/` を優先**する(各ファイルの冒頭に明記)。規約の節は、同じファイル内の汎用的な ECC の記述より優先する。
+- `unity/` と `unreal-engine/` は公式ドキュメントで確認できた範囲だけを書いている。確認できなかったこと(Unity のセキュリティなど)は、各ファイルに「書かれていないこと」として明記してある。コマンド例は組み立てたもので、まだ実行していない。
+- rules は英語で書く。`docs/rules-ja/` を更新するときは、rules の変更と同じ変更に含める。
+- **コードを書くときの共通規則**(各 `coding-style.md` の「Project Rules: Comments and File Header」の節。`cpp/`・`csharp/`・`rust/` にある。`unity/` と `unreal-engine/` は、そこを参照する):
+  - 新しいソースファイルは、先頭に Doxygen 形式のヘッダー(`@file`・`@brief`・`@date`・`@author`)を書く。C++ は `/** */`、C# は `//!` の行、Rust は `//!`(要約・Date・Author)。`@date` は作成日(`YYYY-MM-DD`)を1回だけ書き、`@author` は `git config user.name`。Unreal の著作権表示は1行目のまま。
+  - すべてのコメント行の末尾にピリオドを付ける(値の行、URL、コード例などの例外は各ファイルに記載)。コメントは独立した行に書き、`//` の後に空白を1つ。
 
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。
 

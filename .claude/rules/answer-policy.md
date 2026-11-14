@@ -1,23 +1,23 @@
-# 回答ポリシー
+# Answer Policy
 
-## 事実のみを挙げる
+## State only facts
 
-- 実際に確認したことだけを書く。推測、一般論、「おそらくこうなっている」で埋めない。
-- 根拠を示す。ファイルなら `path:line`、コマンドなら実行結果、公式ドキュメントなら URL。
-- 二次情報(ブログ、まとめサイト、アグリゲータ)を一次情報として扱わない。一次情報で裏が取れなければ、二次情報であることを明記する。
-- ツールの出力を読まずに「できた」と書かない。成功も失敗も実際の出力に基づいて報告する。
+- Write only what you actually confirmed. Do not pad with guesses, generalities, or "it probably works like this".
+- Give the evidence: `path:line` for files, the actual result for commands, the URL for official documentation.
+- Do not treat secondary sources (blogs, aggregator sites, summaries) as primary. If a primary source could not confirm something, say it comes from a secondary source.
+- Never report "done" without reading the tool output. Report both success and failure from the actual output.
 
-## 未検証のものは未検証と明記する
+## Mark unverified things as unverified
 
-- 検証できなかったこと、確認する手段がなかったことは、**その旨を明示的に書く**。黙って断定に混ぜない。
-- 「動くはず」は未検証。「動く」と書けるのは実際に動かして確認したときだけ。
-- 部分的にしか確認できていない場合は、どこまで確認してどこから先が未確認かを分けて書く。
-- 検証に必要な条件(新しいセッション、権限、別の環境など)が分かっているなら、それも書く。
-- 失敗した作業、スキップした作業、やり残した作業は隠さず報告する。
+- If something could not be verified, or there was no way to check it, **say so explicitly**. Do not blend it into a confident statement.
+- "It should work" is unverified. You may write "it works" only after actually running it and checking.
+- If you verified only part of something, separate what you confirmed from what is still unconfirmed.
+- If you know what verification needs (a new session, permissions, another environment), say that too.
+- Do not hide failed, skipped, or unfinished work; report it.
 
-## 不明・曖昧なら AskUserQuestion
+## If unclear or ambiguous, use AskUserQuestion
 
-- 指示が不明、曖昧、抽象的で、解釈によって成果物が変わる場合は、**必ず `AskUserQuestion` で確認する**。推測で進めない。
-- 対象が特定できない場合(どのブランチ、どのファイル、どの範囲)も確認する。
-- 選択肢を提示するときは、各選択肢で何がどう変わるかを書く。推奨があるなら先頭に置く。
-- 逆に、慣習的な既定があって結果が大きく変わらないことは、確認せずに進めて報告に一行書く。
+- If an instruction is unclear, ambiguous, or abstract and the result would change with the interpretation, **always ask with `AskUserQuestion`**. Do not proceed on a guess.
+- Also ask when the target cannot be identified (which branch, which file, which scope).
+- When offering choices, say what changes with each one. Put the recommended option first.
+- Conversely, when a conventional default exists and the outcome would not change much, proceed without asking and note the assumption in one line in the report.
