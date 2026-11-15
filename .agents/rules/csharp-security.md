@@ -1,10 +1,9 @@
 ---
-paths:
-  - "**/*.cs"
-  - "**/*.csx"
-  - "**/*.csproj"
-  - "**/appsettings*.json"
+trigger: glob
+description: "C# Security"
+globs: "**/*.cs, **/*.csx, **/*.csproj, **/appsettings*.json"
 ---
+<!-- generated from .claude/rules/csharp/security.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C# Security
 
 > This file extends [common/security.md](../common/security.md) with C#-specific content.

@@ -1,13 +1,9 @@
 ---
-paths:
-  - "**/*.cpp"
-  - "**/*.hpp"
-  - "**/*.cc"
-  - "**/*.hh"
-  - "**/*.cxx"
-  - "**/*.h"
-  - "**/CMakeLists.txt"
+trigger: glob
+description: "C++ Security"
+globs: "**/*.cpp, **/*.hpp, **/*.cc, **/*.hh, **/*.cxx, **/*.h, **/CMakeLists.txt"
 ---
+<!-- generated from .claude/rules/cpp/security.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C++ Security
 
 > This file extends [common/security.md](../common/security.md) with C++ specific content.

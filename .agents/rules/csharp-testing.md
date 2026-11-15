@@ -1,9 +1,9 @@
 ---
-paths:
-  - "**/*.cs"
-  - "**/*.csx"
-  - "**/*.csproj"
+trigger: glob
+description: "C# Testing"
+globs: "**/*.cs, **/*.csx, **/*.csproj"
 ---
+<!-- generated from .claude/rules/csharp/testing.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C# Testing
 
 > This file extends [common/testing.md](../common/testing.md) with C#-specific content.

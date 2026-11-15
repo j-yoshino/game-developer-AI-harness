@@ -1,13 +1,9 @@
 ---
-paths:
-  - "**/*.cpp"
-  - "**/*.hpp"
-  - "**/*.cc"
-  - "**/*.hh"
-  - "**/*.cxx"
-  - "**/*.h"
-  - "**/CMakeLists.txt"
+trigger: glob
+description: "C++ Hooks"
+globs: "**/*.cpp, **/*.hpp, **/*.cc, **/*.hh, **/*.cxx, **/*.h, **/CMakeLists.txt"
 ---
+<!-- generated from .claude/rules/cpp/hooks.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C++ Hooks
 
 > This file extends [common/hooks.md](../common/hooks.md) with C++ specific content.

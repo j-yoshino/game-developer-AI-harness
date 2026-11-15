@@ -1,8 +1,9 @@
 ---
-paths:
-  - "**/*.rs"
-  - "**/Cargo.toml"
+trigger: glob
+description: "Rust Hooks"
+globs: "**/*.rs, **/Cargo.toml"
 ---
+<!-- generated from .claude/rules/rust/hooks.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Rust Hooks
 
 > This file extends [common/hooks.md](../common/hooks.md) with Rust-specific content.
