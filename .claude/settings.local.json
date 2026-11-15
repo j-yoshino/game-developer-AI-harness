@@ -42,5 +42,18 @@
   "language": "japanese",
   "effortLevel": "medium",
   "advisorModel": "opus",
-  "teammateMode": "auto"
+  "teammateMode": "auto",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/window-reminder.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }

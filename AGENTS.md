@@ -18,8 +18,12 @@
 | ファイル | 内容 |
 |---|---|
 | `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ・確認の経緯は書かない / 事実でないことの明示 / 検証は自分で完結しユーザーの手が要るものだけ「やり残し」/ 曖昧さが残る間は進まず AskUserQuestion)。毎セッション読み込まれる |
+| `.claude/rules/window.md` | 依頼の窓口。ユーザーの発言を、質問・軽作業・本件に判定し、経路に回す(迷ったら層を上げ、下げない)。毎セッション読み込まれる。`.claude/hooks/window-reminder.sh`(UserPromptSubmit フック。`settings.local.json` で登録)が、毎ターン短い注意を注入する。遵守は保証されない |
+| `.claude/skills/window-question/` | 質問(作業なし)への回答の手順。依頼票・納品書・層の宣言を出さず、根拠付きで答える |
+| `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
+| `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
-| `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` だけ)。下表 |
+| `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` と `window.md` だけ)。下表 |
 | `docs/rules-ja/` | `.claude/rules/` の日本語訳(同じ構成・同じファイル名)。**Claude には読み込まれない**。トークン量を抑えるため、rules は英語で書き、日本語は docs に置く |
 
 ### 言語・エンジン別のルール(`.claude/rules/`)
@@ -45,6 +49,8 @@
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。
 
 ## 計画フェーズの使い分け
+
+**依頼は、まず窓口(`.claude/rules/window.md`)を通る。** 質問は `window-question`、軽作業は brainstorming で規模を測って作業、本件(新規実装)は下の流れに進む。作業の完了後は、納品書を `docs/納品書/` に書く。
 
 **計画と実装は spec-kit を正本とする。** superpowers と spec-kit は計画スキルの発動条件が重なるため、役割を以下に固定する。
 

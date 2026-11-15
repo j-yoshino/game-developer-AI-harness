@@ -19,7 +19,7 @@ plan の Technical Context と、設計書の未決の項目から出た調べ�
 ## R3. フックのスクリプトの言語と呼び出し
 
 - **決定**: bash のスクリプト 1 本(`.claude/hooks/window-reminder.sh`)。R1 で、Git Bash から動くことを確認した。
-- **呼び出しのパス**: テストでは、フックの作業ディレクトリは、Claude を起動したディレクトリだった。リポジトリの外から起動された場合、相対パスは壊れる。`$CLAUDE_PROJECT_DIR` のような環境変数が、フックの command で使えるかは、未検証。タスクで確認し、使えなければ相対パス(リポジトリ直下で起動する前提)にして、制約として記す。
+- **呼び出しのパス**: 確認した。フックの実行時、環境変数 `$CLAUDE_PROJECT_DIR` が設定される(値は、Claude を起動したディレクトリ)。command は `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/window-reminder.sh"` とする。リポジトリの外から起動された場合は、そのディレクトリが基準になり、スクリプトが見つからない(その場合、注意が届かないだけで、入力はブロックされない)。
 - **検討した他の案**: PowerShell のスクリプト。このリポジトリの spec-kit は `ps` だが、bash を使う他のフックとの整合と、R1 の確認済みの動作を優先した。
 
 ## R4. 注入文の長さと言語
@@ -32,7 +32,8 @@ plan の Technical Context と、設計書の未決の項目から出た調べ�
 - **確認できたこと**: `.specify/scripts/powershell/common.ps1` の `Resolve-Template` は、テンプレートを次の順で探す。1. `.specify/templates/overrides/`、2. インストール済みの preset、3. extension、4. `.specify/templates/`(core)。
 - **決定**: 依頼票の節を足した spec テンプレートを `.specify/templates/overrides/spec-template.md` に置く。core の `.specify/templates/spec-template.md` は変えない。
 - **理由**: spec-kit の更新が core を上書きしても、override は残る。設計書の「更新で上書きされうる」という懸念を解消できる。
-- **未検証**: `speckit-specify` が、実際に override を使うか(スキルは「preset/template resolution stack」で解決すると書いている)。タスクで、`.specify/scripts/powershell/resolve-template.ps1` を実行して確かめる。
+- **確認できたこと**: `resolve-template.ps1 spec-template` を実行すると、override のテンプレート(依頼票の節を含むもの)が返る。
+- **未検証**: `speckit-specify` が、実際にそのテンプレートで spec を作るか(次に `/speckit-specify` を実行したときに確かめる)。
 - **検討した他の案**: core を直接編集する。更新で上書きされるため採らない。
 
 ## R6. 質問スキルの名前と起動
@@ -53,6 +54,7 @@ plan の Technical Context と、設計書の未決の項目から出た調べ�
 
 ## 未検証のまとめ
 
-1. `additionalContext` がモデルに届き、従われるか(R1)。
-2. フックの command で、プロジェクトのルートを指す環境変数が使えるか(R3)。
-3. `speckit-specify` が override のテンプレートを使うか(R5)。
+1. `additionalContext` がモデルに届き、従われるか(R1。tasks.md の T010)。
+2. `speckit-specify` が override のテンプレートを使うか(R5)。
+
+確認済み: フックは 2.1.233 で発火する(R1)。`$CLAUDE_PROJECT_DIR` が設定される(R3)。リゾルバーは override を返す(R5)。
