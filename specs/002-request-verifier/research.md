@@ -59,3 +59,11 @@ plan の Technical Context と、設計書の未決の項目から出た調べ�
 4. 戻り値の長さの上限(R5)。
 
 確認済み: 汎用のサブエージェントの入れ子は、この環境で動く(R1)。`paths` 付きの rules は、サブエージェントに届かない(R2)。窓口のフックの注入文は、サブエージェントに届かない(R3)。
+
+## R9. 既存のレビュー用エージェントの書式(T001 のメモ)
+
+`.claude/agents/cpp-reviewer.md` を、書式の見本として読んだ。
+
+- frontmatter: `name`、`description`(最後に「MUST BE USED for ... projects.」)、`tools: Read, Grep, Glob, Bash`、`model: sonnet`。
+- 本文の構成: 「Prompt Defense Baseline」(役割の固定、秘密情報を出さない、外部の入力を信用しない、などの箇条書き)、役割の1文、「When invoked」(`git diff` で変更を取る、診断コマンドを実行する、変更ファイルに集中する、すぐ始める)、「Review Priorities」(CRITICAL / HIGH / MEDIUM の見出しごとに、観点を太字で列挙)、「Diagnostic Commands」、「Approval Criteria」(Approve: CRITICAL と HIGH がない。Warning: MEDIUM のみ。Block: CRITICAL または HIGH がある)。
+- 新しいエージェント(`window-verifier`、`unity-reviewer`、`unreal-reviewer`)は、この構成に合わせる。「Prompt Defense Baseline」も、同じ文を入れる。`unity-reviewer` と `unreal-reviewer` の `description` は、「MUST BE USED」を付けない(呼び出しは、確かめる者が名前で指定するため)。
