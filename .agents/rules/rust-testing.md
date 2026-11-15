@@ -1,7 +1,9 @@
 ---
-paths:
-  - "**/*.rs"
+trigger: glob
+description: "Rust Testing"
+globs: "**/*.rs"
 ---
+<!-- generated from .claude/rules/rust/testing.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Rust Testing
 
 > This file extends [common/testing.md](../common/testing.md) with Rust-specific content.

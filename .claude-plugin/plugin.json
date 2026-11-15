@@ -1,0 +1,5 @@
+{
+  "name": "game-developer-ai-harness",
+  "description": "Game development AI harness: request window, verifier, advisor and spec-kit flow. The repository root carries no plugin components; the vendored plugins are exposed through marketplace.json.",
+  "version": "0.1.0"
+}

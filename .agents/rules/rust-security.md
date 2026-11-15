@@ -1,7 +1,9 @@
 ---
-paths:
-  - "**/*.rs"
+trigger: glob
+description: "Rust Security"
+globs: "**/*.rs"
 ---
+<!-- generated from .claude/rules/rust/security.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Rust Security
 
 > This file extends [common/security.md](../common/security.md) with Rust-specific content.

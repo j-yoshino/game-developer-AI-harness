@@ -1,8 +1,9 @@
 ---
-paths:
-  - "**/*.cs"
-  - "**/*.csx"
+trigger: glob
+description: "C# Patterns"
+globs: "**/*.cs, **/*.csx"
 ---
+<!-- generated from .claude/rules/csharp/patterns.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C# Patterns
 
 > This file extends [common/patterns.md](../common/patterns.md) with C#-specific content.

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$(git rev-parse --show-toplevel)/.claude/hooks/window-reminder.sh\"",
+            "commandWindows": "bash .claude/hooks/window-reminder.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

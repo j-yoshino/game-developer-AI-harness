@@ -1,0 +1,11 @@
+{
+  "window-reminder": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "python .agents/hooks/window-reminder-ag.py",
+        "timeout": 10
+      }
+    ]
+  }
+}

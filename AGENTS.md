@@ -26,6 +26,7 @@
 | `.claude/agents/unity-reviewer.md`、`unreal-reviewer.md` | Unity と Unreal のレビュー。`window-verifier` が名前で呼ぶ。`paths` 付きの rules はサブエージェントに自動では届かないため、指示の中で `.claude/rules/unity/`、`.claude/rules/unreal-engine/` を読む |
 | `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
 | `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |
+| `scripts/sync-agent-env.py`、`docs/共有環境/共有の一覧.md` | `.claude/` を正本に、Codex・Antigravity CLI 向けの `.agents/`・`.codex/` を生成する(スキル・エージェント・rules・フック)。`--check` でずれを検査。共有の可否と、できない項目の理由は、一覧にある。実機(Codex・Antigravity)での動作は、ユーザーの検収待ち |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
 | `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` と `window.md` だけ)。下表 |
 | `docs/rules-ja/` | `.claude/rules/` の日本語訳(同じ構成・同じファイル名)。**Claude には読み込まれない**。トークン量を抑えるため、rules は英語で書き、日本語は docs に置く |
@@ -49,6 +50,24 @@
 - **コードを書くときの共通規則**(各 `coding-style.md` の「Project Rules: Comments and File Header」の節。`cpp/`・`csharp/`・`rust/` にある。`unity/` と `unreal-engine/` は、そこを参照する):
   - 新しいソースファイルは、先頭に Doxygen 形式のヘッダー(`@file`・`@brief`・`@date`・`@author`)を書く。C++ は `/** */`、C# は `//!` の行、Rust は `//!`(要約・Date・Author)。`@date` は作成日(`YYYY-MM-DD`)を1回だけ書き、`@author` は `git config user.name`。Unreal の著作権表示は1行目のまま。
   - すべてのコメント行の末尾にピリオドを付ける(値の行、URL、コード例などの例外は各ファイルに記載)。コメントは独立した行に書き、`//` の後に空白を1つ。
+
+### 他のツール(Codex・Antigravity CLI)との共有
+
+- **正本は `.claude/`**。スキル・エージェント・rules・フックは、`.claude/` だけを手で直す。
+- `.agents/` と `.codex/` の中身は、`python scripts/sync-agent-env.py` で生成する。**生成物は手で直さない**(次の同期で上書きされる)。`--check` を付けると、正本とのずれを検査する(ファイルは書かない)。
+- 共有できる範囲と、できない項目の理由は、`docs/共有環境/共有の一覧.md` にある。
+- Windows の Git は、このリポジトリでシンボリックリンクを使えない(`core.symlinks=false`)ため、リンクではなく生成(コピー)にしている。
+
+### rules の案内(Codex 向け)
+
+Codex は `.claude/rules/` を自動では読み込まない。次のとおり、該当する rules を、作業の前に読む(Claude Code と Antigravity は、別の仕組みで読み込むため、重ねて読んでも害はない)。
+
+- 毎回: `.claude/rules/window.md` と `.claude/rules/answer-policy.md`。
+- C/C++ のソース・ヘッダ、`CMakeLists.txt` を触るとき: `.claude/rules/cpp/` の 5 ファイル。
+- C#(`*.cs`、`*.csx`)を触るとき: `.claude/rules/csharp/` の 5 ファイル。
+- Rust(`*.rs`、`Cargo.toml`)を触るとき: `.claude/rules/rust/` の 5 ファイル。
+- Unity(`Assets/` 配下の `*.cs`、`*.asmdef`)を触るとき: `.claude/rules/unity/` の 5 ファイル。重なる `csharp/` よりも `unity/` を優先する。
+- Unreal(`Source/` と `Plugins/**/Source/` の `.h` `.cpp` `.cs`)を触るとき: `.claude/rules/unreal-engine/` の 5 ファイル。重なる `cpp/` よりも `unreal-engine/` を優先する。
 
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。
 

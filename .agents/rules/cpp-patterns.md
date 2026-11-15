@@ -1,13 +1,9 @@
 ---
-paths:
-  - "**/*.cpp"
-  - "**/*.hpp"
-  - "**/*.cc"
-  - "**/*.hh"
-  - "**/*.cxx"
-  - "**/*.h"
-  - "**/CMakeLists.txt"
+trigger: glob
+description: "C++ Patterns"
+globs: "**/*.cpp, **/*.hpp, **/*.cc, **/*.hh, **/*.cxx, **/*.h, **/CMakeLists.txt"
 ---
+<!-- generated from .claude/rules/cpp/patterns.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C++ Patterns
 
 > This file extends [common/patterns.md](../common/patterns.md) with C++ specific content.
