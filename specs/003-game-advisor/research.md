@@ -59,3 +59,7 @@
 | 入れ子の呼び出し | 本件では使わない(相談役は `Agent` を持たない) |
 | 窓口の規則に書いた呼び出し指示に、メインが従うか | 未検証。新しいセッションで検証(quickstart) |
 | 相談役が、Read だけで、記事の出典の書式を守るか | 未検証。quickstart で、返答を読んで確かめる |
+
+## R8. エージェントの書式(T001)
+
+既存の `window-verifier.md`、`unity-reviewer.md` と同じく、frontmatter に `name`・`description`・`tools`・`model` の 4 つ。本文は、`## Prompt Defense Baseline`(同じ 6 項目)から始め、役割、入力、規則、報告の形式の順。`description` は、呼び出しの条件を書き、「use proactively」は書かない。`game-advisor` は、`tools: Read, Grep, Glob`、`model: opus`(設計書 5-4)。
