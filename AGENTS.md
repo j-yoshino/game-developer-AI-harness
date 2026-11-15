@@ -21,6 +21,8 @@
 | `.claude/rules/window.md` | 依頼の窓口。質問(作業を求めない発言)は `window-question` が答え、層は判定しない。作業の依頼は、軽作業・本件に判定し、経路に回す(迷ったら重い層を選び、層は下げない)。毎セッション読み込まれる。`.claude/hooks/window-reminder.sh`(UserPromptSubmit フック。`settings.local.json` で登録)が、毎ターン短い注意を注入する。遵守は保証されない |
 | `.claude/skills/window-question/` | 質問(作業なし)への回答の手順。層を判定せず、依頼票・納品書・層の宣言を出さず、根拠付きで答える |
 | `.claude/agents/window-verifier.md` | 確かめる者。作った者とは別の文脈で、納品書の主張を完了の判定に照合し、確認していないことの抜けを指摘し、確認方法を最大3つ再実行し、言語・エンジン別のレビューを入れ子で呼ぶ。本件は必ず、軽作業はコードかテストを変えたときだけ呼ぶ。報告は納品書の末尾に全文で追記する。第1版は、検査役の書き換えとメインによる報告の改変を検知しない |
+| `.claude/agents/game-advisor.md` | 相談役。別の文脈で、抽象的な依頼やゲームの体験に関わる変更に、解釈案(推奨つき)と番号付きの補った点を返す。決めて進まず、ユーザーの合意を取ってから進む。補った点は依頼票(軽作業は納品書の依頼欄)に記録し、検収で1点ずつ覆せる。`tools` は Read・Grep・Glob だけ。窓口(`window.md` の Advisor 節)が呼ぶ。遵守は保証されない |
+| `docs/ゲーム制作/` | 相談役の知識。8つの見方(`観点/`)、任天堂の記事の出典(`出典.md`)。任天堂の記事は出典付きの要約。桜井さんの動画の二次資料は「二次資料の複合結果」として扱い、個別のソースは書かない |
 | `.claude/agents/unity-reviewer.md`、`unreal-reviewer.md` | Unity と Unreal のレビュー。`window-verifier` が名前で呼ぶ。`paths` 付きの rules はサブエージェントに自動では届かないため、指示の中で `.claude/rules/unity/`、`.claude/rules/unreal-engine/` を読む |
 | `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
 | `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |

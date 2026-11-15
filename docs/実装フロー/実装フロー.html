@@ -95,6 +95,11 @@ th{background:var(--abg);color:var(--a)}
 <div class="k"><b>やること</b><span>作業の大きさを測り、足りない点だけを聞く。設計メモは書かず、<code>writing-plans</code> には進まない。</span></div>
 </div></details>
 
+<details class="step"><summary>相談する<span class="tag opt">条件つき</span></summary><div class="body">
+<div class="k"><b>呼び出すエージェント</b><span><code>game-advisor</code>(相談役)</span></div>
+<div class="k"><b>やること</b><span>変更がゲームの体験に関わるときだけ、作業の前に呼ぶ。解釈案と補った点を、ユーザーに示して、合意を取る。相談役は決めない。補った点は、納品書の依頼欄の「こう理解した」の下に、番号付きで記録する。原因が明らかな不具合の修正や、ドキュメントだけの変更では呼ばない。「相談して」と頼めば、いつでも呼ぶ。</span></div>
+</div></details>
+
 <details class="step"><summary>作業する<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>呼び出すスキル</b><span><code>systematic-debugging</code>(不具合)、<code>test-driven-development</code>(テストが当てはまるとき)</span></div>
 </div></details>
@@ -124,6 +129,11 @@ th{background:var(--abg);color:var(--a)}
 <div class="k"><b>呼び出すスキル</b><span><code>superpowers:brainstorming</code></span></div>
 <div class="k"><b>やること</b><span>何を作るかを決める。曖昧な点は聞かれる。設計メモ(design doc)を作る。</span></div>
 <div class="k"><b>成果物</b><span>design doc(次の手順にパスを渡す)</span></div>
+</div></details>
+
+<details class="step"><summary>相談する<span class="tag opt">条件つき</span></summary><div class="body">
+<div class="k"><b>呼び出すエージェント</b><span><code>game-advisor</code>(相談役)</span></div>
+<div class="k"><b>やること</b><span>抽象的な依頼や、ゲームの体験に関わる依頼のとき、仕様を書く前後に呼ぶ。8つの見方(<code>docs/ゲーム制作/</code>)に基づく解釈案(推奨つき)と、番号付きの補った点を、ユーザーに示して、合意を取る。合意した点は、依頼票の「こう理解した」の下に記録し、完了の判定に項目を足す。検収で、1点ずつ覆せる。</span></div>
 </div></details>
 
 <details class="step"><summary>仕様を書く<span class="tag">必須</span></summary><div class="body">
@@ -232,6 +242,7 @@ th{background:var(--abg);color:var(--a)}
 <table>
 <tr><th>段階</th><th>呼び出すスキル</th><th>成果物</th></tr>
 <tr><td>規模</td><td><code>superpowers:brainstorming</code></td><td>規模の判定</td></tr>
+<tr><td>相談</td><td><code>game-advisor</code>(体験に関わるときだけ)</td><td>解釈案、補った点(納品書の依頼欄)</td></tr>
 <tr><td>作業</td><td><code>systematic-debugging</code> / <code>test-driven-development</code></td><td>変更</td></tr>
 <tr><td>確認</td><td><code>superpowers:verification-before-completion</code></td><td>検証の結果</td></tr>
 <tr><td>報告</td><td>(納品書のテンプレート)</td><td><code>docs/納品書/&lt;YYYY-MM-DD&gt;-&lt;題名&gt;.md</code></td></tr>
@@ -242,6 +253,7 @@ th{background:var(--abg);color:var(--a)}
 <table>
 <tr><th>段階</th><th>呼び出すスキル</th><th>成果物</th></tr>
 <tr><td>決める</td><td><code>superpowers:brainstorming</code></td><td>design doc</td></tr>
+<tr><td>相談</td><td><code>game-advisor</code>(体験に関わるとき)</td><td>解釈案、補った点(依頼票)</td></tr>
 <tr><td>仕様</td><td><code>/speckit-specify</code>(+ <code>clarify</code>)</td><td>spec.md(先頭に依頼票)</td></tr>
 <tr><td>計画</td><td><code>/speckit-plan</code></td><td>specs/&lt;NNN-feature&gt;/plan.md</td></tr>
 <tr><td>分解</td><td><code>/speckit-tasks</code>(+ <code>analyze</code>、<code>checklist</code>)</td><td>tasks.md</td></tr>
