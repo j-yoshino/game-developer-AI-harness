@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>実装フロー</title>
+<style>
+:root{--bg:#fafaf7;--fg:#1d1d1b;--mute:#66665f;--card:#fff;--line:#dcdcd2;--a:#2456a6;--abg:#e8effa;--ok:#1d7a46;--okbg:#e4f4ea;--warn:#9a5b00;--warnbg:#fff1d9;--no:#a02a2a;--nobg:#fbe6e6}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171a;--fg:#ecece6;--mute:#a3a39b;--card:#212126;--line:#3a3a42;--a:#8db4f2;--abg:#222f45;--ok:#6fcf97;--okbg:#1d3326;--warn:#f0b35c;--warnbg:#3a2d17;--no:#f08a8a;--nobg:#3d2222}}
+:root[data-theme=dark]{--bg:#17171a;--fg:#ecece6;--mute:#a3a39b;--card:#212126;--line:#3a3a42;--a:#8db4f2;--abg:#222f45;--ok:#6fcf97;--okbg:#1d3326;--warn:#f0b35c;--warnbg:#3a2d17;--no:#f08a8a;--nobg:#3d2222}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,"Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.6rem;margin:.2em 0}
+h2{font-size:1.2rem;margin:2em 0 .6em;padding-bottom:.3em;border-bottom:2px solid var(--line)}
+p,li{margin:.4em 0}
+code{background:var(--abg);color:var(--a);padding:.1em .4em;border-radius:4px;font-size:.92em;word-break:break-all}
+.lead{color:var(--mute)}
+.note{border-left:4px solid var(--warn);background:var(--warnbg);padding:.6em 1em;border-radius:4px;margin:1em 0}
+.steps{padding:0;margin:0;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+.step>summary{cursor:pointer;list-style:none;padding:12px 14px;display:flex;gap:12px;align-items:center;font-weight:600}
+.step>summary::-webkit-details-marker{display:none}
+.step>summary::before{counter-increment:s;content:counter(s);flex:none;width:2em;height:2em;border-radius:50%;background:var(--a);color:var(--bg);display:grid;place-items:center;font-size:.9rem}
+.step>summary .tag{margin-left:auto;font-size:.75rem;font-weight:500;padding:.1em .6em;border-radius:99px;background:var(--abg);color:var(--a);white-space:nowrap}
+.step>summary .tag.opt{background:var(--warnbg);color:var(--warn)}
+.step[open]>summary{border-bottom:1px solid var(--line)}
+.body{padding:6px 16px 14px}
+.k{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;margin:.5em 0}
+.k b{color:var(--mute);font-weight:600}
+@media(max-width:560px){.k{grid-template-columns:1fr}.k b{margin-top:.4em}}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.box{border-radius:8px;padding:.6em 1em}
+.box.ok{background:var(--okbg);border:1px solid var(--ok)}
+.box.no{background:var(--nobg);border:1px solid var(--no)}
+.box h3{margin:.2em 0;font-size:1rem}
+.box.ok h3{color:var(--ok)}.box.no h3{color:var(--no)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.94rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--abg);color:var(--a)}
+.theme{float:right;font-size:.8rem;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.2em .7em;cursor:pointer}
+.src{font-size:.8rem;color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<button class="theme" id="theme" type="button">表示を切り替え</button>
+<h1>実装フロー</h1>
+<p class="lead">このリポジトリで、機能を実際に実装していくときの流れ。計画と実装は spec-kit を正本にし、superpowers は要件の掘り起こしとテスト・デバッグ・レビューに使う。</p>
+
+<div class="note"><b>この文書について。</b>通して実行して検証したものではない。手順 3・6 の任意のスキルと、<code>/speckit-converge</code> の置き場所は、各スキルの説明文を読んだうえで決めた(各手順に「出典」を付けた)。プロジェクトによって、流れは変わりうる。</div>
+
+<h2>0. 最初に1回だけ</h2>
+<table>
+<tr><th>やること</th><th>内容</th></tr>
+<tr><td>プロジェクトの原則</td><td><code>/speckit-constitution</code> で、プロジェクトの憲章を作る。<code>.specify/memory/</code> は現在空で、未作成。</td></tr>
+<tr><td>スキャン</td><td>スキルやプラグインを取り込む前に、<code>skillspector scan &lt;対象&gt; --recursive --no-llm</code>。検出は、docs 内の記述か実行されるスクリプトかを確かめてから判断する。</td></tr>
+<tr><td>新しいセッション</td><td>プラグインの追加や設定の変更は、新しいセッションで反映される。</td></tr>
+</table>
+
+<h2>1. 機能1つの流れ</h2>
+<p class="lead">各手順を開くと、使うスキルと成果物が見える。</p>
+<div class="steps">
+
+<details class="step" open><summary>要件を決める<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>superpowers:brainstorming</code></span></div>
+<div class="k"><b>やること</b><span>何を作るかを決める。曖昧な点は聞かれる。設計メモ(design doc)を作る。</span></div>
+<div class="k"><b>成果物</b><span>design doc(次の手順にパスを渡す)</span></div>
+</div></details>
+
+<details class="step"><summary>仕様を書く<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>/speckit-specify &lt;design doc のパス&gt;</code></span></div>
+<div class="k"><b>やること</b><span>自然言語の説明から、機能の仕様(<code>spec.md</code>)を作る。</span></div>
+<div class="k"><b>出典</b><span class="src">speckit-specify の説明</span></div>
+</div></details>
+
+<details class="step"><summary>仕様の曖昧さを潰す<span class="tag opt">任意</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>/speckit-clarify</code></span></div>
+<div class="k"><b>やること</b><span>仕様の不足を、最大5問の質問で洗い出し、答えを仕様に書き戻す。</span></div>
+<div class="k"><b>出典</b><span class="src">speckit-clarify の説明。置き場所(specify の直後)は補足。</span></div>
+</div></details>
+
+<details class="step"><summary>計画を書く<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>/speckit-plan</code></span></div>
+<div class="k"><b>成果物</b><span><code>specs/&lt;NNN-feature&gt;/plan.md</code>。<b>計画書の正本はここだけ。</b><code>docs/superpowers/plans/</code> は使わない。</span></div>
+<div class="k"><b>使わない</b><span><code>superpowers:writing-plans</code></span></div>
+</div></details>
+
+<details class="step"><summary>タスクに分ける<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>/speckit-tasks</code></span></div>
+<div class="k"><b>成果物</b><span>依存関係の順に並んだ <code>tasks.md</code></span></div>
+<div class="k"><b>出典</b><span class="src">speckit-tasks の説明</span></div>
+</div></details>
+
+<details class="step"><summary>実装の前に整合性を見る<span class="tag opt">任意</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>/speckit-analyze</code>(<code>/speckit-checklist</code> で、要件の品質チェックリストも作れる)</span></div>
+<div class="k"><b>やること</b><span><code>spec.md</code>・<code>plan.md</code>・<code>tasks.md</code> のあいだの食い違いを、ファイルを変えずに調べる。</span></div>
+<div class="k"><b>出典</b><span class="src">speckit-analyze / speckit-checklist の説明。置き場所(tasks の後)は補足。</span></div>
+</div></details>
+
+<details class="step"><summary>実装する<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>/speckit-implement</code></span></div>
+<div class="k"><b>実装中に併用</b><span>
+<code>superpowers:test-driven-development</code>(テストを先に)、
+<code>superpowers:systematic-debugging</code>(不具合の原因を系統立てて調べる)、
+<code>superpowers:using-git-worktrees</code>(作業の分離)</span></div>
+<div class="k"><b>使わない</b><span><code>superpowers:executing-plans</code>、<code>superpowers:subagent-driven-development</code>。曖昧さを判断して進める仕組みが、answer-policy と食い違うため。</span></div>
+<div class="k"><b>ルール</b><span>該当の言語やエンジンのファイルを開くと、<code>.claude/rules/&lt;言語&gt;/</code> が自動で読み込まれる(下の表)。</span></div>
+</div></details>
+
+<details class="step"><summary>完了前に確かめる<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>使うもの</b><span><code>superpowers:verification-before-completion</code>、<code>superpowers:requesting-code-review</code>(指摘を受けたら <code>superpowers:receiving-code-review</code>)</span></div>
+<div class="k"><b>未実装が残ったとき</b><span><code>/speckit-converge</code> で、コードを仕様・計画・タスクと照らし、残りを <code>tasks.md</code> に追記する。そのあと <code>/speckit-implement</code> に戻る。</span></div>
+<div class="k"><b>出典</b><span class="src">converge の置き場所は補足。</span></div>
+</div></details>
+
+<details class="step"><summary>ブランチを出して PR にする<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>ブランチ</b><span><code>develop</code> から作業ブランチを切る。</span></div>
+<div class="k"><b>PR</b><span><code>develop</code> 向けに作る。</span></div>
+<div class="k"><b>禁止</b><span><code>main</code> に直接コミットしない。</span></div>
+</div></details>
+
+</div>
+
+<h2>2. 常に守ること(回答ポリシー)</h2>
+<div class="cols">
+<div class="box ok"><h3>やる</h3>
+<ul>
+<li>確認できた事実は、言い切る。</li>
+<li>事実でないことは、事実でないと書く。</li>
+<li>検証は自分の側で完結させる。</li>
+<li>ユーザーの手が要ることだけを「やり残し」に挙げる。</li>
+<li>曖昧なら <code>AskUserQuestion</code> で聞く。答えに曖昧さが残るなら、もう一度聞く。</li>
+</ul></div>
+<div class="box no"><h3>やらない</h3>
+<ul>
+<li>「読んだところ」のような、確認の経緯を書く。</li>
+<li>「動くはず」を事実として書く。</li>
+<li>自分で検証できたのに、ユーザーに渡す。</li>
+<li>曖昧さが残ったまま、判断して進める。</li>
+</ul></div>
+</div>
+<p class="src">出典: <code>.claude/rules/answer-policy.md</code></p>
+
+<h2>3. 言語・エンジン別のルール</h2>
+<table>
+<tr><th>ディレクトリ</th><th>読み込まれる条件(<code>paths</code>)</th><th>優先</th></tr>
+<tr><td><code>cpp/</code></td><td>C / C++ のソース・ヘッダ</td><td></td></tr>
+<tr><td><code>csharp/</code></td><td><code>**/*.cs</code></td><td></td></tr>
+<tr><td><code>rust/</code></td><td><code>**/*.rs</code>、<code>**/Cargo.toml</code></td><td></td></tr>
+<tr><td><code>unity/</code></td><td><code>Assets/**/*.cs</code></td><td>Unity では <code>unity/</code> を優先</td></tr>
+<tr><td><code>unreal-engine/</code></td><td><code>Source/**</code>、<code>Plugins/**/Source/**</code> の <code>.h</code> <code>.cpp</code> <code>.cs</code></td><td>Unreal では <code>unreal-engine/</code> を優先</td></tr>
+</table>
+<p>コードを書くときの共通規則:新しいソースファイルは、先頭に Doxygen 形式のヘッダー(<code>@file</code>・<code>@brief</code>・<code>@date</code>・<code>@author</code>)を書く。コメント行の末尾には、ピリオドを付ける。</p>
+
+<h2>4. フロー全体の見取り図</h2>
+<table>
+<tr><th>段階</th><th>使うもの</th><th>成果物</th></tr>
+<tr><td>決める</td><td>brainstorming</td><td>design doc</td></tr>
+<tr><td>仕様</td><td>/speckit-specify (+ clarify)</td><td>spec.md</td></tr>
+<tr><td>計画</td><td>/speckit-plan</td><td>specs/&lt;NNN-feature&gt;/plan.md</td></tr>
+<tr><td>分解</td><td>/speckit-tasks (+ analyze, checklist)</td><td>tasks.md</td></tr>
+<tr><td>実装</td><td>/speckit-implement + TDD / debugging</td><td>コードとテスト</td></tr>
+<tr><td>確認</td><td>verification / code review (+ converge)</td><td>レビュー結果、追記されたタスク</td></tr>
+<tr><td>出す</td><td>develop から作業ブランチ → develop 向け PR</td><td>PR</td></tr>
+</table>
+</main>
+<script>
+(function(){
+  var b=document.getElementById("theme"),r=document.documentElement;
+  b.addEventListener("click",function(){
+    var cur=r.getAttribute("data-theme");
+    var dark=cur==="dark"||(!cur&&matchMedia("(prefers-color-scheme: dark)").matches);
+    r.setAttribute("data-theme",dark?"light":"dark");
+  });
+})();
+</script>
+</body>
+</html>
