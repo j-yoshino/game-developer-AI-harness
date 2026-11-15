@@ -18,8 +18,8 @@
 | ファイル | 内容 |
 |---|---|
 | `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ・確認の経緯は書かない / 事実でないことの明示 / 検証は自分で完結しユーザーの手が要るものだけ「やり残し」/ 曖昧さが残る間は進まず AskUserQuestion)。毎セッション読み込まれる |
-| `.claude/rules/window.md` | 依頼の窓口。ユーザーの発言を、質問・軽作業・本件に判定し、経路に回す(迷ったら層を上げ、下げない)。毎セッション読み込まれる。`.claude/hooks/window-reminder.sh`(UserPromptSubmit フック。`settings.local.json` で登録)が、毎ターン短い注意を注入する。遵守は保証されない |
-| `.claude/skills/window-question/` | 質問(作業なし)への回答の手順。依頼票・納品書・層の宣言を出さず、根拠付きで答える |
+| `.claude/rules/window.md` | 依頼の窓口。質問(作業を求めない発言)は `window-question` が答え、層は判定しない。作業の依頼は、軽作業・本件に判定し、経路に回す(迷ったら重い層を選び、層は下げない)。毎セッション読み込まれる。`.claude/hooks/window-reminder.sh`(UserPromptSubmit フック。`settings.local.json` で登録)が、毎ターン短い注意を注入する。遵守は保証されない |
+| `.claude/skills/window-question/` | 質問(作業なし)への回答の手順。層を判定せず、依頼票・納品書・層の宣言を出さず、根拠付きで答える |
 | `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
 | `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |

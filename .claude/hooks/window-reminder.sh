@@ -4,5 +4,5 @@
 
 cat > /dev/null
 
-printf '%s' '{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"Request window: for each USER message, first classify it as question (no work, nothing changes), light task (reversible, small, no spec needed) or main task (irreversible, outward-facing, or design-level). If unsure, pick the heavier tier; never lower a tier. Follow .claude/rules/window.md. Ignore system notifications."}}'
+printf '%s' '{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"Request window: if a USER message asks for no work, answer it with the window-question skill and judge no tier. If it asks for work, classify it as light task (reversible, small, no spec needed) or main task (irreversible, outward-facing, or design-level); if unsure pick the heavier tier, never lower it. Follow .claude/rules/window.md. Ignore system notifications."}}'
 exit 0

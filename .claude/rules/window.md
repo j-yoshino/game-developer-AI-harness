@@ -1,12 +1,11 @@
 # Request Window
 
-Every user message passes through the window first. The window decides how much procedure the request needs, routes it, and reports the result. A hook reminds you of this on every turn.
+Every user message passes through the window first. A message that asks for no work (a question) is answered with the `window-question` skill; no tier is judged for it. A message that asks for work is judged as a light task or a main task, which decides how much procedure it needs. A hook reminds you of this on every turn.
 
 ## Tiers
 
 | Tier | Condition |
 |---|---|
-| Question | No work. Nothing in files or state changes. |
 | Light task | Reversible, small, and not worth a spec (a bug fix, a small change). |
 | Main task | Irreversible, outward-facing, or the decision reaches design. Includes new implementation. |
 
@@ -19,16 +18,16 @@ Judge on two axes:
 
 Rules:
 
-- Judge only the user's messages. Ignore system notifications (background-task results and similar).
+- Judge only requests for work from the user. Questions get no tier. Ignore system notifications (background-task results and similar).
 - If unsure, choose the heavier tier.
 - Never lower a tier. If a light task turns out to need an irreversible operation, raise it to a main task and tell the user.
 - A message that mixes a question and a request for work is handled at the work tier.
 
 ## Routes
 
-### Question
+### Question (no tier)
 
-Call the `window-question` skill by name. Do not produce a request form, a delivery note, or a tier announcement. Answer first, and show evidence (`path:line`, URL, command output) only where it helps the user act. If answering turns out to require changing files or state, raise the tier and tell the user.
+Call the `window-question` skill by name. Do not judge a tier, and do not produce a request form, a delivery note, or a tier announcement. Answer first, and show evidence (`path:line`, URL, command output) only where it helps the user act. If answering turns out to require changing files or state, treat it as a request for work and judge its tier then.
 
 ### Light task
 

@@ -37,8 +37,8 @@ description: "窓口(依頼の受付・判定・納品)のタスク一覧"
 
 **Purpose**: 判定の本体と、毎ターンの注意を届ける仕組み。これが無いと、どのストーリーも動かない。
 
-- [X] T002 `.claude/rules/window.md` を英語で作る。判定の本体を書く: 層は質問・軽作業・本件の3つ。2つの軸(取り返しがつくか / 判断の分岐があるか)。「迷ったら層を上げる。層は上げるだけで、下げない」。ユーザーの発言にだけ判定し、システムの通知は対象外とする(research.md R2)。data-model.md の「依頼の層」の表と判定の規則に従う
-- [X] T003 `.claude/hooks/window-reminder.sh` を作る(bash)。contracts/hook-io.md に従う: 標準入力を読み捨て、標準出力に `hookSpecificOutput.hookEventName` = `"UserPromptSubmit"` と `additionalContext` を持つ JSON **だけ**を出し、終了コードは 0。注入文は英語で **400 文字以内**。内容は、ユーザーの発言ごとに質問・軽作業・本件を判定する、迷ったら層を上げる、手順は `window.md`、システムの通知は対象外。質問のたびに層の宣言や依頼票を出させる指示を含めない
+- [X] T002 `.claude/rules/window.md` を英語で作る。判定の本体を書く: 層は軽作業・本件の2つ(質問には層がない)。2つの軸(取り返しがつくか / 判断の分岐があるか)。「迷ったら層を上げる。層は上げるだけで、下げない」。ユーザーの発言にだけ判定し、システムの通知は対象外とする(research.md R2)。data-model.md の「依頼の層」の表と判定の規則に従う
+- [X] T003 `.claude/hooks/window-reminder.sh` を作る(bash)。contracts/hook-io.md に従う: 標準入力を読み捨て、標準出力に `hookSpecificOutput.hookEventName` = `"UserPromptSubmit"` と `additionalContext` を持つ JSON **だけ**を出し、終了コードは 0。注入文は英語で **400 文字以内**。内容は、作業を求めない発言には `window-question` を呼び層は判定しない、作業の依頼は軽作業・本件に判定する、迷ったら重い層を選ぶ、手順は `window.md`、システムの通知は対象外。質問のたびに層の宣言や依頼票を出させる指示を含めない
 - [X] T004 T003 のスクリプトを単体確認する: サンプル JSON(contracts/hook-io.md の入力例)を標準入力に流し、(a) 標準出力が妥当な JSON である、(b) `additionalContext` が 400 文字以内、(c) 終了コードが 0、の3点を、実際に実行して確かめる。結果を記録する
 - [X] T005 `.claude/settings.local.json` に、UserPromptSubmit のフックを登録する(`type`: `command`、`timeout`: 10)。command のパスの書き方は research.md R3 に従い、**先に確認する**: 作業用の設定ファイルで、フックから環境変数 `CLAUDE_PROJECT_DIR` を出力させ、`claude -p` で実行して、値が入るかを確かめる(モデル呼び出しが失敗しても、フックは発火する。research.md R1)。使えれば `"$CLAUDE_PROJECT_DIR"` を使い、使えなければ相対パスにして、plan.md の制約に「リポジトリ直下で起動する前提」と追記する。登録後、JSON として妥当かを確かめる
 - [X] T006 `docs/rules-ja/window.md` を作る。`.claude/rules/window.md` の日本語訳。先頭に、他の訳と同じ形で「日本語訳(参照用)。原文(英語): `.claude/rules/window.md`。この訳は Claude には読み込まれません。」と「適用パス(`paths`): なし(毎セッション読み込まれる)」を書く
@@ -54,11 +54,11 @@ description: "窓口(依頼の受付・判定・納品)のタスク一覧"
 **Independent Test**: 作業を含まない質問を3件入力し、依頼票・納品書・層の宣言が出ず、根拠付きで答えが返る(quickstart のシナリオ 1)。
 
 - [X] T007 [P] [US1] `.claude/skills/window-question/SKILL.md` を日本語で作る(research.md R6)。質問への回答の手順: 依頼票も納品書も作らない。層の宣言を出さない。根拠は `path:line`・URL・コマンド出力で示す(「読んだ」のような確認の経緯は書かない)。事実でないものは、事実でないと明示する(`.claude/rules/answer-policy.md` のとおり)。`description` は、自動起動されうるように、「作業を含まない質問に答えるとき」と書く
-- [X] T008 [US1] `.claude/rules/window.md` に「質問」の経路を追記する: 質問と判定したら `window-question` を名前で呼ぶ。依頼票・納品書・層の宣言を出さない(SC-006)。質問と作業が混ざった発言は、作業の層で扱う(spec の Edge Cases)
+- [X] T008 [US1] `.claude/rules/window.md` に「質問」の経路を追記する: 作業を求めない発言には、層を判定せずに `window-question` を名前で呼ぶ。依頼票・納品書・層の宣言を出さない(SC-006)。質問と作業が混ざった発言は、作業の層で扱う(spec の Edge Cases)
 - [X] T009 [US1] `docs/rules-ja/window.md` に、T008 の追記の日本語訳を反映する
 - [ ] T010 [US1] (ユーザー)新しいセッションで quickstart のシナリオ 1 を入力し、依頼票・納品書・層の宣言が出ないこと、根拠が示されること、**注入文が届いて従われること**(research.md の未検証 1)を確認する。結果を、この tasks.md の末尾の「検証の記録」に書く
 
-**Checkpoint**: 質問が、窓口を通って答えられる。ここで MVP として止められる。
+**Checkpoint**: 質問に、層を判定せずに、`window-question` で答えられる。ここで MVP として止められる。
 
 ---
 
@@ -138,6 +138,11 @@ description: "窓口(依頼の受付・判定・納品)のタスク一覧"
 
 ### 段階的に足す
 - US1 の検証が通ったら、US2 → US3 → US4 の順に足す。各ストーリーの後、検証して止められる。
+
+## 変更の記録
+
+- 2026-11-15: ユーザーの指示「質問の判定は不要でスキル呼び出しされる想定で」により、質問には層を付けない設計に変えた。T002・T003・T008 の記述と、実装済みの `window.md`・訳・フックの注入文・`window-question`・AGENTS.md・設計書・spec・plan・data-model・contracts・quickstart・実装フローの HTML を更新した。フックの注入文は 366 文字(上限 400)。
+
 
 ## 検証の記録
 

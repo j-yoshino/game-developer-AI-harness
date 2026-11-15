@@ -63,28 +63,24 @@ th{background:var(--abg);color:var(--a)}
 <p class="lead">ユーザーの発言は、まず窓口(<code>.claude/rules/window.md</code>)を通る。毎ターン、フックが短い注意を届ける。遵守は保証されないため、新しいセッションで挙動を確かめる。</p>
 <table>
 <tr><th>層</th><th>条件</th><th>呼び出すスキル</th></tr>
-<tr><td>質問</td><td>作業がない。何も変わらない</td><td><code>window-question</code></td></tr>
+<tr><td>質問(層は判定しない)</td><td>作業を求めない。何も変わらない</td><td><code>window-question</code></td></tr>
 <tr><td>軽作業</td><td>取り返しがつき、小さく、spec に残すほどではない</td><td><code>superpowers:brainstorming</code>(規模を測る)→ <code>systematic-debugging</code>、<code>test-driven-development</code>、<code>verification-before-completion</code></td></tr>
 <tr><td>本件</td><td>取り返しがつかない、外向き、または設計に及ぶ。新規実装</td><td><code>superpowers:brainstorming</code> → <code>/speckit-specify</code> → 以降は「3. 本件の流れ」</td></tr>
 </table>
 <p>迷ったら重い層を選び、層は下げない。push・PR 作成・マージのような外向きの操作は、本件として先に確認する。納品書は「確認待ち」で報告し、完了とは言わない。承認はユーザーが行う。</p>
 
 <h2>1. 質問の流れ</h2>
-<p class="lead">作業がなく、何も変わらない発言。手続きは最小。</p>
+<p class="lead">作業を求めず、何も変わらない発言。層は判定せず、手続きは最小。</p>
 <div class="steps">
 
-<details class="step" open><summary>質問と判定する<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>やること</b><span>窓口が、作業がなく何も変わらない発言を、質問と判定する。迷ったら重い層を選ぶ。</span></div>
-</div></details>
-
-<details class="step"><summary>答える<span class="tag">必須</span></summary><div class="body">
+<details class="step" open><summary>答える<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>呼び出すスキル</b><span><code>window-question</code></span></div>
 <div class="k"><b>やること</b><span>答えから書く。根拠は <code>path:line</code>・URL・コマンドの出力で示す。事実でないものは、事実でないと明示する。</span></div>
-<div class="k"><b>出さないもの</b><span>依頼票、納品書、層の宣言</span></div>
+<div class="k"><b>出さないもの</b><span>層の判定、依頼票、納品書、層の宣言</span></div>
 </div></details>
 
 <details class="step"><summary>作業が要ると分かったとき<span class="tag opt">任意</span></summary><div class="body">
-<div class="k"><b>やること</b><span>層を上げ、ユーザーに伝える。軽作業または本件の流れに進む。層は下げない。</span></div>
+<div class="k"><b>やること</b><span>作業の依頼として扱い、ユーザーに伝える。その時点で、軽作業か本件かを判定し、その流れに進む。</span></div>
 </div></details>
 
 </div>
@@ -214,7 +210,6 @@ th{background:var(--abg);color:var(--a)}
 <h3>質問</h3>
 <table>
 <tr><th>段階</th><th>呼び出すスキル</th><th>成果物</th></tr>
-<tr><td>判定</td><td>(窓口)</td><td>層</td></tr>
 <tr><td>回答</td><td><code>window-question</code></td><td>根拠付きの回答</td></tr>
 </table>
 
