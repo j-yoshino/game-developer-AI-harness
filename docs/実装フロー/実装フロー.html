@@ -48,6 +48,7 @@ th{background:var(--abg);color:var(--a)}
 <button class="theme" id="theme" type="button">表示を切り替え</button>
 <h1>実装フロー</h1>
 <p class="lead">このリポジトリで、機能を実際に実装していくときの流れ。計画と実装は spec-kit を正本にし、superpowers は要件の掘り起こしとテスト・デバッグ・レビューに使う。</p>
+<p>このハーネスの要件は、概念図(シーケンス図)に沿って作られている: <a href="概念図.html">概念図.html</a></p>
 
 <div class="note"><b>この文書について。</b>通して実行して検証したものではない。手順 3・6 の任意のスキルと、<code>/speckit-converge</code> の置き場所は、各スキルの説明文を読んだうえで決めた(各手順に「出典」を付けた)。プロジェクトによって、流れは変わりうる。</div>
 
@@ -108,6 +109,11 @@ th{background:var(--abg);color:var(--a)}
 <div class="k"><b>やること</b><span>確認した項目ごとに、何をしたか・確認した方法・確認していないことを書く。「確認待ち」と報告し、完了とは言わない。承認はユーザーが行う。</span></div>
 </div></details>
 
+
+<details class="step"><summary>検査する<span class="tag opt">条件つき</span></summary><div class="body">
+<div class="k"><b>呼び出すエージェント</b><span><code>window-verifier</code>(確かめる者)</span></div>
+<div class="k"><b>やること</b><span>作業の差分にソースファイルかテストファイルがあるときだけ、納品書を別の文脈で検査させる。ドキュメント・rules・設定・HTML だけの変更では呼ばず、納品書の最後の節に「検査不要」の1行を書く。報告は納品書の末尾に、全文で追記する。</span></div>
+</div></details>
 </div>
 
 <h2>3. 本件(新規実装)の流れ</h2>
@@ -166,6 +172,12 @@ th{background:var(--abg);color:var(--a)}
 <div class="k"><b>出典</b><span class="src">converge の置き場所は補足。</span></div>
 </div></details>
 
+
+<details class="step"><summary>納品書を書き、検査する<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>成果物</b><span><code>docs/納品書/&lt;NNN-feature&gt;.md</code>(「確認した方法」にコマンドと出力を貼る)</span></div>
+<div class="k"><b>呼び出すエージェント</b><span><code>window-verifier</code>(確かめる者)。本件では必ず通す。完了の判定との照合、確認していないことの抜けの指摘、確認方法の再実行(最大3つ)、言語・エンジン別のレビューを行う。</span></div>
+<div class="k"><b>やること</b><span>報告は納品書の末尾に全文で追記する。要修正なら直して呼び直す(最大2回)。3回目にも要修正なら、未解決の指摘を載せたまま「確認待ち」と報告する。</span></div>
+</div></details>
 <details class="step"><summary>ブランチを出して PR にする<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>ブランチ</b><span><code>develop</code> から作業ブランチを切る。</span></div>
 <div class="k"><b>PR</b><span><code>develop</code> 向けに作る。</span></div>
@@ -220,6 +232,7 @@ th{background:var(--abg);color:var(--a)}
 <tr><td>作業</td><td><code>systematic-debugging</code> / <code>test-driven-development</code></td><td>変更</td></tr>
 <tr><td>確認</td><td><code>superpowers:verification-before-completion</code></td><td>検証の結果</td></tr>
 <tr><td>報告</td><td>(納品書のテンプレート)</td><td><code>docs/納品書/&lt;YYYY-MM-DD&gt;-&lt;題名&gt;.md</code></td></tr>
+<tr><td>検査</td><td><code>window-verifier</code>(コード・テストを変えたときだけ)</td><td>納品書末尾の「確かめる者の報告」</td></tr>
 </table>
 
 <h3>本件(新規実装)</h3>
@@ -232,6 +245,7 @@ th{background:var(--abg);color:var(--a)}
 <tr><td>実装</td><td><code>/speckit-implement</code> + TDD / debugging</td><td>コードとテスト</td></tr>
 <tr><td>確認</td><td>verification / code review(+ <code>converge</code>)</td><td>レビュー結果、追記されたタスク</td></tr>
 <tr><td>報告</td><td>(納品書のテンプレート)</td><td><code>docs/納品書/&lt;NNN-feature&gt;.md</code></td></tr>
+<tr><td>検査</td><td><code>window-verifier</code>(必ず)</td><td>納品書末尾の「確かめる者の報告」</td></tr>
 <tr><td>出す</td><td>develop から作業ブランチ → develop 向け PR</td><td>PR</td></tr>
 </table>
 </main>

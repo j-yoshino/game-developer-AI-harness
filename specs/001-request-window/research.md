@@ -33,7 +33,7 @@ plan の Technical Context と、設計書の未決の項目から出た調べ�
 - **決定**: 依頼票の節を足した spec テンプレートを `.specify/templates/overrides/spec-template.md` に置く。core の `.specify/templates/spec-template.md` は変えない。
 - **理由**: spec-kit の更新が core を上書きしても、override は残る。設計書の「更新で上書きされうる」という懸念を解消できる。
 - **確認できたこと**: `resolve-template.ps1 spec-template` を実行すると、override のテンプレート(依頼票の節を含むもの)が返る。
-- **未検証**: `speckit-specify` が、実際にそのテンプレートで spec を作るか(次に `/speckit-specify` を実行したときに確かめる)。
+- **確認できたこと**: `/speckit-specify` の手順(テンプレートの解決)で、リゾルバーが override のテンプレートを返し、`specs/002-request-verifier/spec.md` は、依頼票の節を先頭に持つ構造で作られた(2026-11-15)。
 - **検討した他の案**: core を直接編集する。更新で上書きされるため採らない。
 
 ## R6. 質問スキルの名前と起動
@@ -54,7 +54,6 @@ plan の Technical Context と、設計書の未決の項目から出た調べ�
 
 ## 未検証のまとめ
 
-1. `additionalContext` がモデルに届き、従われるか(R1。tasks.md の T010)。
-2. `speckit-specify` が override のテンプレートを使うか(R5)。
+1. `additionalContext` が従われるか(R1。tasks.md の T010)。届くことは、このセッションで確認した。
 
 確認済み: フックは 2.1.233 で発火する(R1)。`$CLAUDE_PROJECT_DIR` が設定される(R3)。リゾルバーは override を返す(R5)。

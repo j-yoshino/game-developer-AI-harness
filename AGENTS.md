@@ -20,6 +20,8 @@
 | `.claude/rules/answer-policy.md` | 回答ポリシー(事実のみ・確認の経緯は書かない / 事実でないことの明示 / 検証は自分で完結しユーザーの手が要るものだけ「やり残し」/ 曖昧さが残る間は進まず AskUserQuestion)。毎セッション読み込まれる |
 | `.claude/rules/window.md` | 依頼の窓口。質問(作業を求めない発言)は `window-question` が答え、層は判定しない。作業の依頼は、軽作業・本件に判定し、経路に回す(迷ったら重い層を選び、層は下げない)。毎セッション読み込まれる。`.claude/hooks/window-reminder.sh`(UserPromptSubmit フック。`settings.local.json` で登録)が、毎ターン短い注意を注入する。遵守は保証されない |
 | `.claude/skills/window-question/` | 質問(作業なし)への回答の手順。層を判定せず、依頼票・納品書・層の宣言を出さず、根拠付きで答える |
+| `.claude/agents/window-verifier.md` | 確かめる者。作った者とは別の文脈で、納品書の主張を完了の判定に照合し、確認していないことの抜けを指摘し、確認方法を最大3つ再実行し、言語・エンジン別のレビューを入れ子で呼ぶ。本件は必ず、軽作業はコードかテストを変えたときだけ呼ぶ。報告は納品書の末尾に全文で追記する。第1版は、検査役の書き換えとメインによる報告の改変を検知しない |
+| `.claude/agents/unity-reviewer.md`、`unreal-reviewer.md` | Unity と Unreal のレビュー。`window-verifier` が名前で呼ぶ。`paths` 付きの rules はサブエージェントに自動では届かないため、指示の中で `.claude/rules/unity/`、`.claude/rules/unreal-engine/` を読む |
 | `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
 | `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
@@ -50,7 +52,7 @@
 
 ## 計画フェーズの使い分け
 
-**依頼は、まず窓口(`.claude/rules/window.md`)を通る。** 質問は `window-question`、軽作業は brainstorming で規模を測って作業、本件(新規実装)は下の流れに進む。作業の完了後は、納品書を `docs/納品書/` に書く。
+**依頼は、まず窓口(`.claude/rules/window.md`)を通る。** 質問は `window-question`、軽作業は brainstorming で規模を測って作業、本件(新規実装)は下の流れに進む。作業の完了後は、納品書を `docs/納品書/` に書き、本件と、コードやテストを変えた軽作業では、報告の前に `window-verifier`(確かめる者)に検査させる。
 
 **計画と実装は spec-kit を正本とする。** superpowers と spec-kit は計画スキルの発動条件が重なるため、役割を以下に固定する。
 
