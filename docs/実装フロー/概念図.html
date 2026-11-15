@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>お客様モデルの概念図</title>
+<style>
+:root{--bg:#fafaf7;--fg:#1d1d1b;--mute:#66665f;--card:#fff;--line:#dcdcd2;--a:#2456a6;--abg:#e8effa;--ok:#1d7a46;--okbg:#e4f4ea;--warn:#9a5b00;--warnbg:#fff1d9;--no:#a02a2a;--nobg:#fbe6e6}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171a;--fg:#ecece6;--mute:#a3a39b;--card:#212126;--line:#3a3a42;--a:#8db4f2;--abg:#222f45;--ok:#6fcf97;--okbg:#1d3326;--warn:#f0b35c;--warnbg:#3a2d17;--no:#f08a8a;--nobg:#3d2222}}
+:root[data-theme=dark]{--bg:#17171a;--fg:#ecece6;--mute:#a3a39b;--card:#212126;--line:#3a3a42;--a:#8db4f2;--abg:#222f45;--ok:#6fcf97;--okbg:#1d3326;--warn:#f0b35c;--warnbg:#3a2d17;--no:#f08a8a;--nobg:#3d2222}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.7 system-ui,"Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.6rem;margin:.2em 0}
+h2{font-size:1.2rem;margin:2em 0 .6em;padding-bottom:.3em;border-bottom:2px solid var(--line)}
+p,li{margin:.4em 0}
+code{background:var(--abg);color:var(--a);padding:.1em .4em;border-radius:4px;font-size:.92em;word-break:break-all}
+.lead{color:var(--mute)}
+.note{border-left:4px solid var(--warn);background:var(--warnbg);padding:.6em 1em;border-radius:4px;margin:1em 0}
+.steps{padding:0;margin:0;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0;overflow:hidden}
+.step>summary{cursor:pointer;list-style:none;padding:12px 14px;display:flex;gap:12px;align-items:center;font-weight:600}
+.step>summary::-webkit-details-marker{display:none}
+.step>summary::before{counter-increment:s;content:counter(s);flex:none;width:2em;height:2em;border-radius:50%;background:var(--a);color:var(--bg);display:grid;place-items:center;font-size:.9rem}
+.step>summary .tag{margin-left:auto;font-size:.75rem;font-weight:500;padding:.1em .6em;border-radius:99px;background:var(--abg);color:var(--a);white-space:nowrap}
+.step>summary .tag.opt{background:var(--warnbg);color:var(--warn)}
+.step[open]>summary{border-bottom:1px solid var(--line)}
+.body{padding:6px 16px 14px}
+.k{display:grid;grid-template-columns:7em 1fr;gap:2px 12px;margin:.5em 0}
+.k b{color:var(--mute);font-weight:600}
+@media(max-width:560px){.k{grid-template-columns:1fr}.k b{margin-top:.4em}}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.cols{grid-template-columns:1fr}}
+.box{border-radius:8px;padding:.6em 1em}
+.box.ok{background:var(--okbg);border:1px solid var(--ok)}
+.box.no{background:var(--nobg);border:1px solid var(--no)}
+.box h3{margin:.2em 0;font-size:1rem}
+.box.ok h3{color:var(--ok)}.box.no h3{color:var(--no)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.94rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--abg);color:var(--a)}
+.theme{float:right;font-size:.8rem;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.2em .7em;cursor:pointer}
+.src{font-size:.8rem;color:var(--mute)}
+.seqwrap{overflow-x:auto}
+.seq{width:100%;min-width:760px;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.seq text{fill:var(--fg);font-size:13px;font-family:inherit}
+.seq .mute{fill:var(--mute);font-size:12px}
+.seq .actor rect{fill:var(--abg);stroke:var(--a);stroke-width:1.5}
+.seq .actor text{fill:var(--a);font-weight:700;font-size:14px;text-anchor:middle}
+.seq .life{stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 5}
+.seq .msg{stroke:var(--a);stroke-width:1.8;fill:none}
+.seq .back{stroke:var(--warn);stroke-width:1.8;fill:none;stroke-dasharray:6 4}
+.seq .head{fill:var(--a)}
+.seq .note rect{fill:var(--warnbg);stroke:var(--warn);stroke-width:1.2}
+.seq .note text{fill:var(--fg);text-anchor:middle;font-size:12px}
+.seq .num circle{fill:var(--a)}
+.seq .num text{fill:var(--bg);text-anchor:middle;font-size:12px;font-weight:700}
+.seq .lbl{text-anchor:middle}
+.seq .tool{fill:var(--ok);font-size:12px;text-anchor:middle}
+.seq .ext rect{fill:var(--nobg);stroke:var(--no);stroke-width:1.2}
+.seq .ext text{fill:var(--fg);text-anchor:middle;font-size:12px}
+</style>
+</head>
+<body>
+<main>
+<button class="theme" id="theme" type="button">表示を切り替え</button>
+<h1>お客様モデルの概念図</h1>
+<p class="lead">作業を頼む人(お客様)と、受ける側の役(窓口・作る者・確かめる者)のあいだで、書類がどう動くか。実際の手順は、<a href="実装フロー.html">実装フロー(手順書)</a>にある。</p>
+<div class="note"><b>このモデルについて。</b>役所の手続きから、書式が決まった書類で境界を越えることを、トヨタの自工程完結から、後工程はお客様として扱うことを借りた、責任と手続きのモデル。お客様は何が欲しいかを持ち、受ける側は、聞き返し、線引きを先に出し、確認の限界を言い、依頼と結果を照合し、自分の工程を自分で確かめてから渡す。</div>
+<h2>シーケンス図</h2>
+<div class="seqwrap"><svg class="seq" viewBox="0 0 940 1160" role="img" aria-label="お客様モデルの手続きのシーケンス図(このハーネスで呼ぶスキルとエージェントの名前入り)">
+<g class="actor"><rect x="38" y="12" width="184" height="50" rx="8"/><text x="130" y="33">お客様</text><text x="130" y="52" style="font-size:11px;fill:var(--mute);font-weight:400">(依頼する人 = ユーザー)</text></g>
+<line class="life" x1="130" y1="64" x2="130" y2="1146"/>
+<g class="actor"><rect x="258" y="12" width="184" height="50" rx="8"/><text x="350" y="33">窓口</text><text x="350" y="52" style="font-size:11px;fill:var(--mute);font-weight:400">(受付・判定・照合 = メインの会話)</text></g>
+<line class="life" x1="350" y1="64" x2="350" y2="1146"/>
+<g class="actor"><rect x="478" y="12" width="184" height="50" rx="8"/><text x="570" y="33">作る者</text><text x="570" y="52" style="font-size:11px;fill:var(--mute);font-weight:400">(手を動かす = メインの会話)</text></g>
+<line class="life" x1="570" y1="64" x2="570" y2="1146"/>
+<g class="actor"><rect x="708" y="12" width="184" height="50" rx="8"/><text x="800" y="33">確かめる者</text><text x="800" y="52" style="font-size:11px;fill:var(--mute);font-weight:400">(別の文脈で検査 = window-verifier)</text></g>
+<line class="life" x1="800" y1="64" x2="800" y2="1146"/>
+<line class="msg" x1="134" y1="112" x2="348" y2="112"/>
+<polygon class="head" points="350,112 340,107 340,117"/>
+<text class="lbl" x="240" y="103">要望を言う</text>
+<text class="lbl mute" x="240" y="128">(曖昧でよい)</text>
+<text class="lbl tool" x="240" y="145">ユーザーの発言</text>
+<g class="num"><circle cx="154" cy="92" r="11"/><text x="154" y="96">1</text></g>
+<g class="note"><rect x="185" y="168" width="330" height="52" rx="6"/><text x="350" y="187">手続きの重さを判定する(即答 / 軽作業 / 本件)</text><text class="tool" x="350" y="204">window.md + UserPromptSubmit のフック</text></g>
+<line class="msg" x1="346" y1="290" x2="132" y2="290"/>
+<polygon class="head" points="130,290 140,285 140,295"/>
+<text class="lbl" x="240" y="281">依頼票(草案)</text>
+<text class="lbl mute" x="240" y="306">ご要望の原文・こう理解した・伺いたい点</text>
+<text class="lbl tool" x="240" y="323">brainstorming → /speckit-specify(spec の先頭の依頼票)</text>
+<g class="num"><circle cx="326" cy="270" r="11"/><text x="326" y="274">2</text></g>
+<line class="msg" x1="134" y1="398" x2="348" y2="398"/>
+<polygon class="head" points="350,398 340,393 340,403"/>
+<text class="lbl" x="240" y="389">回答と合意</text>
+<text class="lbl mute" x="240" y="414">やらないこと・完了の判定</text>
+<text class="lbl tool" x="240" y="431">AskUserQuestion(選択肢の形で聞く)</text>
+<g class="num"><circle cx="154" cy="378" r="11"/><text x="154" y="382">3</text></g>
+<line class="msg" x1="354" y1="508" x2="568" y2="508"/>
+<polygon class="head" points="570,508 560,503 560,513"/>
+<text class="lbl" x="460" y="499">依頼票(確定)+原文</text>
+<text class="lbl mute" x="460" y="524">作業を任せる</text>
+<text class="lbl tool" x="460" y="541">/speckit-plan → tasks → implement</text>
+<g class="num"><circle cx="374" cy="488" r="11"/><text x="374" y="492">4</text></g>
+<g class="note"><rect x="350" y="556" width="440" height="52" rx="6"/><text x="570" y="575">作る(渡す前に自分で確かめる)</text><text class="tool" x="570" y="592">TDD・systematic-debugging・verification-before-completion</text></g>
+<line class="msg" x1="574" y1="680" x2="798" y2="680"/>
+<polygon class="head" points="800,680 790,675 790,685"/>
+<text class="lbl" x="685" y="671">引き継ぎ票</text>
+<text class="lbl mute" x="685" y="696">何をしたか・確認した方法・確認していないこと</text>
+<text class="lbl tool" x="685" y="713">納品書の全文 + 原文を渡す(引き継ぎ票は当面使わない)</text>
+<g class="num"><circle cx="594" cy="660" r="11"/><text x="594" y="664">5</text></g>
+<g class="note"><rect x="670" y="722" width="260" height="52" rx="6"/><text x="800" y="741">検査する(正しさを調べる)</text><text class="tool" x="800" y="758">window-verifier + 言語別のレビュー</text></g>
+<line class="msg" x1="796" y1="838" x2="352" y2="838"/>
+<polygon class="head" points="350,838 360,833 360,843"/>
+<text class="lbl" x="575" y="829">引き継ぎ票(検査の結果)</text>
+<text class="lbl tool" x="575" y="871">検査の報告(判定・完了の判定との照合・抜け・再実行・レビュー)</text>
+<g class="num"><circle cx="776" cy="818" r="11"/><text x="776" y="822">6</text></g>
+<g class="note"><rect x="160" y="890" width="380" height="52" rx="6"/><text x="350" y="909">依頼票と結果を照合する・納品書を書く</text><text class="tool" x="350" y="926">docs/納品書/ に書き、報告の全文を末尾へ追記</text></g>
+<line class="msg" x1="346" y1="1026" x2="132" y2="1026"/>
+<polygon class="head" points="130,1026 140,1021 140,1031"/>
+<text class="lbl" x="240" y="1017">納品書</text>
+<text class="lbl mute" x="240" y="1042">各行: 何をしたか・確認した方法・確認していないこと</text>
+<text class="lbl tool" x="240" y="1059">docs/納品書/<…>.md(状態: 確認待ち)</text>
+<g class="num"><circle cx="326" cy="1006" r="11"/><text x="326" y="1010">7</text></g>
+<g class="note"><rect x="5" y="1072" width="250" height="52" rx="6"/><text x="130" y="1091">検収する(完了の判定の一覧と照合)</text><text class="tool" x="130" y="1108">納品書を「承認済み」にする</text></g>
+</svg></div>
+<p class="src">矢印は、書類の流れ。数字は、モデルの手順の番号。緑の文字は、このハーネスで呼ぶスキル・エージェント・ファイル。手順 8(外向きの操作の承認)は、push・PR 作成・マージを、先にユーザーに確認すること。戻る条件は、下の表。</p>
+
+<h3>戻る条件</h3>
+<table>
+<tr><th>状況</th><th>戻る先</th></tr>
+<tr><td>手順 3 で、お客様が線引きに同意しない</td><td>手順 2(範囲を変えて、依頼票を書き直す)</td></tr>
+<tr><td>手順 4・5 の途中で、依頼票の前提が崩れたと分かった</td><td>作業を止めて、手順 2</td></tr>
+<tr><td>手順 6 で、依頼に答えていない項目が見つかった</td><td>手順 4(納品書を出さない)</td></tr>
+<tr><td>手順 7 で、お客様が検収しない</td><td>手順 4(不足を、依頼票の追記として受ける)</td></tr>
+</table>
+
+<h3>層による違い</h3>
+<p>手続きの重さの判定は、手順 2 の冒頭で行う。<b>即答・軽作業の層では、書類のやりとり(手順 2・3・6)を飛ばす。</b>層は、上げるだけで、下げない。</p>
+
+<h3>このハーネスでの対応</h3>
+<table>
+<tr><th>モデルの役</th><th>このハーネスでは</th></tr>
+<tr><td>お客様</td><td>ユーザー</td></tr>
+<tr><td>窓口</td><td>メインの会話(<code>.claude/rules/window.md</code> と、毎ターンのフックの注意)</td></tr>
+<tr><td>作る者</td><td>メインの会話(第1版)</td></tr>
+<tr><td>確かめる者</td><td><code>window-verifier</code>(本件は必ず、軽作業はコードやテストを変えたときだけ)</td></tr>
+<tr><td>依頼票</td><td>spec の先頭の依頼票(新規実装)</td></tr>
+<tr><td>納品書</td><td><code>docs/納品書/</code></td></tr>
+<tr><td>引き継ぎ票</td><td>当面使わない。確かめる者には、納品書の全文を渡す</td></tr>
+</table>
+</main>
+<script>
+(function(){
+  var b=document.getElementById("theme"),r=document.documentElement;
+  b.addEventListener("click",function(){
+    var cur=r.getAttribute("data-theme");
+    var dark=cur==="dark"||(!cur&&matchMedia("(prefers-color-scheme: dark)").matches);
+    r.setAttribute("data-theme",dark?"light":"dark");
+  });
+})();
+</script>
+</body>
+</html>
