@@ -206,6 +206,9 @@ th{background:var(--abg);color:var(--a)}
 </div>
 <p class="src">出典: <code>.claude/rules/answer-policy.md</code></p>
 
+<h3>Claude 自身の仕様は、記憶で答えない</h3>
+<p>Claude Code・Claude Agent SDK・Claude API の仕様(設定キー、hooks、モデル ID、料金など)は、記憶や推測で答えず、<code>/check-claude-docs</code> で確認する。<code>claude-code-guide</code> エージェントが、公式ドキュメントで裏を取り、URL つきで返す。</p>
+
 <h2>5. 言語・エンジン別のルール</h2>
 <table>
 <tr><th>ディレクトリ</th><th>読み込まれる条件(<code>paths</code>)</th><th>優先</th></tr>
