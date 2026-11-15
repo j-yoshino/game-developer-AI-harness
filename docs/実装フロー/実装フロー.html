@@ -41,6 +41,23 @@ th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;verti
 th{background:var(--abg);color:var(--a)}
 .theme{float:right;font-size:.8rem;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:.2em .7em;cursor:pointer}
 .src{font-size:.8rem;color:var(--mute)}
+.seqwrap{overflow-x:auto}
+.seq{width:100%;min-width:640px;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.seq text{fill:var(--fg);font-size:13px;font-family:inherit}
+.seq .mute{fill:var(--mute);font-size:12px}
+.seq .actor rect{fill:var(--abg);stroke:var(--a);stroke-width:1.5}
+.seq .actor text{fill:var(--a);font-weight:700;font-size:14px;text-anchor:middle}
+.seq .life{stroke:var(--line);stroke-width:1.5;stroke-dasharray:5 5}
+.seq .msg{stroke:var(--a);stroke-width:1.8;fill:none}
+.seq .back{stroke:var(--warn);stroke-width:1.8;fill:none;stroke-dasharray:6 4}
+.seq .head{fill:var(--a)}
+.seq .note rect{fill:var(--warnbg);stroke:var(--warn);stroke-width:1.2}
+.seq .note text{fill:var(--fg);text-anchor:middle;font-size:12px}
+.seq .num circle{fill:var(--a)}
+.seq .num text{fill:var(--bg);text-anchor:middle;font-size:12px;font-weight:700}
+.seq .lbl{text-anchor:middle}
+.seq .ext rect{fill:var(--nobg);stroke:var(--no);stroke-width:1.2}
+.seq .ext text{fill:var(--fg);text-anchor:middle;font-size:12px}
 </style>
 </head>
 <body>
@@ -57,6 +74,84 @@ th{background:var(--abg);color:var(--a)}
 <tr><td>プロジェクトの原則</td><td><code>/speckit-constitution</code> で、プロジェクトの憲章を作る。<code>.specify/memory/constitution.md</code> は、テンプレートのままで未記入。</td></tr>
 <tr><td>スキャン</td><td>スキルやプラグインを取り込む前に、<code>skillspector scan &lt;対象&gt; --recursive --no-llm</code>。検出は、docs 内の記述か実行されるスクリプトかを確かめてから判断する。</td></tr>
 <tr><td>新しいセッション</td><td>プラグインの追加や設定の変更は、新しいセッションで反映される。</td></tr>
+</table>
+
+<h2>お客様モデルの概念図</h2>
+<p class="lead">作業を頼む人(お客様)と、受ける側の役(窓口・作る者・確かめる者)のあいだで、書類がどう動くか。出典: <code>docs/ハーネス設計/お客様モデル_役所の手続きとトヨタの自工程完結.md</code> の 6 節(本件の経路)。</p>
+<div class="seqwrap"><svg class="seq" viewBox="0 0 820 772" role="img" aria-label="お客様モデルの手続きのシーケンス図">
+<g class="actor"><rect x="48" y="12" width="124" height="46" rx="8"/><text x="110" y="33">お客様</text><text class="mute" x="110" y="50" style="font-size:11px;fill:var(--mute);font-weight:400">(依頼する人)</text></g>
+<line class="life" x1="110" y1="60" x2="110" y2="758"/>
+<g class="actor"><rect x="248" y="12" width="124" height="46" rx="8"/><text x="310" y="33">窓口</text><text class="mute" x="310" y="50" style="font-size:11px;fill:var(--mute);font-weight:400">(受付・判定・照合)</text></g>
+<line class="life" x1="310" y1="60" x2="310" y2="758"/>
+<g class="actor"><rect x="448" y="12" width="124" height="46" rx="8"/><text x="510" y="33">作る者</text><text class="mute" x="510" y="50" style="font-size:11px;fill:var(--mute);font-weight:400">(手を動かす)</text></g>
+<line class="life" x1="510" y1="60" x2="510" y2="758"/>
+<g class="actor"><rect x="648" y="12" width="124" height="46" rx="8"/><text x="710" y="33">確かめる者</text><text class="mute" x="710" y="50" style="font-size:11px;fill:var(--mute);font-weight:400">(別の文脈で検査)</text></g>
+<line class="life" x1="710" y1="60" x2="710" y2="758"/>
+<line class="msg" x1="114" y1="96" x2="308" y2="96"/>
+<polygon class="head" points="310,96 300,91 300,101"/>
+<text class="lbl" x="210" y="88">要望を言う</text>
+<text class="lbl mute" x="210" y="112">(曖昧でよい)</text>
+<g class="num"><circle cx="134" cy="76" r="11"/><text x="134" y="80">1</text></g>
+<g class="note"><rect x="195" y="136" width="230" height="40" rx="6"/><text x="310" y="154">手続きの重さを判定する</text><text x="310" y="170">即答 / 軽作業 / 本件</text></g>
+<line class="msg" x1="306" y1="232" x2="112" y2="232"/>
+<polygon class="head" points="110,232 120,227 120,237"/>
+<text class="lbl" x="210" y="224">依頼票(草案)</text>
+<text class="lbl mute" x="210" y="248">ご要望の原文・こう理解した・伺いたい点</text>
+<g class="num"><circle cx="286" cy="212" r="11"/><text x="286" y="216">2</text></g>
+<line class="msg" x1="114" y1="292" x2="308" y2="292"/>
+<polygon class="head" points="310,292 300,287 300,297"/>
+<text class="lbl" x="210" y="284">回答と合意</text>
+<text class="lbl mute" x="210" y="308">やらないこと・完了の判定</text>
+<g class="num"><circle cx="134" cy="272" r="11"/><text x="134" y="276">3</text></g>
+<line class="msg" x1="314" y1="356" x2="508" y2="356"/>
+<polygon class="head" points="510,356 500,351 500,361"/>
+<text class="lbl" x="410" y="348">依頼票(確定)+原文</text>
+<text class="lbl mute" x="410" y="372">作業を任せる</text>
+<g class="num"><circle cx="334" cy="336" r="11"/><text x="334" y="340">4</text></g>
+<g class="note"><rect x="410" y="386" width="200" height="40" rx="6"/><text x="510" y="404">作る</text><text x="510" y="420">渡す前に自分で確かめる</text></g>
+<line class="msg" x1="514" y1="462" x2="708" y2="462"/>
+<polygon class="head" points="710,462 700,457 700,467"/>
+<text class="lbl" x="610" y="454">引き継ぎ票</text>
+<text class="lbl mute" x="610" y="478">渡すもの・何をしたか・確認した方法・確認していないこと</text>
+<g class="num"><circle cx="534" cy="442" r="11"/><text x="534" y="446">5</text></g>
+<g class="note"><rect x="610" y="492" width="200" height="40" rx="6"/><text x="710" y="510">検査する</text><text x="710" y="526">正しさを調べる</text></g>
+<line class="msg" x1="706" y1="566" x2="312" y2="566"/>
+<polygon class="head" points="310,566 320,561 320,571"/>
+<text class="lbl" x="510" y="558">引き継ぎ票(検査の結果)</text>
+<g class="num"><circle cx="334" cy="546" r="11"/><text x="334" y="550">6</text></g>
+<g class="note"><rect x="180" y="584" width="260" height="40" rx="6"/><text x="310" y="602">依頼票と結果を照合する</text><text x="310" y="618">納品書を書く</text></g>
+<line class="msg" x1="306" y1="668" x2="112" y2="668"/>
+<polygon class="head" points="110,668 120,663 120,673"/>
+<text class="lbl" x="210" y="660">納品書</text>
+<text class="lbl mute" x="210" y="684">各行: 何をしたか・確認した方法・確認していないこと</text>
+<g class="num"><circle cx="286" cy="648" r="11"/><text x="286" y="652">7</text></g>
+<g class="note"><rect x="10" y="700" width="200" height="40" rx="6"/><text x="110" y="718">検収する</text><text x="110" y="734">完了の判定の一覧と照合</text></g>
+<g class="ext"><rect x="10" y="748" width="200" height="26" rx="6"/><text x="110" y="766">外向きの操作を承認する(8)</text></g>
+</svg></div>
+<p class="src">矢印は、書類の流れ。数字は、モデルの手順の番号(8 は、図の下端に示した、外向きの操作の承認)。戻る条件は、下の表。</p>
+
+<h3>戻る条件</h3>
+<table>
+<tr><th>状況</th><th>戻る先</th></tr>
+<tr><td>手順 3 で、お客様が線引きに同意しない</td><td>手順 2(範囲を変えて、依頼票を書き直す)</td></tr>
+<tr><td>手順 4・5 の途中で、依頼票の前提が崩れたと分かった</td><td>作業を止めて、手順 2</td></tr>
+<tr><td>手順 6 で、依頼に答えていない項目が見つかった</td><td>手順 4(納品書を出さない)</td></tr>
+<tr><td>手順 7 で、お客様が検収しない</td><td>手順 4(不足を、依頼票の追記として受ける)</td></tr>
+</table>
+
+<h3>層による違い</h3>
+<p>手続きの重さの判定は、手順 2 の冒頭で行う。<b>即答・軽作業の層では、書類のやりとり(手順 2・3・6)を飛ばす。</b>層は、上げるだけで、下げない。</p>
+
+<h3>このハーネスでの対応</h3>
+<table>
+<tr><th>モデルの役</th><th>このハーネスでは</th></tr>
+<tr><td>お客様</td><td>ユーザー</td></tr>
+<tr><td>窓口</td><td>メインの会話(<code>.claude/rules/window.md</code> と、毎ターンのフックの注意)</td></tr>
+<tr><td>作る者</td><td>メインの会話(第1版)</td></tr>
+<tr><td>確かめる者</td><td><code>window-verifier</code>(本件は必ず、軽作業はコードやテストを変えたときだけ)</td></tr>
+<tr><td>依頼票</td><td>spec の先頭の依頼票(新規実装)</td></tr>
+<tr><td>納品書</td><td><code>docs/納品書/</code></td></tr>
+<tr><td>引き継ぎ票</td><td>当面使わない。確かめる者には、納品書の全文を渡す</td></tr>
 </table>
 
 <h2>窓口: 最初の分かれ道</h2>
