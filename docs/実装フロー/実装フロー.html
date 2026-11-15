@@ -49,7 +49,7 @@ th{background:var(--abg);color:var(--a)}
 <h1>実装フロー</h1>
 <p class="lead">このリポジトリで、機能を実際に実装していくときの流れ。計画と実装は spec-kit を正本にし、superpowers は要件の掘り起こしとテスト・デバッグ・レビューに使う。</p>
 
-<div class="note"><b>この文書について。</b>流れは <code>AGENTS.md</code> の方針を、順に並べたもの。通して実行して検証したものではない。手順 3・6 の任意のスキルと、<code>/speckit-converge</code> の置き場所は、AGENTS.md に書かれていない。各スキルの説明文を読んだうえで、置き場所を決めた(各手順に「出典」を付けた)。</div>
+<div class="note"><b>この文書について。</b>通して実行して検証したものではない。手順 3・6 の任意のスキルと、<code>/speckit-converge</code> の置き場所は、各スキルの説明文を読んだうえで決めた(各手順に「出典」を付けた)。プロジェクトによって、流れは変わりうる。</div>
 
 <h2>0. 最初に1回だけ</h2>
 <table>
@@ -67,13 +67,12 @@ th{background:var(--abg);color:var(--a)}
 <div class="k"><b>使うもの</b><span><code>superpowers:brainstorming</code></span></div>
 <div class="k"><b>やること</b><span>何を作るかを決める。曖昧な点は聞かれる。設計メモ(design doc)を作る。</span></div>
 <div class="k"><b>成果物</b><span>design doc(次の手順にパスを渡す)</span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md「計画フェーズの使い分け」</span></div>
 </div></details>
 
 <details class="step"><summary>仕様を書く<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>使うもの</b><span><code>/speckit-specify &lt;design doc のパス&gt;</code></span></div>
 <div class="k"><b>やること</b><span>自然言語の説明から、機能の仕様(<code>spec.md</code>)を作る。</span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md / speckit-specify の説明</span></div>
+<div class="k"><b>出典</b><span class="src">speckit-specify の説明</span></div>
 </div></details>
 
 <details class="step"><summary>仕様の曖昧さを潰す<span class="tag opt">任意</span></summary><div class="body">
@@ -86,13 +85,12 @@ th{background:var(--abg);color:var(--a)}
 <div class="k"><b>使うもの</b><span><code>/speckit-plan</code></span></div>
 <div class="k"><b>成果物</b><span><code>specs/&lt;NNN-feature&gt;/plan.md</code>。<b>計画書の正本はここだけ。</b><code>docs/superpowers/plans/</code> は使わない。</span></div>
 <div class="k"><b>使わない</b><span><code>superpowers:writing-plans</code></span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md</span></div>
 </div></details>
 
 <details class="step"><summary>タスクに分ける<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>使うもの</b><span><code>/speckit-tasks</code></span></div>
 <div class="k"><b>成果物</b><span>依存関係の順に並んだ <code>tasks.md</code></span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md / speckit-tasks の説明</span></div>
+<div class="k"><b>出典</b><span class="src">speckit-tasks の説明</span></div>
 </div></details>
 
 <details class="step"><summary>実装の前に整合性を見る<span class="tag opt">任意</span></summary><div class="body">
@@ -109,20 +107,18 @@ th{background:var(--abg);color:var(--a)}
 <code>superpowers:using-git-worktrees</code>(作業の分離)</span></div>
 <div class="k"><b>使わない</b><span><code>superpowers:executing-plans</code>、<code>superpowers:subagent-driven-development</code>。曖昧さを判断して進める仕組みが、answer-policy と食い違うため。</span></div>
 <div class="k"><b>ルール</b><span>該当の言語やエンジンのファイルを開くと、<code>.claude/rules/&lt;言語&gt;/</code> が自動で読み込まれる(下の表)。</span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md</span></div>
 </div></details>
 
 <details class="step"><summary>完了前に確かめる<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>使うもの</b><span><code>superpowers:verification-before-completion</code>、<code>superpowers:requesting-code-review</code>(指摘を受けたら <code>superpowers:receiving-code-review</code>)</span></div>
 <div class="k"><b>未実装が残ったとき</b><span><code>/speckit-converge</code> で、コードを仕様・計画・タスクと照らし、残りを <code>tasks.md</code> に追記する。そのあと <code>/speckit-implement</code> に戻る。</span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md(verification と review)。converge の置き場所は補足。</span></div>
+<div class="k"><b>出典</b><span class="src">converge の置き場所は補足。</span></div>
 </div></details>
 
 <details class="step"><summary>ブランチを出して PR にする<span class="tag">必須</span></summary><div class="body">
 <div class="k"><b>ブランチ</b><span><code>develop</code> から作業ブランチを切る。</span></div>
 <div class="k"><b>PR</b><span><code>develop</code> 向けに作る。</span></div>
 <div class="k"><b>禁止</b><span><code>main</code> に直接コミットしない。</span></div>
-<div class="k"><b>出典</b><span class="src">AGENTS.md「ブランチ運用」</span></div>
 </div></details>
 
 </div>
@@ -156,7 +152,7 @@ th{background:var(--abg);color:var(--a)}
 <tr><td><code>unity/</code></td><td><code>Assets/**/*.cs</code></td><td>Unity では <code>unity/</code> を優先</td></tr>
 <tr><td><code>unreal-engine/</code></td><td><code>Source/**</code>、<code>Plugins/**/Source/**</code> の <code>.h</code> <code>.cpp</code> <code>.cs</code></td><td>Unreal では <code>unreal-engine/</code> を優先</td></tr>
 </table>
-<p>コードを書くときの共通規則:新しいソースファイルは、先頭に Doxygen 形式のヘッダー(<code>@file</code>・<code>@brief</code>・<code>@date</code>・<code>@author</code>)を書く。コメント行の末尾には、ピリオドを付ける。<span class="src">(出典: AGENTS.md)</span></p>
+<p>コードを書くときの共通規則:新しいソースファイルは、先頭に Doxygen 形式のヘッダー(<code>@file</code>・<code>@brief</code>・<code>@date</code>・<code>@author</code>)を書く。コメント行の末尾には、ピリオドを付ける。</p>
 
 <h2>4. フロー全体の見取り図</h2>
 <table>
