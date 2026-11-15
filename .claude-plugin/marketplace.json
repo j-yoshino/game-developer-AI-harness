@@ -1,0 +1,13 @@
+{
+  "name": "game-developer-ai-harness",
+  "description": "Local marketplace that exposes vendored plugins which ship no marketplace.json of their own.",
+  "owner": { "name": "GameDeveloperAIHarness" },
+  "plugins": [
+    {
+      "name": "unreal-engine-skills-for-claude-code",
+      "source": "./vendor/unreal-engine-skills-for-claude-code-plugin",
+      "description": "Epic Games' Unreal Engine skills: control Unreal Editor via MCP.",
+      "category": "Developer Tools"
+    }
+  ]
+}

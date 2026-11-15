@@ -9,7 +9,9 @@
   "workflowKeywordTriggerEnabled": true,
   "enabledPlugins": {
     "i-have-adhd@i-have-adhd": true,
-    "superpowers@superpowers-dev": true
+    "superpowers@superpowers-dev": true,
+    "unity@unity-agent-plugin": true,
+    "unreal-engine-skills-for-claude-code@game-developer-ai-harness": true
   },
   "extraKnownMarketplaces": {
     "superpowers-dev": {
@@ -22,6 +24,18 @@
       "source": {
         "source": "directory",
         "path": "vendor/i-have-adhd"
+      }
+    },
+    "unity-agent-plugin": {
+      "source": {
+        "source": "directory",
+        "path": "vendor/unity-agent-plugin"
+      }
+    },
+    "game-developer-ai-harness": {
+      "source": {
+        "source": "directory",
+        "path": "."
       }
     }
   },
