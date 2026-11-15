@@ -59,48 +59,99 @@ th{background:var(--abg);color:var(--a)}
 <tr><td>新しいセッション</td><td>プラグインの追加や設定の変更は、新しいセッションで反映される。</td></tr>
 </table>
 
-<h2>1. 機能1つの流れ</h2>
+<h2>窓口: 最初の分かれ道</h2>
+<p class="lead">ユーザーの発言は、まず窓口(<code>.claude/rules/window.md</code>)を通る。毎ターン、フックが短い注意を届ける。遵守は保証されないため、新しいセッションで挙動を確かめる。</p>
+<table>
+<tr><th>層</th><th>条件</th><th>呼び出すスキル</th></tr>
+<tr><td>質問(層は判定しない)</td><td>作業を求めない。何も変わらない</td><td><code>window-question</code></td></tr>
+<tr><td>軽作業</td><td>取り返しがつき、小さく、spec に残すほどではない</td><td><code>superpowers:brainstorming</code>(規模を測る)→ <code>systematic-debugging</code>、<code>test-driven-development</code>、<code>verification-before-completion</code></td></tr>
+<tr><td>本件</td><td>取り返しがつかない、外向き、または設計に及ぶ。新規実装</td><td><code>superpowers:brainstorming</code> → <code>/speckit-specify</code> → 以降は「3. 本件の流れ」</td></tr>
+</table>
+<p>迷ったら重い層を選び、層は下げない。push・PR 作成・マージのような外向きの操作は、本件として先に確認する。納品書は「確認待ち」で報告し、完了とは言わない。承認はユーザーが行う。</p>
+
+<h2>1. 質問の流れ</h2>
+<p class="lead">作業を求めず、何も変わらない発言。層は判定せず、手続きは最小。</p>
+<div class="steps">
+
+<details class="step" open><summary>答える<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>呼び出すスキル</b><span><code>window-question</code></span></div>
+<div class="k"><b>やること</b><span>答えから書く。根拠は <code>path:line</code>・URL・コマンドの出力で示す。事実でないものは、事実でないと明示する。</span></div>
+<div class="k"><b>出さないもの</b><span>層の判定、依頼票、納品書、層の宣言</span></div>
+</div></details>
+
+<details class="step"><summary>作業が要ると分かったとき<span class="tag opt">任意</span></summary><div class="body">
+<div class="k"><b>やること</b><span>作業の依頼として扱い、ユーザーに伝える。その時点で、軽作業か本件かを判定し、その流れに進む。</span></div>
+</div></details>
+
+</div>
+
+<h2>2. 軽作業の流れ</h2>
+<p class="lead">取り返しがつき、小さく、spec に残すほどではない変更(不具合修正など)。メインの会話が作業する。</p>
+<div class="steps">
+
+<details class="step" open><summary>規模を測る<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>呼び出すスキル</b><span><code>superpowers:brainstorming</code></span></div>
+<div class="k"><b>やること</b><span>作業の大きさを測り、足りない点だけを聞く。設計メモは書かず、<code>writing-plans</code> には進まない。</span></div>
+</div></details>
+
+<details class="step"><summary>作業する<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>呼び出すスキル</b><span><code>systematic-debugging</code>(不具合)、<code>test-driven-development</code>(テストが当てはまるとき)</span></div>
+</div></details>
+
+<details class="step"><summary>完了前に確かめる<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>呼び出すスキル</b><span><code>superpowers:verification-before-completion</code></span></div>
+<div class="k"><b>やること</b><span>検証コマンドを実行し、出力を確認してから、完了と言う。</span></div>
+</div></details>
+
+<details class="step"><summary>納品書を書く<span class="tag">必須</span></summary><div class="body">
+<div class="k"><b>成果物</b><span><code>docs/納品書/&lt;YYYY-MM-DD&gt;-&lt;題名&gt;.md</code>(<code>docs/納品書/_template.md</code> から)</span></div>
+<div class="k"><b>やること</b><span>確認した項目ごとに、何をしたか・確認した方法・確認していないことを書く。「確認待ち」と報告し、完了とは言わない。承認はユーザーが行う。</span></div>
+</div></details>
+
+</div>
+
+<h2>3. 本件(新規実装)の流れ</h2>
 <p class="lead">各手順を開くと、使うスキルと成果物が見える。</p>
 <div class="steps">
 
 <details class="step" open><summary>要件を決める<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>superpowers:brainstorming</code></span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>superpowers:brainstorming</code></span></div>
 <div class="k"><b>やること</b><span>何を作るかを決める。曖昧な点は聞かれる。設計メモ(design doc)を作る。</span></div>
 <div class="k"><b>成果物</b><span>design doc(次の手順にパスを渡す)</span></div>
 </div></details>
 
 <details class="step"><summary>仕様を書く<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>/speckit-specify &lt;design doc のパス&gt;</code></span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>/speckit-specify &lt;design doc のパス&gt;</code></span></div>
 <div class="k"><b>やること</b><span>自然言語の説明から、機能の仕様(<code>spec.md</code>)を作る。</span></div>
 <div class="k"><b>出典</b><span class="src">speckit-specify の説明</span></div>
 </div></details>
 
 <details class="step"><summary>仕様の曖昧さを潰す<span class="tag opt">任意</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>/speckit-clarify</code></span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>/speckit-clarify</code></span></div>
 <div class="k"><b>やること</b><span>仕様の不足を、最大5問の質問で洗い出し、答えを仕様に書き戻す。</span></div>
 <div class="k"><b>出典</b><span class="src">speckit-clarify の説明。置き場所(specify の直後)は補足。</span></div>
 </div></details>
 
 <details class="step"><summary>計画を書く<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>/speckit-plan</code></span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>/speckit-plan</code></span></div>
 <div class="k"><b>成果物</b><span><code>specs/&lt;NNN-feature&gt;/plan.md</code>。<b>計画書の正本はここだけ。</b><code>docs/superpowers/plans/</code> は使わない。</span></div>
 <div class="k"><b>使わない</b><span><code>superpowers:writing-plans</code></span></div>
 </div></details>
 
 <details class="step"><summary>タスクに分ける<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>/speckit-tasks</code></span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>/speckit-tasks</code></span></div>
 <div class="k"><b>成果物</b><span>依存関係の順に並んだ <code>tasks.md</code></span></div>
 <div class="k"><b>出典</b><span class="src">speckit-tasks の説明</span></div>
 </div></details>
 
 <details class="step"><summary>実装の前に整合性を見る<span class="tag opt">任意</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>/speckit-analyze</code>(<code>/speckit-checklist</code> で、要件の品質チェックリストも作れる)</span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>/speckit-analyze</code>(<code>/speckit-checklist</code> で、要件の品質チェックリストも作れる)</span></div>
 <div class="k"><b>やること</b><span><code>spec.md</code>・<code>plan.md</code>・<code>tasks.md</code> のあいだの食い違いを、ファイルを変えずに調べる。</span></div>
 <div class="k"><b>出典</b><span class="src">speckit-analyze / speckit-checklist の説明。置き場所(tasks の後)は補足。</span></div>
 </div></details>
 
 <details class="step"><summary>実装する<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>/speckit-implement</code></span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>/speckit-implement</code></span></div>
 <div class="k"><b>実装中に併用</b><span>
 <code>superpowers:test-driven-development</code>(テストを先に)、
 <code>superpowers:systematic-debugging</code>(不具合の原因を系統立てて調べる)、
@@ -110,7 +161,7 @@ th{background:var(--abg);color:var(--a)}
 </div></details>
 
 <details class="step"><summary>完了前に確かめる<span class="tag">必須</span></summary><div class="body">
-<div class="k"><b>使うもの</b><span><code>superpowers:verification-before-completion</code>、<code>superpowers:requesting-code-review</code>(指摘を受けたら <code>superpowers:receiving-code-review</code>)</span></div>
+<div class="k"><b>呼び出すスキル</b><span><code>superpowers:verification-before-completion</code>、<code>superpowers:requesting-code-review</code>(指摘を受けたら <code>superpowers:receiving-code-review</code>)</span></div>
 <div class="k"><b>未実装が残ったとき</b><span><code>/speckit-converge</code> で、コードを仕様・計画・タスクと照らし、残りを <code>tasks.md</code> に追記する。そのあと <code>/speckit-implement</code> に戻る。</span></div>
 <div class="k"><b>出典</b><span class="src">converge の置き場所は補足。</span></div>
 </div></details>
@@ -123,7 +174,7 @@ th{background:var(--abg);color:var(--a)}
 
 </div>
 
-<h2>2. 常に守ること(回答ポリシー)</h2>
+<h2>4. 常に守ること(回答ポリシー)</h2>
 <div class="cols">
 <div class="box ok"><h3>やる</h3>
 <ul>
@@ -143,7 +194,7 @@ th{background:var(--abg);color:var(--a)}
 </div>
 <p class="src">出典: <code>.claude/rules/answer-policy.md</code></p>
 
-<h2>3. 言語・エンジン別のルール</h2>
+<h2>5. 言語・エンジン別のルール</h2>
 <table>
 <tr><th>ディレクトリ</th><th>読み込まれる条件(<code>paths</code>)</th><th>優先</th></tr>
 <tr><td><code>cpp/</code></td><td>C / C++ のソース・ヘッダ</td><td></td></tr>
@@ -154,15 +205,33 @@ th{background:var(--abg);color:var(--a)}
 </table>
 <p>コードを書くときの共通規則:新しいソースファイルは、先頭に Doxygen 形式のヘッダー(<code>@file</code>・<code>@brief</code>・<code>@date</code>・<code>@author</code>)を書く。コメント行の末尾には、ピリオドを付ける。</p>
 
-<h2>4. フロー全体の見取り図</h2>
+<h2>6. フロー全体の見取り図</h2>
+
+<h3>質問</h3>
 <table>
-<tr><th>段階</th><th>使うもの</th><th>成果物</th></tr>
-<tr><td>決める</td><td>brainstorming</td><td>design doc</td></tr>
-<tr><td>仕様</td><td>/speckit-specify (+ clarify)</td><td>spec.md</td></tr>
-<tr><td>計画</td><td>/speckit-plan</td><td>specs/&lt;NNN-feature&gt;/plan.md</td></tr>
-<tr><td>分解</td><td>/speckit-tasks (+ analyze, checklist)</td><td>tasks.md</td></tr>
-<tr><td>実装</td><td>/speckit-implement + TDD / debugging</td><td>コードとテスト</td></tr>
-<tr><td>確認</td><td>verification / code review (+ converge)</td><td>レビュー結果、追記されたタスク</td></tr>
+<tr><th>段階</th><th>呼び出すスキル</th><th>成果物</th></tr>
+<tr><td>回答</td><td><code>window-question</code></td><td>根拠付きの回答</td></tr>
+</table>
+
+<h3>軽作業</h3>
+<table>
+<tr><th>段階</th><th>呼び出すスキル</th><th>成果物</th></tr>
+<tr><td>規模</td><td><code>superpowers:brainstorming</code></td><td>規模の判定</td></tr>
+<tr><td>作業</td><td><code>systematic-debugging</code> / <code>test-driven-development</code></td><td>変更</td></tr>
+<tr><td>確認</td><td><code>superpowers:verification-before-completion</code></td><td>検証の結果</td></tr>
+<tr><td>報告</td><td>(納品書のテンプレート)</td><td><code>docs/納品書/&lt;YYYY-MM-DD&gt;-&lt;題名&gt;.md</code></td></tr>
+</table>
+
+<h3>本件(新規実装)</h3>
+<table>
+<tr><th>段階</th><th>呼び出すスキル</th><th>成果物</th></tr>
+<tr><td>決める</td><td><code>superpowers:brainstorming</code></td><td>design doc</td></tr>
+<tr><td>仕様</td><td><code>/speckit-specify</code>(+ <code>clarify</code>)</td><td>spec.md(先頭に依頼票)</td></tr>
+<tr><td>計画</td><td><code>/speckit-plan</code></td><td>specs/&lt;NNN-feature&gt;/plan.md</td></tr>
+<tr><td>分解</td><td><code>/speckit-tasks</code>(+ <code>analyze</code>、<code>checklist</code>)</td><td>tasks.md</td></tr>
+<tr><td>実装</td><td><code>/speckit-implement</code> + TDD / debugging</td><td>コードとテスト</td></tr>
+<tr><td>確認</td><td>verification / code review(+ <code>converge</code>)</td><td>レビュー結果、追記されたタスク</td></tr>
+<tr><td>報告</td><td>(納品書のテンプレート)</td><td><code>docs/納品書/&lt;NNN-feature&gt;.md</code></td></tr>
 <tr><td>出す</td><td>develop から作業ブランチ → develop 向け PR</td><td>PR</td></tr>
 </table>
 </main>
