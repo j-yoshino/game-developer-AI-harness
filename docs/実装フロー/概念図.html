@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>お客様モデルの概念図</title>
+<title>概念図</title>
 <style>
 :root{--bg:#fafaf7;--fg:#1d1d1b;--mute:#66665f;--card:#fff;--line:#dcdcd2;--a:#2456a6;--abg:#e8effa;--ok:#1d7a46;--okbg:#e4f4ea;--warn:#9a5b00;--warnbg:#fff1d9;--no:#a02a2a;--nobg:#fbe6e6}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171a;--fg:#ecece6;--mute:#a3a39b;--card:#212126;--line:#3a3a42;--a:#8db4f2;--abg:#222f45;--ok:#6fcf97;--okbg:#1d3326;--warn:#f0b35c;--warnbg:#3a2d17;--no:#f08a8a;--nobg:#3d2222}}
@@ -64,11 +64,11 @@ th{background:var(--abg);color:var(--a)}
 <body>
 <main>
 <button class="theme" id="theme" type="button">表示を切り替え</button>
-<h1>お客様モデルの概念図</h1>
+<h1>概念図</h1>
 <p class="lead">作業を頼む人(お客様)と、受ける側の役(窓口・作る者・確かめる者)のあいだで、書類がどう動くか。実際の手順は、<a href="実装フロー.html">実装フロー(手順書)</a>にある。</p>
-<div class="note"><b>このモデルについて。</b>役所の手続きから、書式が決まった書類で境界を越えることを、トヨタの自工程完結から、後工程はお客様として扱うことを借りた、責任と手続きのモデル。お客様は何が欲しいかを持ち、受ける側は、聞き返し、線引きを先に出し、確認の限界を言い、依頼と結果を照合し、自分の工程を自分で確かめてから渡す。</div>
+<div class="note"><b>この概念図について。</b>このハーネスの要件(窓口、確かめる者、依頼票、納品書など)は、この概念図に沿って作られている。役所の手続きから、書式が決まった書類で境界を越えることを、トヨタの自工程完結から、後工程はお客様として扱うことを借りた、責任と手続きの考え方。お客様は何が欲しいかを持ち、受ける側は、聞き返し、線引きを先に出し、確認の限界を言い、依頼と結果を照合し、自分の工程を自分で確かめてから渡す。</div>
 <h2>シーケンス図</h2>
-<div class="seqwrap"><svg class="seq" viewBox="0 0 940 1160" role="img" aria-label="お客様モデルの手続きのシーケンス図(このハーネスで呼ぶスキルとエージェントの名前入り)">
+<div class="seqwrap"><svg class="seq" viewBox="0 0 940 1160" role="img" aria-label="手続きのシーケンス図(このハーネスで呼ぶスキルとエージェントの名前入り)">
 <g class="actor"><rect x="38" y="12" width="184" height="50" rx="8"/><text x="130" y="33">お客様</text><text x="130" y="52" style="font-size:11px;fill:var(--mute);font-weight:400">(依頼する人 = ユーザー)</text></g>
 <line class="life" x1="130" y1="64" x2="130" y2="1146"/>
 <g class="actor"><rect x="258" y="12" width="184" height="50" rx="8"/><text x="350" y="33">窓口</text><text x="350" y="52" style="font-size:11px;fill:var(--mute);font-weight:400">(受付・判定・照合 = メインの会話)</text></g>
@@ -124,7 +124,7 @@ th{background:var(--abg);color:var(--a)}
 <g class="num"><circle cx="326" cy="1006" r="11"/><text x="326" y="1010">7</text></g>
 <g class="note"><rect x="5" y="1072" width="250" height="52" rx="6"/><text x="130" y="1091">検収する(完了の判定の一覧と照合)</text><text class="tool" x="130" y="1108">納品書を「承認済み」にする</text></g>
 </svg></div>
-<p class="src">矢印は、書類の流れ。数字は、モデルの手順の番号。緑の文字は、このハーネスで呼ぶスキル・エージェント・ファイル。手順 8(外向きの操作の承認)は、push・PR 作成・マージを、先にユーザーに確認すること。戻る条件は、下の表。</p>
+<p class="src">矢印は、書類の流れ。数字は、概念図の手順の番号。緑の文字は、このハーネスで呼ぶスキル・エージェント・ファイル。手順 8(外向きの操作の承認)は、push・PR 作成・マージを、先にユーザーに確認すること。戻る条件は、下の表。</p>
 
 <h3>戻る条件</h3>
 <table>
@@ -140,7 +140,7 @@ th{background:var(--abg);color:var(--a)}
 
 <h3>このハーネスでの対応</h3>
 <table>
-<tr><th>モデルの役</th><th>このハーネスでは</th></tr>
+<tr><th>概念図の役</th><th>このハーネスでは</th></tr>
 <tr><td>お客様</td><td>ユーザー</td></tr>
 <tr><td>窓口</td><td>メインの会話(<code>.claude/rules/window.md</code> と、毎ターンのフックの注意)</td></tr>
 <tr><td>作る者</td><td>メインの会話(第1版)</td></tr>
