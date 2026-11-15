@@ -69,15 +69,13 @@ th{background:var(--abg);color:var(--a)}
 </table>
 <p>迷ったら重い層を選び、層は下げない。push・PR 作成・マージのような外向きの操作は、本件として先に確認する。納品書は「確認待ち」で報告し、完了とは言わない。承認はユーザーが行う。</p>
 
-<h2>窓口: 最初の分かれ道</h2>
-<p class="lead">ユーザーの発言は、まず窓口(<code>.claude/rules/window.md</code>)を通る。毎ターン、フックが短い注意を届ける。遵守は保証されないため、新しいセッションで挙動を確かめる。</p>
-<table>
-<tr><th>層</th><th>条件</th><th>進む先</th></tr>
-<tr><td>質問</td><td>作業がない。何も変わらない</td><td><code>window-question</code> が、根拠付きで答える。依頼票・納品書・層の宣言なし</td></tr>
-<tr><td>軽作業</td><td>取り返しがつき、小さく、spec に残すほどではない</td><td>brainstorming で規模を測る(設計メモ・計画に進まない)。メインが superpowers のスキルで作業し、納品書を <code>docs/納品書/</code> に書く</td></tr>
-<tr><td>本件</td><td>取り返しがつかない、外向き、または設計に及ぶ。新規実装</td><td>下の「機能1つの流れ」。完了後、納品書を書く</td></tr>
-</table>
-<p>迷ったら重い層を選び、層は下げない。push・PR 作成・マージのような外向きの操作は、本件として先に確認する。納品書は「確認待ち」で報告し、完了とは言わない。承認はユーザーが行う。</p>
+<h2>スキルの呼び出し(原則)</h2>
+<p><b>各手順に書いたスキルは、その手順で必ず呼ぶ。自動発動に任せない。</b>スキルは、名前を指定して呼ぶ(例: <code>/speckit-specify</code>、<code>superpowers:brainstorming</code>)。</p>
+<ul>
+<li>理由: 自動発動は、スキルの <code>description</code> に基づくモデルの判断で決まる(公式: <code>skills.md</code>)。確実に使わせるため、手順の側で、呼ぶスキルを名指しする。</li>
+<li>呼ぶスキルが決まっていない作業(例: 軽作業のデバッグやテスト)も、該当するスキル(<code>systematic-debugging</code>、<code>test-driven-development</code>、<code>verification-before-completion</code>)を、名前を指定して呼ぶ。</li>
+<li>使わないスキル: <code>writing-plans</code>、<code>executing-plans</code>、<code>subagent-driven-development</code>(代わりに spec-kit を使う)。</li>
+</ul>
 
 <h2>1. 機能1つの流れ</h2>
 <p class="lead">各手順を開くと、使うスキルと成果物が見える。</p>
