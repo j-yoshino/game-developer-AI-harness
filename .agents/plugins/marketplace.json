@@ -1,0 +1,20 @@
+{
+  "name": "game-developer-ai-harness-local",
+  "interface": {
+    "displayName": "Game Developer AI Harness (local)"
+  },
+  "plugins": [
+    {
+      "name": "superpowers",
+      "source": {
+        "source": "local",
+        "path": "./vendor/superpowers"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

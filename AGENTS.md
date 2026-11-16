@@ -27,6 +27,7 @@
 | `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
 | `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |
 | `scripts/sync-agent-env.py`、`docs/共有環境/共有の一覧.md` | `.claude/` を正本に、Codex・Antigravity CLI 向けの `.agents/`・`.codex/` を生成する(スキル・エージェント・rules・フック)。`--check` でずれを検査。共有の可否と、できない項目の理由は、一覧にある。実機(Codex・Antigravity)での動作は、ユーザーの検収待ち |
+| `scripts/setup-antigravity-plugins.py`、`docs/共有環境/環境構築.md` | superpowers を Codex・Antigravity に入れる手順(環境構築)。Antigravity IDE へは、`vendor/superpowers` を `.agents/plugins/superpowers/` へコピーする(プロジェクト単位、Git では追跡しない)。Codex はアプリのサイドバーから、ユーザーが導入する。実機の動作は、ユーザーの検収待ち |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
 | `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` と `window.md` だけ)。下表 |
 | `docs/rules-ja/` | `.claude/rules/` の日本語訳(同じ構成・同じファイル名)。**Claude には読み込まれない**。トークン量を抑えるため、rules は英語で書き、日本語は docs に置く |
@@ -68,6 +69,22 @@ Codex は `.claude/rules/` を自動では読み込まない。次のとおり�
 - Rust(`*.rs`、`Cargo.toml`)を触るとき: `.claude/rules/rust/` の 5 ファイル。
 - Unity(`Assets/` 配下の `*.cs`、`*.asmdef`)を触るとき: `.claude/rules/unity/` の 5 ファイル。重なる `csharp/` よりも `unity/` を優先する。
 - Unreal(`Source/` と `Plugins/**/Source/` の `.h` `.cpp` `.cs`)を触るとき: `.claude/rules/unreal-engine/` の 5 ファイル。重なる `cpp/` よりも `unreal-engine/` を優先する。
+
+### 道具名の読み替え表(Codex・Antigravity 向け)
+
+`.claude/rules/`、`.claude/agents/`、`.claude/skills/` は、Claude Code の道具の名前で書いてある。Codex と Antigravity では、次のとおりに読み替える(`.claude/` の文言は変えない)。確認できなかった所は「未確認」、公式でない情報は「二次資料」と書く。
+
+| Claude の道具・項目 | Codex | Antigravity | 出典 |
+|---|---|---|---|
+| `AskUserQuestion`(選択肢でユーザーに聞く)。`answer-policy.md`、`window.md` | 番号つきの選択肢を、通常の文章で書いて質問し、返事を待つ。`request_user_input` という道具は、Plan モードなら使える見込み(二次資料。Default モードは機能フラグが要り、開発中) | 番号つきの選択肢を、通常の文章で書いて質問し、返事を待つ。対応する道具名は、未確認 | https://community.openai.com/t/let-a-codex-skill-raise-a-modal-request-user-input-in-default-mode-and-an-enterplanmode-exitplanmode-tool/1381866(二次資料) |
+| `Agent` ツールと `subagent_type`(`window-verifier`、`game-advisor`、Unity・Unreal のレビューを呼ぶ)。`window.md`、`window-verifier.md` | 専用の道具はない。自然な文章で、エージェントの名前を指して頼む(例: 「`window-verifier` に検査させて」)。定義は `.codex/agents/<名前>.toml` | `invoke_subagent` ツール(`subagent: true` のエージェント)。引数の仕様は未確認。定義は `.agents/agents/<名前>.md` | https://learn.chatgpt.com/docs/agent-configuration/subagents.md 、 https://antigravity.google/docs/subagents.md |
+| エージェントの `tools:`(`Read`、`Grep`、`Glob`、`Bash`、`Write`、`Edit`、`Agent`) | 対応なし。エージェントごとに道具や読み取り専用を制限できない(`sandbox_mode` は親の設定を上書きしない)。読み取り専用のエージェントには、指示で注意を足してある(強制ではない)。強制するなら、親のセッションの設定で読み取り専用にする | `tools:` のリスト。`Read`→`view_file`、`Grep`→`grep_search`、`Bash`→`run_command`、`Write`・`Edit`→`replace_file_content`。`Glob` と `Agent` は、対応する道具名を確認できず、入れていない。生成時に変換する | https://learn.chatgpt.com/docs/agent-configuration/subagents.md 、 https://antigravity.google/docs/subagents.md |
+| エージェントの `model:`(`sonnet`、`opus`) | 移していない(モデルは親から引き継ぐ) | 段階に変換する(公式の値は `inherit`・`flash`・`pro`)。`opus`→`pro`、`sonnet`→`flash`(ユーザーの指定。公式に対応表はなく、`pro` が特定のモデルに当たるとは限らない) | https://antigravity.google/docs/subagents.md |
+| `claude-code-guide`(Claude 専用の組み込みエージェント。`check-claude-docs` が呼ぶ) | 対応なし。このスキルは、Claude Code でだけ使う | 対応なし。同上 | `.claude/skills/check-claude-docs/SKILL.md` |
+| スキルの呼び方(`/speckit-plan` など) | 未確認(スキルの名前を言えば使える見込みだが、記法は確認していない) | 未確認 | — |
+
+- `.agents/agents/` と `.codex/agents/` は、`python scripts/sync-agent-env.py` が生成する。変換の規則は `specs/005-cross-tool-flow-gaps/data-model.md`。
+- 共有できる範囲と、できない項目は、`docs/共有環境/共有の一覧.md` にある。
 
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。
 
