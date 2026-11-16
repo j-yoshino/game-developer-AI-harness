@@ -103,26 +103,72 @@ def gen_skills(desired, errors):
             desired[f".agents/skills/{rel}"] = f.read_bytes()
 
 
+# Claude tool name -> Antigravity tool name (only names confirmed in the official example).
+# Glob and Agent have no confirmed Antigravity counterpart and are left out of the tool list.
+AG_TOOLS = {
+    "Read": "view_file",
+    "Grep": "grep_search",
+    "Bash": "run_command",
+    "Write": "replace_file_content",
+    "Edit": "replace_file_content",
+}
+AG_UNMAPPED = {"Glob", "Agent"}
+# Claude model -> Antigravity model tier (official values: inherit, flash, pro).
+# The mapping is the user's choice (opus -> pro, sonnet -> flash); the docs do not define it.
+AG_MODELS = {"opus": "pro", "sonnet": "flash", "haiku": "flash"}
+READ_ONLY_TOOLS = {"Read", "Grep", "Glob"}
+CODEX_READ_ONLY_NOTE = (
+    "Read-only: do not create, edit or delete files, and do not run commands that change state. "
+    "Report findings only.\n\n"
+)
+TOML_LITERAL = "'" * 3
+
+
 def gen_agents(desired, errors):
     src = ROOT / ".claude" / "agents"
     for f in sorted(src.glob("*.md")):
-        desired[f".agents/agents/{f.name}"] = f.read_bytes()
+        rel_src = f.relative_to(ROOT).as_posix()
         text = read_text(f)
         fm, body = split_frontmatter(text)
         meta = parse_frontmatter(fm) if fm is not None else {}
         name, desc = meta.get("name"), meta.get("description")
-        if not name or not desc:
-            errors.append(f"{f.relative_to(ROOT)}: frontmatter needs name and description")
+        tools_raw = meta.get("tools")
+        if not name or not desc or not isinstance(tools_raw, str):
+            errors.append(f"{rel_src}: frontmatter needs name, description and tools")
             continue
+        claude_model = meta.get("model")
+        if claude_model is not None and claude_model not in AG_MODELS:
+            errors.append(f"{rel_src}: unknown model {claude_model!r}; add it to AG_MODELS")
+            continue
+        ag_model = AG_MODELS.get(claude_model, "inherit")
+        tools = [x.strip() for x in tools_raw.split(",") if x.strip()]
+        unknown = [x for x in tools if x not in AG_TOOLS and x not in AG_UNMAPPED]
+        if unknown:
+            errors.append(f"{rel_src}: unknown tool name(s) {unknown}; add them to AG_TOOLS or AG_UNMAPPED")
+            continue
+        ag_tools = []
+        for x in tools:
+            if x in AG_TOOLS and AG_TOOLS[x] not in ag_tools:
+                ag_tools.append(AG_TOOLS[x])
         instructions = body.lstrip("\n")
-        if "'''" in instructions:
-            errors.append(f"{f.relative_to(ROOT)}: body contains ''' (cannot be written as a TOML literal string)")
+        # Antigravity: converted frontmatter (tool and model names differ from Claude).
+        ag = ["---", f"name: {json.dumps(name, ensure_ascii=False)}",
+              f"description: {json.dumps(desc, ensure_ascii=False)}", "tools:"]
+        ag += [f"  - {x}" for x in ag_tools]
+        ag += ["subagent: true", "mainAgent: false", f"model: {ag_model}", "---",
+               f"<!-- generated from {rel_src}. Do not edit; run scripts/sync-agent-env.py. -->"]
+        desired[f".agents/agents/{f.name}"] = ("\n".join(ag) + "\n" + instructions).encode("utf-8")
+        # Codex: TOML. A per-agent read-only sandbox is not available, so add an instruction.
+        if TOML_LITERAL in instructions:
+            errors.append(f"{rel_src}: body contains three single quotes (cannot be written as a TOML literal string)")
             continue
+        if set(tools) <= READ_ONLY_TOOLS:
+            instructions = CODEX_READ_ONLY_NOTE + instructions
         toml = (
-            f"# generated from .claude/agents/{f.name}. Do not edit; run scripts/sync-agent-env.py.\n"
+            f"# generated from {rel_src}. Do not edit; run scripts/sync-agent-env.py.\n"
             f"name = {toml_basic(name)}\n"
             f"description = {toml_basic(desc)}\n"
-            f"developer_instructions = '''\n{instructions}'''\n"
+            f"developer_instructions = {TOML_LITERAL}\n{instructions}{TOML_LITERAL}\n"
         )
         desired[f".codex/agents/{f.stem}.toml"] = toml.encode("utf-8")
 

@@ -1,6 +1,6 @@
 # 納品書: Codex・Antigravity を Claude と同じ環境で使えるようにする
 
-- 状態: 確認待ち
+- 状態: 承認済み
 - 依頼: [specs/004-cross-tool-claude-env/spec.md](../../specs/004-cross-tool-claude-env/spec.md)(依頼票は、spec の先頭)
 - 納品日: 2026-11-15
 
