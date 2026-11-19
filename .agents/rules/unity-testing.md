@@ -3,7 +3,6 @@ trigger: glob
 description: "Unity Testing"
 globs: "Assets/**/*.cs, Assets/**/*.asmdef"
 ---
-<!-- generated from .claude/rules/unity/testing.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unity Testing
 
 > This file extends [common/testing.md](../common/testing.md) with Unity specific content.

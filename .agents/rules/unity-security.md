@@ -3,7 +3,6 @@ trigger: glob
 description: "Unity Security"
 globs: "Assets/**/*.cs"
 ---
-<!-- generated from .claude/rules/unity/security.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unity Security
 
 > This file extends [common/security.md](../common/security.md) with Unity specific content.

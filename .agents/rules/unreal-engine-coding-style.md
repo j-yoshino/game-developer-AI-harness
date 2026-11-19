@@ -3,7 +3,6 @@ trigger: glob
 description: "Unreal Engine C++ Coding Style"
 globs: "Source/**/*.h, Source/**/*.cpp, Source/**/*.cs, Plugins/**/Source/**/*.h, Plugins/**/Source/**/*.cpp, Plugins/**/Source/**/*.cs"
 ---
-<!-- generated from .claude/rules/unreal-engine/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unreal Engine C++ Coding Style
 
 Source: https://dev.epicgames.com/documentation/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine?lang=ja (Unreal Engine 5.9 documentation, Japanese page, read in full on 2026-11-15). Epic's in-house standard; the page says compliance is required.

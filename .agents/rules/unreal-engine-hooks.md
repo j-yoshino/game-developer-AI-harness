@@ -3,7 +3,6 @@ trigger: glob
 description: "Unreal Engine Hooks"
 globs: "Source/**/*.h, Source/**/*.cpp, Source/**/*.cs, Plugins/**/Source/**/*.h, Plugins/**/Source/**/*.cpp, Plugins/**/Source/**/*.cs"
 ---
-<!-- generated from .claude/rules/unreal-engine/hooks.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unreal Engine Hooks
 
 > This file extends [common/hooks.md](../common/hooks.md) with Unreal Engine specific content.

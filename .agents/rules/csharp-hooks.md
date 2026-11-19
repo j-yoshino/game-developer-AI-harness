@@ -3,7 +3,6 @@ trigger: glob
 description: "C# Hooks"
 globs: "**/*.cs, **/*.csx, **/*.csproj, **/*.sln, **/Directory.Build.props, **/Directory.Build.targets"
 ---
-<!-- generated from .claude/rules/csharp/hooks.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C# Hooks
 
 > This file extends [common/hooks.md](../common/hooks.md) with C#-specific content.

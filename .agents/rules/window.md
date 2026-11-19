@@ -2,7 +2,6 @@
 trigger: always_on
 description: "Request Window"
 ---
-<!-- generated from .claude/rules/window.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Request Window
 
 Every user message passes through the window first. A message that asks for no work (a question) is answered with the `window-question` skill; no tier is judged for it. A message that asks for work is judged as a light task or a main task, which decides how much procedure it needs. A hook reminds you of this on every turn.

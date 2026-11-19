@@ -3,7 +3,6 @@ trigger: glob
 description: "Unity C# Coding Style"
 globs: "Assets/**/*.cs"
 ---
-<!-- generated from .claude/rules/unity/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unity C# Coding Style
 
 Source: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity (read in full on 2026-11-15). Unity's article builds on Microsoft's conventions and says the best rules are the ones your team agrees on.

@@ -3,7 +3,6 @@ trigger: glob
 description: "C# Coding Style"
 globs: "**/*.cs, **/*.csx"
 ---
-<!-- generated from .claude/rules/csharp/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C# Coding Style
 
 > This file extends [common/coding-style.md](../common/coding-style.md) with C#-specific content.

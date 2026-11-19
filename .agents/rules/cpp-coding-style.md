@@ -3,7 +3,6 @@ trigger: glob
 description: "C++ Coding Style"
 globs: "**/*.cpp, **/*.hpp, **/*.cc, **/*.hh, **/*.cxx, **/*.h, **/CMakeLists.txt"
 ---
-<!-- generated from .claude/rules/cpp/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C++ Coding Style
 
 > This file extends [common/coding-style.md](../common/coding-style.md) with C++ specific content.
