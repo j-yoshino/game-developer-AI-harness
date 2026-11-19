@@ -3,7 +3,6 @@ trigger: glob
 description: "Unity C# Coding Style"
 globs: "Assets/**/*.cs"
 ---
-<!-- generated from .claude/rules/unity/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unity C# Coding Style
 
 Source: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity (read in full on 2026-11-15). Unity's article builds on Microsoft's conventions and says the best rules are the ones your team agrees on.
@@ -21,7 +20,7 @@ Source: https://unity.com/ja/how-to/naming-and-code-style-tips-c-scripting-unity
 - Nouns for non-`bool`; `bool` gets a verb prefix (`isDead`, `hasDamageMultiplier`). No abbreviations; one-letter names only in loops and math. Prefer readability over brevity.
 - Public fields PascalCase, private fields camelCase (the article's example prefixes private fields with `_`, e.g. `_isDead`). Constants: `k_` prefix + PascalCase. `m_` and `s_` prefixes are shown only as options and are described as uncommon in modern C#.
 - Use `this` to separate members from locals. Decide as a team whether to write `private` explicitly (Microsoft recommends explicit); use `protected` if subclasses need access.
-- Do not initialize fields to their defaults (`= 0`, `= null`, `= false`). One variable per line. Do not repeat the class name (`Player.Score`, not `Player.PlayerScore`). No joke names.
+- Initialize fields as in "Project Rules: Initialization" in `.claude/rules/csharp/coding-style.md` (`= default` for value types). This is a project rule that differs from the article, which tells you to remove redundant initializers (its stated reason: fields are automatically set to their default values). One variable per line. Do not repeat the class name (`Player.Score`, not `Player.PlayerScore`). No joke names.
 - `var`: team decision; the article describes using it only when the type is obvious and avoiding it when the type is unclear or for primitives outside loops.
 
 ## Enums, classes, interfaces, methods

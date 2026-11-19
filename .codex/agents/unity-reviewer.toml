@@ -1,4 +1,3 @@
-# generated from .claude/agents/unity-reviewer.md. Do not edit; run scripts/sync-agent-env.py.
 name = "unity-reviewer"
 description = "Unity C# code reviewer. Reviews changed C# files under Assets/ against this repository's Unity rules (naming and style, patterns, security, testing). Called by name by the verifier."
 developer_instructions = '''

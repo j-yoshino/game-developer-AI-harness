@@ -3,7 +3,6 @@ trigger: glob
 description: "C++ Testing"
 globs: "**/*.cpp, **/*.hpp, **/*.cc, **/*.hh, **/*.cxx, **/*.h, **/CMakeLists.txt"
 ---
-<!-- generated from .claude/rules/cpp/testing.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C++ Testing
 
 > This file extends [common/testing.md](../common/testing.md) with C++ specific content.

@@ -3,7 +3,6 @@ trigger: glob
 description: "Rust Coding Style"
 globs: "**/*.rs"
 ---
-<!-- generated from .claude/rules/rust/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Rust Coding Style
 
 > This file extends [common/coding-style.md](../common/coding-style.md) with Rust-specific content.

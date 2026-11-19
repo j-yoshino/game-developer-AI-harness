@@ -3,7 +3,6 @@ trigger: glob
 description: "Unreal Engine Testing"
 globs: "Source/**/*.h, Source/**/*.cpp, Source/**/*.cs, Plugins/**/Source/**/*.h, Plugins/**/Source/**/*.cpp, Plugins/**/Source/**/*.cs"
 ---
-<!-- generated from .claude/rules/unreal-engine/testing.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unreal Engine Testing
 
 > This file extends [common/testing.md](../common/testing.md) with Unreal Engine specific content.

@@ -1,4 +1,3 @@
-# generated from .claude/agents/csharp-reviewer.md. Do not edit; run scripts/sync-agent-env.py.
 name = "csharp-reviewer"
 description = "Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance. Use for all C# code changes. MUST BE USED for C# projects."
 developer_instructions = '''

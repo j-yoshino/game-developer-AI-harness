@@ -3,7 +3,6 @@ trigger: glob
 description: "Unreal Engine Security"
 globs: "Source/**/*.h, Source/**/*.cpp, Source/**/*.cs, Plugins/**/Source/**/*.h, Plugins/**/Source/**/*.cpp, Plugins/**/Source/**/*.cs"
 ---
-<!-- generated from .claude/rules/unreal-engine/security.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unreal Engine Security
 
 > This file extends [common/security.md](../common/security.md) with Unreal Engine specific content.

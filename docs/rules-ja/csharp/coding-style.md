@@ -114,3 +114,24 @@ public async Task<Order> LoadOrderAsync(
 
 ### ピリオドの規則
 すべてのコメント行の末尾にピリオド(`.`)を付ける。折り返したコメントの各行も含む。ピリオドが収まるように、各行を完結した文または句として書く。ピリオドを付けると内容が壊れる場合は例外とする: `@file`・`@date`・`@author` の行の値、URL、コード例の中の行。区切りだけの行はコメントのテキストではない。
+
+## プロジェクトルール: 初期化
+
+このプロジェクトルールは、ECC の汎用の記述と、上の .NET の節と食い違うときは、それらに優先する。Unity のコード(`Assets/`)と、Unreal のビルドスクリプト(`Source/**/*.cs`)にも適用する。
+
+- 既定値にする値型(数値型、`bool`、`char`、`enum`、`struct`)は、`= default` と書く。初期化子を省略せず、`= 0` や `= false` とも書かない。
+- それ以外の値は、`= 値` と書く。
+- `null` が意味を持つ参照型は、`T?` と宣言し、`= null` と書く。
+- `string` は `= string.Empty`。コレクションは、宣言から型が決まる場合は `= []`、そうでなければ `= new()`。
+- フィールド、プロパティ、意味のある値を持たずに宣言するローカル変数に適用する。
+
+```csharp
+private int count = default;
+private bool isReady = default;
+private string name = string.Empty;
+private Target? target = null;
+private List<Item> items = [];
+private int limit = 5;
+```
+
+- 未確認: `= default` と、冗長な初期化子を指摘するアナライザー(例: IDE0034、CA1805)との関係。

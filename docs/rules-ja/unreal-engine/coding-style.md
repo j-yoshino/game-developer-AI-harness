@@ -55,6 +55,9 @@
 - ピリオドの規則は、著作権表示には適用しない(正確に一致する必要があるため)。
 - `Source/**/*.cs` のビルドスクリプトでは、`.claude/rules/csharp/coding-style.md` の C# のヘッダーの形式(`//!` の行)を使い、インデントは Epic のタブにする。
 
+## 初期化
+`.claude/rules/cpp/coding-style.md` の「Project Rules: Initialization」に従う: 既定値は `{}`(`int32 Count{};`)、それ以外の値は `=`(`float Speed = 600.0f;`)。`UPROPERTY` のメンバと、ヘッダーの既定のメンバ初期化子にも適用する。このリポジトリでは未確認: `UPROPERTY` のメンバで、UnrealHeaderTool がブレースの形を受け付けること。
+
 ## C++ のルールから埋めた部分
 - Epic のページは、例外、RTTI、三項演算子、スレッドの規則を述べていない。そこでは、`.claude/rules/cpp/coding-style.md` の Core Guidelines の節を適用する。ただし、そのエラー処理の規則(E.*)は例外が使えることを前提にしている。個々の Unreal のモジュールで例外が有効かは確認していないため、例外を使う前に、モジュールのビルド設定を確認する。
 - `.claude/rules/cpp/coding-style.md` のその他の C++ の規則は、上の表や Epic のページと矛盾しない限り適用する。

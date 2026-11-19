@@ -1,4 +1,3 @@
-# generated from .claude/agents/window-verifier.md. Do not edit; run scripts/sync-agent-env.py.
 name = "window-verifier"
 description = "Independent verifier for finished work. Receives the user's original request, the request form (or the light-task understanding), the delivery note, and the list of changed files, then checks the work in a fresh context and returns a report. Called by name from the request window after a delivery note is written."
 developer_instructions = '''

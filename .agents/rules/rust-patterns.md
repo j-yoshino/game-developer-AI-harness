@@ -3,7 +3,6 @@ trigger: glob
 description: "Rust Patterns"
 globs: "**/*.rs"
 ---
-<!-- generated from .claude/rules/rust/patterns.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Rust Patterns
 
 > This file extends [common/patterns.md](../common/patterns.md) with Rust-specific content.

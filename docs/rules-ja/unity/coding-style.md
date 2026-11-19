@@ -18,7 +18,7 @@
 - `bool` 以外は名詞、`bool` は動詞の接頭辞を付ける(`isDead`、`hasDamageMultiplier`)。省略しない。1文字の名前はループと数式だけ。簡潔さより可読性を優先する。
 - public フィールドは PascalCase、private フィールドは camelCase(記事の例では private フィールドに `_` を付けている。例: `_isDead`)。定数は `k_` 接頭辞 + PascalCase。`m_` と `s_` の接頭辞は選択肢として示されているだけで、最近の C# では一般的でないとされている。
 - メンバーとローカル変数を区別するには `this` を使う。`private` を明示するかどうかはチームで決める(Microsoft は明示を推奨)。サブクラスが必要とするなら `protected`。
-- フィールドを既定値で初期化しない(`= 0`、`= null`、`= false`)。1行に1つの変数。クラス名を繰り返さない(`Player.PlayerScore` ではなく `Player.Score`)。ふざけた名前を付けない。
+- フィールドは、`.claude/rules/csharp/coding-style.md` の「Project Rules: Initialization」のとおり初期化する(値型は `= default`)。これは、記事と異なるプロジェクトの規則である(記事は冗長な初期化子の削除を求め、その理由は、フィールドが自動的に既定値に設定されることだと書いている)。1行に1つの変数。クラス名を繰り返さない(`Player.PlayerScore` ではなく `Player.Score`)。ふざけた名前を付けない。
 - `var`: チームで決める。記事は、型が明らかなときだけ使い、型が不明確なときやループ外のプリミティブでは避ける流儀を説明している。
 
 ## 列挙型・クラス・インターフェース・メソッド

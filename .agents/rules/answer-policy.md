@@ -2,7 +2,6 @@
 trigger: always_on
 description: "Answer Policy"
 ---
-<!-- generated from .claude/rules/answer-policy.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Answer Policy
 
 ## Facts

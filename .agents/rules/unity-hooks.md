@@ -3,7 +3,6 @@ trigger: glob
 description: "Unity Hooks"
 globs: "Assets/**/*.cs"
 ---
-<!-- generated from .claude/rules/unity/hooks.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unity Hooks
 
 > This file extends [common/hooks.md](../common/hooks.md) with Unity specific content.

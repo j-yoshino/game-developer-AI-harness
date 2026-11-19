@@ -3,7 +3,6 @@ trigger: glob
 description: "Unreal Engine C++ Coding Style"
 globs: "Source/**/*.h, Source/**/*.cpp, Source/**/*.cs, Plugins/**/Source/**/*.h, Plugins/**/Source/**/*.cpp, Plugins/**/Source/**/*.cs"
 ---
-<!-- generated from .claude/rules/unreal-engine/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unreal Engine C++ Coding Style
 
 Source: https://dev.epicgames.com/documentation/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine?lang=ja (Unreal Engine 5.9 documentation, Japanese page, read in full on 2026-11-15). Epic's in-house standard; the page says compliance is required.
@@ -57,6 +56,9 @@ Follow "Project Rules: Comments and File Header" in `.claude/rules/cpp/coding-st
 - Epic's JavaDoc-style documentation comments (`/** */`) at public declarations are Doxygen blocks and stay allowed. They follow the period rule too.
 - The period rule does not apply to the copyright notice, which must match exactly.
 - For `Source/**/*.cs` build scripts use the C# header form (`//!` lines) from `.claude/rules/csharp/coding-style.md`, with Epic's tabs.
+
+## Initialization
+Follow "Project Rules: Initialization" in `.claude/rules/cpp/coding-style.md`: `{}` for default values (`int32 Count{};`), `=` for any other value (`float Speed = 600.0f;`). It applies to `UPROPERTY` members and to default member initializers in headers. Not verified in this repository: that UnrealHeaderTool accepts the brace form on `UPROPERTY` members.
 
 ## Gaps filled from the C++ rules
 - The Epic page does not state rules for exceptions, RTTI, the ternary operator or threading. The Core Guidelines section in `.claude/rules/cpp/coding-style.md` applies there, except that its error-handling rules (E.*) assume exceptions. Whether exceptions are enabled for a given Unreal module was not verified, so check the module's build settings before using them.

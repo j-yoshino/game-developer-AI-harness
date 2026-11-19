@@ -3,7 +3,6 @@ trigger: glob
 description: "Unity Patterns"
 globs: "Assets/**/*.cs, Assets/**/*.asmdef"
 ---
-<!-- generated from .claude/rules/unity/patterns.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unity Patterns
 
 > This file extends [common/patterns.md](../common/patterns.md) with Unity specific content.

@@ -3,7 +3,6 @@ trigger: glob
 description: "Unreal Engine Patterns"
 globs: "Source/**/*.h, Source/**/*.cpp, Source/**/*.cs, Plugins/**/Source/**/*.h, Plugins/**/Source/**/*.cpp, Plugins/**/Source/**/*.cs"
 ---
-<!-- generated from .claude/rules/unreal-engine/patterns.md. Do not edit; run scripts/sync-agent-env.py. -->
 # Unreal Engine Patterns
 
 > This file extends [common/patterns.md](../common/patterns.md) with Unreal Engine specific content.

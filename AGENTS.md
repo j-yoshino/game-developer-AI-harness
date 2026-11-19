@@ -26,8 +26,9 @@
 | `.claude/agents/unity-reviewer.md`、`unreal-reviewer.md` | Unity と Unreal のレビュー。`window-verifier` が名前で呼ぶ。`paths` 付きの rules はサブエージェントに自動では届かないため、指示の中で `.claude/rules/unity/`、`.claude/rules/unreal-engine/` を読む |
 | `docs/納品書/` | 納品書(作業後の報告)の置き場。`_template.md` が書式。軽作業と本件の完了後に書き、ユーザーが確認する。状態は「確認待ち」から始まる |
 | `.specify/templates/overrides/spec-template.md` | 依頼票(ご要望の原文・こう理解した・誰のためか・やらないこと・完了の判定)の節を足した spec テンプレート。spec-kit の更新で上書きされない |
-| `scripts/sync-agent-env.py`、`docs/共有環境/共有の一覧.md` | `.claude/` を正本に、Codex・Antigravity CLI 向けの `.agents/`・`.codex/` を生成する(スキル・エージェント・rules・フック)。`--check` でずれを検査。共有の可否と、できない項目の理由は、一覧にある。実機(Codex・Antigravity)での動作は、ユーザーの検収待ち |
+| `docs/共有環境/共有の一覧.md` | ツールごとの、スキル・エージェント・rules・フックの共有の可否と、できない項目の理由(出典つき)。実機の結果を含む |
 | `scripts/setup-antigravity-plugins.py`、`docs/共有環境/環境構築.md` | superpowers を Codex・Antigravity に入れる手順(環境構築)。Antigravity IDE へは、`vendor/superpowers` を `.agents/plugins/superpowers/` へコピーする(プロジェクト単位、Git では追跡しない)。Codex はアプリのサイドバーから、ユーザーが導入する。実機の動作は、ユーザーの検収待ち |
+| `scripts/build-main.py`、`scripts/publish-main-branch.py`、`scripts/templates/`、`docs/共有環境/変換ブランチ.md` | `main` に出す最小の構成を、`develop` の追跡済みのファイルから組み立て(`build-main.py`)、ローカルの変換ブランチにコミットする(`publish-main-branch.py`。push しない)。`main` への PR・マージは、ユーザーの確認のもとで、別に行う |
 | `.claude/skills/check-claude-docs/` | `/check-claude-docs` — Claude 自身の仕様を `claude-code-guide` エージェントに確認させる |
 | `.claude/rules/<言語・エンジン>/` | 言語・エンジンごとのルール。`paths` で該当ファイルを開いたときだけ読み込まれる(毎セッション読み込まれるのは `answer-policy.md` と `window.md` だけ)。下表 |
 | `docs/rules-ja/` | `.claude/rules/` の日本語訳(同じ構成・同じファイル名)。**Claude には読み込まれない**。トークン量を抑えるため、rules は英語で書き、日本語は docs に置く |
@@ -54,10 +55,10 @@
 
 ### 他のツール(Codex・Antigravity CLI)との共有
 
-- **正本は `.claude/`**。スキル・エージェント・rules・フックは、`.claude/` だけを手で直す。
-- `.agents/` と `.codex/` の中身は、`python scripts/sync-agent-env.py` で生成する。**生成物は手で直さない**(次の同期で上書きされる)。`--check` を付けると、正本とのずれを検査する(ファイルは書かない)。
+- **正本は、ツールごとに独立している**。Claude は `.claude/`、Codex は `.codex/` と `.agents/`、Antigravity は `.agents/`。それぞれを、手で保守する。互いを、生成の元にしない(2026-11-17 に、004・005 の「`.claude/` から生成する同期」を廃止した)。
+- 同じ内容(例: `window-question` のスキル)が、複数の場所にある。直すときは、ツールごとに、手で直す。ツールの間で、文言がずれていくのは、受け入れている(ずれを検知する仕組みは、ない)。
+- Codex と Antigravity は、どちらも、リポジトリ直下の `.agents/skills` を読むため、両ツールで共有される。
 - 共有できる範囲と、できない項目の理由は、`docs/共有環境/共有の一覧.md` にある。
-- Windows の Git は、このリポジトリでシンボリックリンクを使えない(`core.symlinks=false`)ため、リンクではなく生成(コピー)にしている。
 
 ### rules の案内(Codex 向け)
 
@@ -83,7 +84,7 @@ Codex は `.claude/rules/` を自動では読み込まない。次のとおり�
 | `claude-code-guide`(Claude 専用の組み込みエージェント。`check-claude-docs` が呼ぶ) | 対応なし。このスキルは、Claude Code でだけ使う | 対応なし。同上 | `.claude/skills/check-claude-docs/SKILL.md` |
 | スキルの呼び方(`/speckit-plan` など) | 未確認(スキルの名前を言えば使える見込みだが、記法は確認していない) | 未確認 | — |
 
-- `.agents/agents/` と `.codex/agents/` は、`python scripts/sync-agent-env.py` が生成する。変換の規則は `specs/005-cross-tool-flow-gaps/data-model.md`。
+- `.agents/agents/` と `.codex/agents/` は、手で保守する(Antigravity の frontmatter への変換は、005 で、一度だけ行った。規則は `specs/005-cross-tool-flow-gaps/data-model.md`)。
 - 共有できる範囲と、できない項目は、`docs/共有環境/共有の一覧.md` にある。
 
 **Claude Code / Agent SDK / Claude API の仕様は記憶で答えない。** 設定キーやフラグは実在しないものを書いても黙って無視されるため、`/check-claude-docs` で裏を取る。

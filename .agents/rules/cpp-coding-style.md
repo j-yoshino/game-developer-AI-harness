@@ -3,7 +3,6 @@ trigger: glob
 description: "C++ Coding Style"
 globs: "**/*.cpp, **/*.hpp, **/*.cc, **/*.hh, **/*.cxx, **/*.h, **/CMakeLists.txt"
 ---
-<!-- generated from .claude/rules/cpp/coding-style.md. Do not edit; run scripts/sync-agent-env.py. -->
 # C++ Coding Style
 
 > This file extends [common/coding-style.md](../common/coding-style.md) with C++ specific content.
@@ -130,3 +129,21 @@ Start every new C++ source and header file with this block, before any `#include
 
 ### Period rule
 End every comment line with a period (`.`), including each line of a comment that wraps. Write every line as a complete sentence or phrase so that the period fits. Exceptions, where a period would corrupt the content: the values on `@file`, `@date` and `@author` lines, the mandatory copyright notice, URLs, and lines inside code examples. Lines that contain only a delimiter (`/**`, ` */`) are not comment text.
+
+## Project Rules: Initialization
+
+These project rules take precedence over the generic ECC text and over the Core Guidelines section above where they differ (ES.23 prefers `{}` for every initializer; this project uses `{}` only for default values). In Unreal Engine code, `.claude/rules/unreal-engine/coding-style.md` applies them as well.
+
+- Always initialize (ES.20). A variable that should hold the default value of its type (zero, `false`, `nullptr`, or the default-constructed object) is initialized with an empty brace pair, never left uninitialized and never written as `= 0`, `= false` or `= nullptr`.
+- A variable that should hold any other value is initialized with `=`. Do not use braces with a value (`Count{5}`).
+- Applies to default member initializers, local variables and namespace-scope variables.
+
+```cpp
+int Count{};
+bool bReady{};
+Foo* Target{};
+int Limit = 5;
+float Speed = 600.0f;
+```
+
+- Not verified: how this rule interacts with narrowing checks and with `auto` (`auto X = 5;` is allowed; `auto X{};` is not valid).
