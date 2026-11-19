@@ -57,6 +57,9 @@ Follow "Project Rules: Comments and File Header" in `.claude/rules/cpp/coding-st
 - The period rule does not apply to the copyright notice, which must match exactly.
 - For `Source/**/*.cs` build scripts use the C# header form (`//!` lines) from `.claude/rules/csharp/coding-style.md`, with Epic's tabs.
 
+## Initialization
+Follow "Project Rules: Initialization" in `.claude/rules/cpp/coding-style.md`: `{}` for default values (`int32 Count{};`), `=` for any other value (`float Speed = 600.0f;`). It applies to `UPROPERTY` members and to default member initializers in headers. Not verified in this repository: that UnrealHeaderTool accepts the brace form on `UPROPERTY` members.
+
 ## Gaps filled from the C++ rules
 - The Epic page does not state rules for exceptions, RTTI, the ternary operator or threading. The Core Guidelines section in `.claude/rules/cpp/coding-style.md` applies there, except that its error-handling rules (E.*) assume exceptions. Whether exceptions are enabled for a given Unreal module was not verified, so check the module's build settings before using them.
 - Other C++ rules in `.claude/rules/cpp/coding-style.md` apply unless the table above or Epic's page contradicts them.

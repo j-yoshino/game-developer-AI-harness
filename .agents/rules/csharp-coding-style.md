@@ -116,3 +116,24 @@ Start every new C# file with this block, before the `using` directives:
 
 ### Period rule
 End every comment line with a period (`.`), including each line of a comment that wraps. Write every line as a complete sentence or phrase so that the period fits. Exceptions, where a period would corrupt the content: the values on `@file`, `@date` and `@author` lines, URLs, and lines inside code examples. Delimiter-only lines are not comment text.
+
+## Project Rules: Initialization
+
+These project rules take precedence over the generic ECC text and over the .NET section above where they differ. They also apply to Unity code (`Assets/`) and to Unreal build scripts (`Source/**/*.cs`).
+
+- Value types (numeric types, `bool`, `char`, `enum`, `struct`) that should hold the default value: write `= default`. Do not leave the initializer out and do not write `= 0` or `= false`.
+- Any other value: write `= value`.
+- Reference types where `null` is a meaningful state: declare `T?` and write `= null`.
+- `string`: `= string.Empty`. Collections: `= []` where the type is known from the declaration, otherwise `= new()`.
+- Applies to fields, properties and locals declared without a meaningful value.
+
+```csharp
+private int count = default;
+private bool isReady = default;
+private string name = string.Empty;
+private Target? target = null;
+private List<Item> items = [];
+private int limit = 5;
+```
+
+- Not verified: how `= default` interacts with analyzers that flag redundant initializers (for example IDE0034 and CA1805).
